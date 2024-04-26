@@ -11,7 +11,7 @@
     "test": "jest --runInBand --detectOpenHandles --forceExit",
     "test:silent": "npm test -- --silent",
     "test:watch": "npm test -- --watchAll",
-    "zip": "bestzip CSE187.Assignment3.Submission.zip test/**/* src/**/* sql/schema.sql sql/data.sql"
+    "build": "next build"
   },
   "dependencies": {
     "@emotion/react": "*",
