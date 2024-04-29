@@ -23,6 +23,7 @@ export function App() {
         Hello World - Group 4
         Oliver Lokhandwala
         Harman Gidha
+        Josue Martinez 
       </Typography>
     </Fragment>
   );
