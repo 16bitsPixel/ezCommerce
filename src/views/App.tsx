@@ -24,6 +24,7 @@ export function App() {
         Oliver Lokhandwala
         Harman Gidha
         Josue Martinez 
+        Christian Wylie
       </Typography>
     </Fragment>
   );
