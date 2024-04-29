@@ -20,7 +20,8 @@ export function App() {
   return (
     <Fragment>
       <Typography component="h1" variant="h5">
-        Hello World
+        Hello World - Group 4
+        Oliver Lokhandwala
       </Typography>
     </Fragment>
   );
