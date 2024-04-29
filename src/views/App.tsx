@@ -22,6 +22,7 @@ export function App() {
       <Typography component="h1" variant="h5">
         Hello World - Group 4
         Oliver Lokhandwala
+        Harman Gidha
       </Typography>
     </Fragment>
   );
