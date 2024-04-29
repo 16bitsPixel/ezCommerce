@@ -20,11 +20,11 @@ export function App() {
   return (
     <Fragment>
       <Typography component="h1" variant="h5">
-        Hello World - Group 4
-        Oliver Lokhandwala
-        Harman Gidha
-        Josue Martinez
-        Christian Wylie
+        Hello World - Group 4 <br/>
+        Oliver Lokhandwala<br/>
+        Harman Gidha<br/>
+        Josue Martinez<br/>
+        Christian Wylie<br/>
       </Typography>
     </Fragment>
   );
