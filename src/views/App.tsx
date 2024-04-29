@@ -25,6 +25,7 @@ export function App() {
         Harman Gidha<br/>
         Josue Martinez<br/>
         Christian Wylie<br/>
+        Ahmad Joseph<br/>
       </Typography>
     </Fragment>
   );
