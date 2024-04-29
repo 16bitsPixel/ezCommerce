@@ -20,7 +20,7 @@ export function App() {
   return (
     <Fragment>
       <Typography component="h1" variant="h5">
-        EzCommerce
+        Hello World
       </Typography>
     </Fragment>
   );
