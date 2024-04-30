@@ -26,6 +26,8 @@ export function App() {
         Josue Martinez<br/>
         Christian Wylie<br/>
         Ahmad Joseph<br/>
+        Brandon Llanes<br/>
+
       </Typography>
     </Fragment>
   );
