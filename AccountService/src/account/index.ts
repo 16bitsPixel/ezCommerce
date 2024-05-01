@@ -9,17 +9,18 @@
 #######################################################################
 */
 
-import { Query, Resolver, Args } from "type-graphql"
+export interface Authenticated {
+  id: string,
+  name: string,
+  accessToken: string
+}
 
-import { Credentials, Authenticated } from "./schema"
-import { AuthService } from "./service"
+export interface Credentials {
+  email: string,
+  password: string
+}
 
-@Resolver()
-export class AuthResolver {
-  @Query(() => Authenticated)
-  async login(
-    @Args() credentials: Credentials,
-  ): Promise<Authenticated> {
-    return new AuthService().login(credentials)
-  }
+export type SessionUser = {
+  id: string,
+  role: string
 }
