@@ -1,80 +1,24 @@
 {
-  "name": "EzCommerce",
-  "version": "0.1.0",
-  "description": "Full Stack eCommerce Web App akin to Amazon",
+  "name": "ezCommerce",
+  "version": "1.0.0",
+  "description": "Commerce Web App Similar to Amazon",
   "author": "",
   "license": "UNLICENSED",
   "repository": "none",
   "scripts": {
-    "docker": "npm run docker-accounts",
-    "docker-accounts": "cd AccountService && docker-compose up -d",
+    "docker": "npm run docker-accounts && npm run docker-books",
+    "docker-accounts": "cd AccountService && docker-compose up -d", 
+    "docker-books": "cd BookService && docker-compose up -d",
+    "installs": "npm install && npm run install-accounts && npm run install-books && npm run install-webapp",
+    "install-accounts": "cd AccountService && npm install",
+    "install-books": "cd BookService && npm install",
+    "install-webapp": "cd WebApp && npm install",
+    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run books\" \"npm run webapp\"",
     "accounts": "cd AccountService && npm run dev",
-    "dev": "concurrently --kill-others \"next dev\" \"npm run accounts\" ",
-    "lint": "next lint --fix",
-    "test": "jest --runInBand --detectOpenHandles --forceExit",
-    "test:silent": "npm test -- --silent",
-    "test:watch": "npm test -- --watchAll",
-    "build": "next build"
-  },
-  "dependencies": {
-    "@emotion/react": "*",
-    "@emotion/styled": "*",
-    "@mui/icons-material": "*",
-    "@mui/material": "*",
-    "class-validator": "*",
-    "concurrently": "^8.2.2",
-    "graphql": "*",
-    "graphql-request": "*",
-    "graphql-yoga": "*",
-    "jsonwebtoken": "*",
-    "next": "*",
-    "pg": "*",
-    "react": "*",
-    "react-dom": "*",
-    "reflect-metadata": "*",
-    "type-graphql": "^2.0.0-beta.6"
+    "books": "cd BookService && npm run dev",
+    "webapp": "cd WebApp && npm run dev"
   },
   "devDependencies": {
-    "@jest/globals": "*",
-    "@testing-library/jest-dom": "*",
-    "@testing-library/react": "*",
-    "@testing-library/user-event": "*",
-    "@types/glob": "*",
-    "@types/jest": "*",
-    "@types/jsonwebtoken": "*",
-    "@types/node": "*",
-    "@types/pg": "*",
-    "@types/react": "*",
-    "@types/react-dom": "*",
-    "@types/supertest": "*",
-    "bestzip": "*",
-    "dotenv": "*",
-    "eslint": "*",
-    "eslint-config-next": "*",
-    "eslint-config-typescript": "*",
-    "jest": "*",
-    "jest-environment-jsdom": "*",
-    "msw": "*",
-    "next-router-mock": "*",
-    "supertest": "*",
-    "ts-jest": "*",
-    "ts-node": "*",
-    "ts-postgres": "*",
-    "typescript": "*"
-  },
-  "eslintConfig": {
-    "extends": [
-      "next/core-web-vitals",
-      "typescript"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 14
-    },
-    "rules": {
-      "indent": [
-        "warn",
-        2
-      ]
-    }
+    "concurrently": "*"
   }
 }
