@@ -1,8 +1,8 @@
 {
-  "name": "cse187-microservice",
+  "name": "cse187-microservice-account",
   "version": "1.0.0",
   "description": "CSE187 Account Micro Service",
-  "author": "",
+  "author": "David Harrison <dcharris@ucsc.edu>",
   "license": "UNLICENSED",
   "repository": "none",
   "devDependencies": {
