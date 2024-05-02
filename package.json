@@ -13,10 +13,16 @@
     "install-accounts": "cd AccountService && npm install",
     "install-products": "cd ProductService && npm install",
     "install-webapp": "cd WebApp && npm install",
+<<<<<<< HEAD
     "dev": "concurrently --kill-others \"npm run accounts\" \"npm run products\" \"npm run webapp\" \"npm run adminapp\"",
     "accounts": "cd AccountService && npm run dev",
     "products": "cd ProductService && npm run dev",
     "adminapp": "cd adminWebApp && npm run dev",
+=======
+    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run products\" \"npm run webapp\"",
+    "accounts": "cd AccountService && npm run dev",
+    "products": "cd ProductService && npm run dev",
+>>>>>>> 1faac4218b91512c43eb87e9224308e3efb3c5d5
     "webapp": "cd WebApp && npm run dev"
   },
   "devDependencies": {

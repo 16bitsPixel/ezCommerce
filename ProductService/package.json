@@ -1,0 +1,64 @@
+{
+  "name": "cse187-microservice-product",
+  "version": "1.0.0",
+  "description": "CSE187 Product Micro Service",
+  "author": "",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "devDependencies": {
+    "@types/cors": "*",
+    "@types/express": "*",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "@types/pg": "*",
+    "@types/supertest": "*",
+    "@types/swagger-ui-express": "*",
+    "concurrently": "*",
+    "eslint": "*",
+    "eslint-config-typescript": "",
+    "nodemon": "*",
+    "ts-node": "*",
+    "ts-postgres": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "cors": "*",
+    "dotenv": "*",
+    "express": "*",
+    "pg": "*",
+    "swagger-ui-express": "*",
+    "tsoa": "*"
+  },
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "node build/src/server.js",
+    "prebuild": "npm run swagger",
+    "build": "tsc",
+    "predev": "npm run swagger",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "swagger": "tsoa spec-and-routes",
+    "pretest": "npm run swagger",
+    "lint": "eslint ./src/**/*.[jt]s --fix"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/server.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "typescript"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 14
+    },
+    "rules": {
+      "indent": [
+        "warn",
+        2
+      ]
+    }
+  }
+}
