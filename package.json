@@ -6,16 +6,16 @@
   "license": "UNLICENSED",
   "repository": "none",
   "scripts": {
-    "docker": "npm run docker-accounts && npm run docker-books",
+    "docker": "npm run docker-accounts && npm run docker-products",
     "docker-accounts": "cd AccountService && docker-compose up -d", 
-    "docker-books": "cd BookService && docker-compose up -d",
-    "installs": "npm install && npm run install-accounts && npm run install-books && npm run install-webapp",
+    "docker-products": "cd ProductService && docker-compose up -d",
+    "installs": "npm install && npm run install-accounts && npm run install-products && npm run install-webapp",
     "install-accounts": "cd AccountService && npm install",
-    "install-books": "cd BookService && npm install",
+    "install-products": "cd ProductService && npm install",
     "install-webapp": "cd WebApp && npm install",
-    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run books\" \"npm run webapp\"",
+    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run products\" \"npm run webapp\"",
     "accounts": "cd AccountService && npm run dev",
-    "books": "cd BookService && npm run dev",
+    "products": "cd ProductService && npm run dev",
     "webapp": "cd WebApp && npm run dev"
   },
   "devDependencies": {
