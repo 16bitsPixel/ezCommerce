@@ -9,16 +9,19 @@
     "docker": "npm run docker-accounts && npm run docker-products",
     "docker-accounts": "cd AccountService && docker-compose up -d", 
     "docker-products": "cd ProductService && docker-compose up -d",
-    "installs": "npm install && npm run install-accounts && npm run install-products && npm run install-webapp && npm run install-adminapp",
+    "installs": "npm install && npm run install-adminapp &&  npm run install-vendorapp &&  npm run install-shopperapp && npm run install-accounts && npm run install-products",
     "install-adminapp": "cd AdminApp && npm install",
+    "install-vendorapp": "cd VendorApp && npm install",
+    "install-shopperapp": "cd ShopperApp && npm install",
     "install-accounts": "cd AccountService && npm install",
     "install-products": "cd ProductService && npm install",
-    "install-webapp": "cd WebApp && npm install",
-    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run products\" \"npm run webapp\" \"npm run adminapp\"",
+    "dev": "concurrently --kill-others \"npm run accounts\" \"npm run products\" \"npm run shopperapp\" \"npm run adminapp\" \"npm run vendorapp\"",
     "accounts": "cd AccountService && npm run dev",
     "products": "cd ProductService && npm run dev",
     "adminapp": "cd AdminApp && npm run dev",
-    "webapp": "cd WebApp && npm run dev"
+    "shopperapp": "cd ShopperApp && npm run dev",
+    "vendorapp": "cd VendorApp && npm run dev"
+
   },
   "devDependencies": {
     "concurrently": "*"
