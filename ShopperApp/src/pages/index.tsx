@@ -14,8 +14,23 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import { App } from '../views/App'
 
+import type { GetServerSideProps } from 'next'
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale ?? 'en', [
+        'common',
+      ])),
+    },
+  }
+}
+
 export default function Index() {
-  const title = 'CSE187 Micro Service Book Example'
+  const { t } = useTranslation('common');
+  const title = t('title');
   return (
     <Fragment>
       <Head>
