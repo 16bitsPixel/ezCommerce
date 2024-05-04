@@ -28,7 +28,7 @@
     "dotenv": "*",
     "express": "*",
     "jsonwebtoken": "*",
-    "pg": "*",
+    "pg": "^8.11.5",
     "swagger-ui-express": "*",
     "tsoa": "*"
   },

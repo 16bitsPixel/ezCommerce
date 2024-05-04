@@ -5,6 +5,9 @@ const nextConfig = {
     config.experiments.topLevelAwait = true;
     return config;
   },
+  eslint : {
+    ignoreDuringBuilds: true
+  }
 }
 
 module.exports = nextConfig

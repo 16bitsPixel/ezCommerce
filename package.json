@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "repository": "none",
   "scripts": {
+    "containerised": "npm run build && docker-compose up --build",
     "docker": "npm run docker-accounts && npm run docker-products",
     "docker-accounts": "cd AccountService && docker-compose up -d", 
     "docker-products": "cd ProductService && docker-compose up -d",
@@ -20,8 +21,19 @@
     "products": "cd ProductService && npm run dev",
     "adminapp": "cd AdminApp && npm run dev",
     "shopperapp": "cd ShopperApp && npm run dev",
-    "vendorapp": "cd VendorApp && npm run dev"
-
+    "vendorapp": "cd VendorApp && npm run dev",
+    "cis": "npm ci && npm run ci-accounts && npm run ci-products && npm run ci-shopperapp && npm run ci-vendorapp && npm run ci-adminapp",
+    "ci-accounts": "cd AccountService && npm ci",
+    "ci-products": "cd ProductService && npm ci",
+    "ci-shopperapp": "cd ShopperApp && npm ci",
+    "ci-vendorapp": "cd VendorApp && npm ci",
+    "ci-adminapp": "cd AdminApp && npm ci",
+    "build": "npm run build-accounts && npm run build-products && npm run build-shopperapp && npm run build-vendorapp && npm run build-adminapp ",
+    "build-accounts": "cd AccountService && npm run build",
+    "build-products": "cd ProductService && npm run build",
+    "build-shopperapp": "cd ShopperApp && npm run build",
+    "build-vendorapp": "cd VendorApp && npm run build",
+    "build-adminapp": "cd AdminApp && npm run build"
   },
   "devDependencies": {
     "concurrently": "*"

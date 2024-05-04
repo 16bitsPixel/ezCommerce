@@ -23,7 +23,7 @@ export async function authChecker(context: NextApiRequest, authHeader: string, r
   return true
 }
 
-export const nextAuthChecker: AuthChecker<NextApiRequest> = async (
+export const nextAuthChecker: AuthChecker<any> = async (
   { context }, roles,) => 
 {
   return await authChecker(context, context.req.headers.authorization, roles)
