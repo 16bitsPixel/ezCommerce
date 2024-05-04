@@ -10,7 +10,7 @@
 */
 
 import * as jwt from "jsonwebtoken";
-import { Authenticated, Credentials, SessionUser } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
 import { pool } from '../db';
 
 interface Account {
@@ -65,5 +65,47 @@ export class AccountService {
         reject(e);
       }
     });
+  }
+
+  public async Signup(cred: SignupCred): Promise<Boolean|undefined>  {
+    let account = await this.find(cred);
+    if (account) {
+      return undefined;
+    } else {
+      let select = 
+      `INSERT INTO account(data) VALUES jsonb_build_object('email', $1,'name', $2,'pwhash',crypt('$3','87'),'role','$4'));`
+      let query = {
+        text: select,
+        values: [cred.email, `${cred.firstname} ${cred.lastname}`, cred.password, cred.role],
+      };
+      await pool.query(query);
+      account = await this.find(cred);
+      if (cred.role == 'vendor') {
+        select = 
+        `INSERT INTO vendor(vendor_id) VALUES $1;`
+        query = {
+          text: select,
+          values: [account!.id],
+        };
+        await pool.query(query);
+      }
+      return true;
+    }
+  }
+
+  public async isVerified(credentials: Credentials): Promise<Boolean|undefined>  {
+    const account = await this.find(credentials);
+    if (account) {
+      let select = 
+      `SELECT verified FROM vendor WHERE vendor_id = $1;`
+      let query = {
+        text: select,
+        values: [account.id],
+      };
+      const res = await pool.query(query);
+      return res.rows[0]?.verified === 't';
+    } else {
+      return undefined;
+    }
   }
 }

@@ -20,6 +20,14 @@ export interface Credentials {
   password: string
 }
 
+export interface SignupCred {
+  role: string,
+  firstname: string,
+  lastname: string,
+  email: string,
+  password: string
+}
+
 export type SessionUser = {
   id: string,
   role: string
