@@ -17,9 +17,10 @@ import {
   Get,
   Response,
   Route,
+  SuccessResponse,
 } from 'tsoa';
 
-import { Authenticated, Credentials, SessionUser } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
 import { AccountService } from './service';
 
 @Route('authenticate')
@@ -49,6 +50,41 @@ export class AccountController extends Controller {
           this.setStatus(401)
         }
         return account
+      });
+  }
+}
+
+@Route('Signup')
+export class SignupController extends Controller {
+  @Post()
+  @Response('409', 'Already Exists')
+  @SuccessResponse('201', 'Account created')
+  public async Signup(
+    @Body() cred: SignupCred,
+  ): Promise<Boolean|undefined> {
+    return new AccountService().Signup(cred)
+      .then(async (created: Boolean|undefined): Promise<Boolean|undefined> => {
+        if (!created) {
+          this.setStatus(409)
+        }
+        return created
+      });
+  }
+}
+
+@Route('Verify')
+export class VerifyController extends Controller {
+  @Post()
+  @Response('403', 'Forbidden')
+  public async Verified(
+    @Body() cred: SignupCred,
+  ): Promise<Boolean|undefined> {
+    return new AccountService().isVerified(cred)
+      .then(async (status: Boolean|undefined): Promise<Boolean|undefined> => {
+        if (!status) {
+          this.setStatus(403)
+        }
+        return status
       });
   }
 }
