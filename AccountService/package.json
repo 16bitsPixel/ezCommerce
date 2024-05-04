@@ -1,5 +1,5 @@
 {
-  "name": "cse187-microservice-account",
+  "name": "account-microservice",
   "version": "1.0.0",
   "description": "CSE187 Account Micro Service",
   "author": "David Harrison <dcharris@ucsc.edu>",
