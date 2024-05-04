@@ -9,12 +9,17 @@
 #######################################################################
 */
 import React from 'react';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 import { LoginContext } from '../context/Login'
+import Link from 'next/link';
 
 export function Login() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
+  const { t } = useTranslation('common');
+  const router = useRouter();
 
   const handleInputChange = (event: any) => {
     const {value, name} = event.target;
@@ -53,28 +58,35 @@ export function Login() {
       });
   };
 
+  const changeTo = router.locale === 'en' ? 'es' : 'en'
+
   if (loginContext.accessToken.length < 1) {
     return (
+      <div>
+         <Link href="/" locale={changeTo}>
+            <button>{t('change-locale', { changeTo })}</button>
+          </Link>
       <form onSubmit={onSubmit}>
         <input
           type="email"
           name="email"
-          aria-label="Email Address"
-          placeholder="Email Address"
+          aria-label={t('email-placeholder') || 'Email Address'}
+          placeholder={t('email-placeholder') || 'Email Address'}
           onChange={handleInputChange}
           required
         />
         <input
           type="password"
           name="password"
-          aria-label="Password"
-          placeholder="Password"
+          aria-label={t('password-placeholder') || 'Password'}
+          placeholder={t('password-placeholder') || 'Password'}
           onChange={handleInputChange}
           required
         />
-        <input type="submit" value="Login"/>
+        <input type="submit" value={t('login') || 'Login'}/>
       </form>
-    )
+      </div>
+    );
   }
   else {
     return null
