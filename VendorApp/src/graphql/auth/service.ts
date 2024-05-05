@@ -1,15 +1,4 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2022-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
-
-import { Credentials, Authenticated } from './schema';
+import { Credentials, Authenticated, SignupCred } from './schema';
 import { SessionUser } from '../../types/next';
 
 export class AuthService {
@@ -74,6 +63,56 @@ export class AuthService {
             });
         }
       }
+    });
+  }
+
+  public async signup(signupCred: SignupCred): Promise<Boolean|undefined> {
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:3011/api/v0/Signup', {
+        method: 'POST',
+        body: JSON.stringify(signupCred),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw res
+          }
+          return res.json()
+        })
+        .then((created) => {
+          resolve(created)
+        })
+        .catch((err) => {
+          console.log(err)
+          reject(new Error("Not Created"))
+        });
+    });
+  }
+
+  public async isVerified(credentials: Credentials): Promise<Boolean|undefined> { 
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:3011/api/v0/Verify', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw res
+          }
+          return res.json()
+        })
+        .then((verified) => {
+          resolve(verified)
+        })
+        .catch((err) => {
+          console.log(err)
+          reject(new Error("Not Verified"))
+        });
     });
   }
 }
