@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "lint": "next lint --fix",
-    "build": "next build"
+    "build": "next build",
+    "start": "next start -p 3002"
   },
   "devDependencies": {
     "@types/node": "*",

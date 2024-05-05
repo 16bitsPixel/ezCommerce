@@ -1,7 +1,5 @@
 FROM node:20-alpine
-EXPOSE 3000
-EXPOSE 3001
-EXPOSE 3002
+EXPOSE 3000 3001 3002
 
 WORKDIR /home/app
 
@@ -20,22 +18,23 @@ COPY ProductService/package-lock.json /home/app/ProductService/
 COPY ShopperApp/.next/ /home/app/ShopperApp/.next/
 COPY ShopperApp/package.json /home/app/ShopperApp/
 COPY ShopperApp/package-lock.json /home/app/ShopperApp/
-COPY ShopperApp/next.config.mjs/ /home/app/ShopperApp/
+COPY ShopperApp/next.config.js /home/app/ShopperApp/
+COPY ShopperApp/next-i18next.config.js /home/app/ShopperApp/
 COPY ShopperApp/public/ /home/app/ShopperApp/public/
 
 COPY AdminApp/.next/ /home/app/AdminApp/.next/
 COPY AdminApp/package.json /home/app/AdminApp/
 COPY AdminApp/package-lock.json /home/app/AdminApp/
-COPY AdminApp/next.config.mjs/ /home/app/AdminApp/
+COPY AdminApp/next.config.js/ /home/app/AdminApp/
 COPY AdminApp/public/ /home/app/AdminApp/public/
 
 COPY VendorApp/.next/ /home/app/VendorApp/.next/
 COPY VendorApp/package.json /home/app/VendorApp/
 COPY VendorApp/package-lock.json /home/app/VendorApp/
-COPY VendorApp/next.config.mjs/ /home/app/VendorApp/
+COPY VendorApp/next.config.js/ /home/app/VendorApp/
 COPY VendorApp/public/ /home/app/VendorApp/public/
 
 
 RUN npm run cis
 
-CMD npm run dev
+CMD npm run start
