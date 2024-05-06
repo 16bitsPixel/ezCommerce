@@ -15,14 +15,14 @@ export class AuthResolver {
   @Mutation(() => Boolean)
   async signup(
     @Args() signupCred: SignupCred,
-  ): Promise<Boolean|undefined> {
+  ): Promise<boolean|undefined> {
     return new AuthService().signup(signupCred)
   }
 
   @Query (() => Boolean)
   async isVerified(
     @Args() credentials: Credentials,
-  ): Promise<Boolean|undefined> {
+  ): Promise<boolean|undefined> {
     return new AuthService().isVerified(credentials)
   }
 }

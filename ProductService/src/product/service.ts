@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
 #######################################################################
 #
@@ -9,12 +10,13 @@
 #######################################################################
 */
 
+
 import { UUID, Product } from '.'
 import { pool } from '../db'
 
 export class ProductService {
   public async getAll(): Promise<Product[]> {
-    let select = 'SELECT product FROM product';
+    const select = 'SELECT product FROM product';
     const query = {
       text: select,
       values: [],

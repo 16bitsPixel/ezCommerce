@@ -12,7 +12,6 @@
 import {
   Controller,
   Get,
-  Query,
   Route,
 } from 'tsoa'
 

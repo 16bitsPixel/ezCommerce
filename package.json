@@ -34,12 +34,13 @@
     "build-shopperapp": "cd ShopperApp && npm run build",
     "build-vendorapp": "cd VendorApp && npm run build",
     "build-adminapp": "cd AdminApp && npm run build",
-    "start": "concurrently --kill-others \"npm run start-accounts\" \"npm run start-products\" \"npm run start-shopperapp\" \"npm run start-vendorapp\" \"npm run start-adminapp\"",
-    "start-accounts": "cd AccountService && npm start",
-    "start-products": "cd ProductService && npm start",
-    "start-shopperapp": "cd ShopperApp && npm start",
-    "start-vendorapp": "cd VendorApp && npm start",
-    "start-adminapp": "cd AdminApp && npm start"
+    "lints":"npm run lint-accounts && npm run lint-products && npm run lint-shopperapp && npm run lint-vendorapp && npm run lint-adminapp",
+    "lint-accounts": "cd AccountService && npm run lint",
+    "lint-products": "cd ProductService && npm run lint",
+    "lint-shopperapp": "cd ShopperApp && npm run lint",
+    "lint-vendorapp": "cd VendorApp && npm run lint",
+    "lint-adminapp" : "cd AdminApp && npm run build"
+
   },
   "devDependencies": {
     "concurrently": "*"

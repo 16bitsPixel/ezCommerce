@@ -63,28 +63,28 @@ export function Login() {
   if (loginContext.accessToken.length < 1) {
     return (
       <div>
-         <Link href="/" locale={changeTo}>
-            <button>{t('change-locale', { changeTo })}</button>
-          </Link>
-      <form onSubmit={onSubmit}>
-        <input
-          type="email"
-          name="email"
-          aria-label={t('email-placeholder') || 'Email Address'}
-          placeholder={t('email-placeholder') || 'Email Address'}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          aria-label={t('password-placeholder') || 'Password'}
-          placeholder={t('password-placeholder') || 'Password'}
-          onChange={handleInputChange}
-          required
-        />
-        <input type="submit" value={t('login') || 'Login'}/>
-      </form>
+        <Link href="/" locale={changeTo}>
+          <button>{t('change-locale', { changeTo })}</button>
+        </Link>
+        <form onSubmit={onSubmit}>
+          <input
+            type="email"
+            name="email"
+            aria-label={t('email-placeholder') || 'Email Address'}
+            placeholder={t('email-placeholder') || 'Email Address'}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            aria-label={t('password-placeholder') || 'Password'}
+            placeholder={t('password-placeholder') || 'Password'}
+            onChange={handleInputChange}
+            required
+          />
+          <input type="submit" value={t('login') || 'Login'}/>
+        </form>
       </div>
     );
   }
