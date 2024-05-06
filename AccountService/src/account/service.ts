@@ -21,7 +21,7 @@ interface Account {
 
 export class AccountService {
   private async find(creds: Credentials): Promise<Account|undefined> {
-    let select = 
+    const select = 
       ` SELECT jsonb_build_object('id', id, 'name', data->>'name', 'role', data->>'role')` +
       ` AS account FROM account` +
       ` WHERE data->>'email' = $1` +
@@ -67,7 +67,7 @@ export class AccountService {
     });
   }
 
-  public async Signup(cred: SignupCred): Promise<Boolean|undefined>  {
+  public async Signup(cred: SignupCred): Promise<boolean|undefined>  {
     let account = await this.find(cred);
     if (account) {
       return undefined;
@@ -93,12 +93,12 @@ export class AccountService {
     }
   }
 
-  public async isVerified(credentials: Credentials): Promise<Boolean|undefined>  {
+  public async isVerified(credentials: Credentials): Promise<boolean|undefined>  {
     const account = await this.find(credentials);
     if (account) {
-      let select = 
+      const select = 
       `SELECT verified FROM vendor WHERE vendor_id = $1;`
-      let query = {
+      const query = {
         text: select,
         values: [account.id],
       };

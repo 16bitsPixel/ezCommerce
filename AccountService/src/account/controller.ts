@@ -61,9 +61,9 @@ export class SignupController extends Controller {
   @SuccessResponse('201', 'Account created')
   public async Signup(
     @Body() cred: SignupCred,
-  ): Promise<Boolean|undefined> {
+  ): Promise<boolean|undefined> {
     return new AccountService().Signup(cred)
-      .then(async (created: Boolean|undefined): Promise<Boolean|undefined> => {
+      .then(async (created: boolean|undefined): Promise<boolean|undefined> => {
         if (!created) {
           this.setStatus(409)
         }
@@ -78,9 +78,9 @@ export class VerifyController extends Controller {
   @Response('403', 'Forbidden')
   public async Verified(
     @Body() cred: SignupCred,
-  ): Promise<Boolean|undefined> {
+  ): Promise<boolean|undefined> {
     return new AccountService().isVerified(cred)
-      .then(async (status: Boolean|undefined): Promise<Boolean|undefined> => {
+      .then(async (status: boolean|undefined): Promise<boolean|undefined> => {
         if (!status) {
           this.setStatus(403)
         }
