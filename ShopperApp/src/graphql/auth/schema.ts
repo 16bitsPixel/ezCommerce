@@ -19,7 +19,7 @@ export class Authenticated {
     accessToken!: string
 }
 
-@ObjectType()
+@ArgsType()
 export class SignupCred {
   @Field()
     role!: string
