@@ -16,7 +16,7 @@ import { Product } from "./schema"
 import { ProductService } from "./service"
 
 @Resolver()
-export class BookResolver {
+export class ProductResolver {
   @Authorized("member")
   @Query(() => [Product])
   async product(
