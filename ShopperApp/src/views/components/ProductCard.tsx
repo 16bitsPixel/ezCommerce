@@ -29,7 +29,7 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
   ));
   
   return (
-    <Card sx={{ maxWidth: 250 }}>
+    <Card>
       <CardMedia
         component="img"
         height="200"
@@ -43,7 +43,7 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
         onMouseLeave={handleMouseLeave}
       />
       <CardContent>
-        <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 3 }} component="div">
+        <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }} component="div">
           {name}
         </Typography>
       </CardContent>
