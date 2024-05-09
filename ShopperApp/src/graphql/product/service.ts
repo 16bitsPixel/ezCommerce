@@ -10,8 +10,6 @@
 */
 
 import type { Product } from './schema'
-import type { NextApiRequest } from 'next'
-
 
 export class ProductService{
   async getAll(): Promise<Product[]> {
