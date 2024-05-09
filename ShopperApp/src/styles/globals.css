@@ -1,40 +1,64 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2022-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without 
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
-
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#books {
-  border-collapse: collapse;
+.Gallery {
+  position: 'relative';
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+  width: 600px;
+  height: 400px;
+}
+
+.slide {
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 7px #666;
   width: 100%;
+  height: 100%;
 }
 
-#books td, #books th {
-  border: 1px solid #ddd;
-  padding: 4px;
-}
-
-#books tr:nth-child(even){background-color: #f2f2f2;}
-
-#books tr:hover {background-color: #ddd;}
-
-#books th {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-align: left;
-  background-color: #4CAF50;
+.arrow {
+  position: 'absolute';
+  width: 2rem;
+  height: 2rem;
   color: white;
+  filter: drop-shadow(0px 0px 7px #555)
 }
 
-label {
-  padding: 6px 8px;
+.arrow:hover {
+  cursor: pointer;
+}
+
+.arrow-left {
+  left: 1rem;
+}
+.arrow-right {
+  right: 1rem;
+}
+
+.indicators {
+  display: 'flex';
+  position: 'absolute';
+  bottom: 1rem;
+}
+
+.slide-hidden {
+  display: none;
+}
+
+.indicator {
+  background-color: white;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 100%;
+  border: none;
+  outline: none;
+  box-shadow: 0px 0px 5px #555;
+  margin: 0 0.2rem;
+  cursor: pointer; 
+}
+
+.indicator-inactive {
+  background-color: grey;
 }
