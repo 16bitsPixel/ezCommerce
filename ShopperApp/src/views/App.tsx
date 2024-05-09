@@ -11,11 +11,13 @@
 import { Books } from './Books'
 import { Login } from './Login'
 import { LoginProvider } from '../context/Login'
+import { TrendingList  } from './components/trendingList';
 
 export function App() {
   return (
     <LoginProvider>
       <Books/>
+      <TrendingList/>
       <Login/>
     </LoginProvider>
   )
