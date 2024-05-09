@@ -1,2 +1,2 @@
 DELETE FROM product;
-INSERT INTO product(id, product) VALUES ('eca286ff-43a8-457d-ab07-b2f3d003d903', jsonb_build_object('name','Test Item','description','This is a test item','quantity', 2, 'price', 99.99));
+INSERT INTO product(id, product) VALUES ('eca286ff-43a8-457d-ab07-b2f3d003d903', jsonb_build_object('name','EASELR WeightedPlush Cute Capybara Plush, 12inch Capybara Stuffed Animal Soft Capybara Plushies Toy Capybara Doll Pillow Birthday for Kids (with Bag)','description','This is a test item', 'price', 99.99, 'rating', 5, 'image', 'https://m.media-amazon.com/images/I/71Du3SVNIBL._AC_SX679_.jpg'));
