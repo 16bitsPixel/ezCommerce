@@ -13,6 +13,7 @@ import React from 'react';
 import { LoginContext } from '../../context/Login'
 import { Product } from '../../graphql/product/schema'
 import ProductCard from './ProductCard';
+import { Box } from '@mui/material';
 
 interface FetchProductsParams {
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -59,16 +60,11 @@ export function TrendingList() {
     fetchProducts({setProducts, setError, accessToken: loginContext.accessToken});
   }, [loginContext.accessToken]);
 
-  if (loginContext.accessToken.length > 0) {
-    return (
-      <div>
-        {products.map((product: Product) => (
-          <ProductCard key = {product.id} name={product.name} price={product.price} rating={product.rating} image={product.image}/>
-        ))}
-      </div>
-    )
-  }
-  else {
-    return null
-  }
+  return (
+    <Box>
+      {products.map((product: Product) => (
+        <ProductCard key = {product.id} name={product.name} price={product.price} rating={product.rating} image={product.image}/>
+      ))}
+    </Box>
+  )
 }

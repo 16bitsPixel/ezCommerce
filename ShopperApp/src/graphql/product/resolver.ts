@@ -16,7 +16,6 @@ import { ProductService } from "./service"
 
 @Resolver()
 export class ProductResolver {
-  @Authorized("member")
   @Query(() => [Product])
   async product(): Promise<Product[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
