@@ -16,7 +16,7 @@ import { pool } from '../db'
 
 export class ProductService {
   public async getAll(): Promise<Product[]> {
-    const select = 'SELECT product FROM product';
+    const select = 'SELECT * FROM product';
     const query = {
       text: select,
       values: [],
@@ -24,7 +24,9 @@ export class ProductService {
     const {rows} = await pool.query(query);
     const products = [];
     for (const row of rows) {
-      products.push(row.product)
+      const product = row.product;
+      product.id = row.id;
+      products.push(product)
     }
     return products
   }

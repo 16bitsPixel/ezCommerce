@@ -3,20 +3,17 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, Box, CardActions } from '@mui/material';
+import {Box, CardActions} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
-const styles = {
-  cardMedia: {
-    objectFit: 'contain',
-    transition: 'transform 0.3s ease-in-out',
-  },
-  cardMediaHovered: {
-    transform: 'scale(1.1)', // Adjust the scale factor as needed
-  },
-};
+interface ProductCardProps {
+  name: string;
+  price: number;
+  rating: number;
+  image: string;
+}
 
-export default function ProductCard({name, price, rating, image}: any) {
+export default function ProductCard({name, price, rating, image}: ProductCardProps) {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseEnter = () => {
@@ -46,7 +43,7 @@ export default function ProductCard({name, price, rating, image}: any) {
         onMouseLeave={handleMouseLeave}
       />
       <CardContent>
-      <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 3 }} component="div">
+        <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 3 }} component="div">
           {name}
         </Typography>
       </CardContent>
@@ -59,3 +56,13 @@ export default function ProductCard({name, price, rating, image}: any) {
     </Card>
   );
 }
+
+const styles = {
+  cardMedia: {
+    objectFit: 'contain',
+    transition: 'transform 0.3s ease-in-out',
+  },
+  cardMediaHovered: {
+    transform: 'scale(1.1)', // Adjust the scale factor as needed
+  },
+};

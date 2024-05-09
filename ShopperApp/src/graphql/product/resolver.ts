@@ -9,8 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql"
-import type { NextApiRequest } from 'next'
+import { Query, Resolver, Authorized} from "type-graphql"
 
 import { Product } from "./schema"
 import { ProductService } from "./service"
