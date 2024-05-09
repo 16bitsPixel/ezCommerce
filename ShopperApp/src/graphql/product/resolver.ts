@@ -19,10 +19,8 @@ import { ProductService } from "./service"
 export class ProductResolver {
   @Authorized("member")
   @Query(() => [Product])
-  async product(
-    @Ctx() request: NextApiRequest
-  ): Promise<Product[]> {
+  async product(): Promise<Product[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
-    return new ProductService().getAll(request)
+    return new ProductService().getAll()
   }
 }
