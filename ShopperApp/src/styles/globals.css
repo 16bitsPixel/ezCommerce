@@ -3,12 +3,12 @@ body {
 }
 
 .Gallery {
-  position: 'relative';
-  display: 'flex';
-  justify-content: 'center';
-  align-items: 'center';
-  width: 600px;
-  height: 400px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 600px;
+  height: 400px; */
 }
 
 .slide {
@@ -19,7 +19,7 @@ body {
 }
 
 .arrow {
-  position: 'absolute';
+  position: absolute;
   width: 2rem;
   height: 2rem;
   color: white;
@@ -38,8 +38,8 @@ body {
 }
 
 .indicators {
-  display: 'flex';
-  position: 'absolute';
+  display: flex;
+  position: absolute;
   bottom: 1rem;
 }
 
