@@ -61,82 +61,82 @@ export function SignUp() {
           </Typography>
         </Box>
         <Card variant="outlined" sx={{ mt: 4 }}>
-        <CardContent>
-          <Typography variant="h4" component="h2" gutterBottom>
-            {t('signup')}
-          </Typography>
-          <form onSubmit={onSubmit}>
-            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 'bold' }}>
-              {t('first-name')}
-            </Typography>
-            <TextField
-              type="text"
-              name="firstname"
-              aria-label={t('first-name') || 'First Name'}
-              placeholder={t('first-name') || 'First Name'}
-              margin="normal"
-              fullWidth
-              onChange={handleInputChange}
-              required
-              sx={{ mt: 0 }}
-            />
-            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-              {t('last-name')}
-            </Typography>
-            <TextField
-              type="text"
-              name="lastname"
-              aria-label={t('last-name') || 'Last Name'}
-              placeholder={t('last-name') || 'Last Name'}
-              margin="normal"
-              fullWidth
-              onChange={handleInputChange}
-              required
-              sx={{ mt: 0 }}
-            />
-            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-              {t('email-placeholder')}
-            </Typography>
-            <TextField
-              type="email"
-              name="email"
-              aria-label={t('email-placeholder') || 'Email Address'}
-              placeholder={t('email-placeholder') || 'Email Address'}
-              margin="normal"
-              fullWidth
-              onChange={handleInputChange}
-              required
-              sx={{ mt: 0 }}
-            />
-            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
-              {t('password-placeholder')}
-            </Typography>
-            <TextField
-              type="password"
-              name="password"
-              aria-label={t('password-placeholder') || 'Password'}
-              placeholder={t('password-placeholder') || 'Password'}
-              margin="normal"
-              fullWidth
-              onChange={handleInputChange}
-              required
-              sx={{ mt: 0 }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
-            >
+          <CardContent>
+            <Typography variant="h4" component="h2" gutterBottom>
               {t('signup')}
-            </Button>
-            <Link href="/" locale={changeTo} passHref>
-              <Button fullWidth variant="text">{t('change-locale', { changeTo })}</Button>
-            </Link>
-          </form>
-        </CardContent>
-      </Card>
+            </Typography>
+            <form onSubmit={onSubmit}>
+              <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 'bold' }}>
+                {t('first-name')}
+              </Typography>
+              <TextField
+                type="text"
+                name="firstname"
+                aria-label={t('first-name') || 'First Name'}
+                placeholder={t('first-name') || 'First Name'}
+                margin="normal"
+                fullWidth
+                onChange={handleInputChange}
+                required
+                sx={{ mt: 0 }}
+              />
+              <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
+                {t('last-name')}
+              </Typography>
+              <TextField
+                type="text"
+                name="lastname"
+                aria-label={t('last-name') || 'Last Name'}
+                placeholder={t('last-name') || 'Last Name'}
+                margin="normal"
+                fullWidth
+                onChange={handleInputChange}
+                required
+                sx={{ mt: 0 }}
+              />
+              <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
+                {t('email-placeholder')}
+              </Typography>
+              <TextField
+                type="email"
+                name="email"
+                aria-label={t('email-placeholder') || 'Email Address'}
+                placeholder={t('email-placeholder') || 'Email Address'}
+                margin="normal"
+                fullWidth
+                onChange={handleInputChange}
+                required
+                sx={{ mt: 0 }}
+              />
+              <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
+                {t('password-placeholder')}
+              </Typography>
+              <TextField
+                type="password"
+                name="password"
+                aria-label={t('password-placeholder') || 'Password'}
+                placeholder={t('password-placeholder') || 'Password'}
+                margin="normal"
+                fullWidth
+                onChange={handleInputChange}
+                required
+                sx={{ mt: 0 }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
+              >
+                {t('signup')}
+              </Button>
+              <Link href="/" locale={changeTo} passHref>
+                <Button fullWidth variant="text">{t('change-locale', { changeTo })}</Button>
+              </Link>
+            </form>
+          </CardContent>
+        </Card>
         <Box sx={{ mt: 4, textAlign: 'center', position: 'relative', mb: 2 }}>
           <Divider sx={{ mb: 2 }} />
           <Typography

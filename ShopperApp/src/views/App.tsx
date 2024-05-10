@@ -18,10 +18,9 @@ export function App() {
   return (
     <LoginProvider>
       <Login/>
+      <SignUp/>
       <TrendingList/>
       <Books/>
-      <Login/>
-      <SignUp/>
     </LoginProvider>
   )
 }
