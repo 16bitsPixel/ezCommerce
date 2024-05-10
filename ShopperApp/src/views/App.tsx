@@ -10,6 +10,7 @@
 */
 import { Books } from './Books'
 import { Login } from './Login'
+import { SignUp } from './Signup'
 import { LoginProvider } from '../context/Login'
 
 export function App() {
@@ -17,6 +18,7 @@ export function App() {
     <LoginProvider>
       <Books/>
       <Login/>
+      <SignUp/>
     </LoginProvider>
   )
 }

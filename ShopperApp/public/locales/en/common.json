@@ -3,6 +3,13 @@
   "email-placeholder": "Email Address",
   "password-placeholder": "Password",
   "login": "Login",
+  "new-to-ecommerce": "New to ezCommerce?",
+  "switch-signup": "Create your ezCommerce account",
+  "signup": "Create account",
+  "first-name": "First Name",
+  "last-name": "Last Name",
+  "old-to-ecommerce": "Already have an account?",
+  "switch-login": "Sign in here",
   "change-locale": "Switch to Spanish"
 }
 

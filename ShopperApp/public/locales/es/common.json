@@ -3,5 +3,12 @@
   "email-placeholder": "Correo Electrónico",
   "password-placeholder": "Contraseña",
   "login": "Iniciar Sesión",
+  "new-to-ecommerce": "¿Nuevo en ezCommerce?",
+  "switch-signup": "Crear tu cuenta de ezCommerce",
+  "signup": "Crear cuenta",
+  "first-name": "Nombre",
+  "last-name": "Apellido",
+  "old-to-ecommerce": "¿Ya tienes una cuenta?",
+  "switch-login": "Inicia sesión aquí",
   "change-locale": "Cambiar a Inglés"
 }

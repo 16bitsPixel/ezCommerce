@@ -1,13 +1,3 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2020-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
 import React from 'react';
 import { TextField, Button, Card, CardContent, Typography, Container, Box, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
@@ -16,7 +6,7 @@ import { useRouter } from 'next/router';
 import { LoginContext } from '../context/Login'
 import Link from 'next/link';
 
-export function Login() {
+export function SignUp() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
@@ -36,7 +26,7 @@ export function Login() {
 
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
+    const query = {query: `query signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname}"email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -62,7 +52,7 @@ export function Login() {
 
   const changeTo = router.locale === 'en' ? 'es' : 'en'
 
-  if (loginContext.accessToken.length < 1 && view === 'Login') {
+  if (loginContext.accessToken.length < 1 && view === 'Signup') {
     return (
       <Container maxWidth="sm">
         <Box sx={{ mt: 2, textAlign: 'center' }}>
@@ -73,10 +63,38 @@ export function Login() {
         <Card variant="outlined" sx={{ mt: 4 }}>
         <CardContent>
           <Typography variant="h4" component="h2" gutterBottom>
-            {t('login')}
+            {t('signup')}
           </Typography>
           <form onSubmit={onSubmit}>
             <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 'bold' }}>
+              {t('first-name')}
+            </Typography>
+            <TextField
+              type="text"
+              name="firstname"
+              aria-label={t('first-name') || 'First Name'}
+              placeholder={t('first-name') || 'First Name'}
+              margin="normal"
+              fullWidth
+              onChange={handleInputChange}
+              required
+              sx={{ mt: 0 }}
+            />
+            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
+              {t('last-name')}
+            </Typography>
+            <TextField
+              type="text"
+              name="lastname"
+              aria-label={t('last-name') || 'Last Name'}
+              placeholder={t('last-name') || 'Last Name'}
+              margin="normal"
+              fullWidth
+              onChange={handleInputChange}
+              required
+              sx={{ mt: 0 }}
+            />
+            <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 2, fontWeight: 'bold' }}>
               {t('email-placeholder')}
             </Typography>
             <TextField
@@ -111,7 +129,7 @@ export function Login() {
               color="primary"
               sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
             >
-              {t('login')}
+              {t('signup')}
             </Button>
             <Link href="/" locale={changeTo} passHref>
               <Button fullWidth variant="text">{t('change-locale', { changeTo })}</Button>
@@ -132,7 +150,7 @@ export function Login() {
               px: 1
             }}
           >
-            {t('new-to-ecommerce')}
+            {t('old-to-ecommerce')}
           </Typography>
           <Button
             variant="outlined"
@@ -147,12 +165,12 @@ export function Login() {
                 borderColor: 'black'
               }
             }}
-            onClick={() => setView('Signup')}
+            onClick={() => setView('Login')}
           >
-            {t('switch-signup')}
+            {t('switch-login')}
           </Button>
         </Box>
-      </Container>
+      </Container> 
     );
   }
   else {
