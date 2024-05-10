@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql"
+import { Query, Resolver, Authorized, Ctx } from "type-graphql"
 import type { NextApiRequest } from 'next'
 
 import { Book } from "./schema"

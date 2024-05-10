@@ -58,7 +58,7 @@ export class AuthService {
               }
               resolve({id: sessionUser.id});
             })
-            .catch((err) => {
+            .catch(() => {
               reject(new Error("Unauthorised"))
             });
         }
@@ -66,7 +66,7 @@ export class AuthService {
     });
   }
 
-  public async signup(signupCred: SignupCred): Promise<Boolean|undefined> {
+  public async signup(signupCred: SignupCred): Promise<boolean|undefined> {
     return new Promise((resolve, reject) => {
       fetch('http://localhost:3011/api/v0/Signup', {
         method: 'POST',
@@ -91,7 +91,7 @@ export class AuthService {
     });
   }
 
-  public async isVerified(credentials: Credentials): Promise<Boolean|undefined> { 
+  public async isVerified(credentials: Credentials): Promise<boolean|undefined> { 
     return new Promise((resolve, reject) => {
       fetch('http://localhost:3011/api/v0/Verify', {
         method: 'POST',

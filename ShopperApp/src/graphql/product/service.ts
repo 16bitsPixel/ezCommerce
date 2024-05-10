@@ -10,11 +10,9 @@
 */
 
 import type { Product } from './schema'
-import type { NextApiRequest } from 'next'
-
 
 export class ProductService{
-  async getAll(request: NextApiRequest): Promise<Product[]> {
+  async getAll(): Promise<Product[]> {
     const res = await fetch('http://localhost:3012/api/v0/product')
     return res.json()
   }

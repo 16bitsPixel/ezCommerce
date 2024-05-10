@@ -22,20 +22,21 @@
     "typescript": "*"
   },
   "dependencies": {
-    "@emotion/react": "*",
-    "@emotion/styled": "*",
-    "@mui/material": "*",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.17",
+    "@mui/material": "^5.15.17",
     "class-validator": "*",
     "graphql": "*",
     "graphql-request": "*",
     "graphql-yoga": "*",
+    "i18next": "^22.4.10",
     "next": "*",
+    "next-i18next": "^13.1.5",
     "react": "*",
     "react-dom": "*",
     "reflect-metadata": "*",
-    "type-graphql": "*",
-    "i18next": "^22.4.10",
-    "next-i18next": "^13.1.5"
+    "type-graphql": "*"
   },
   "eslintConfig": {
     "extends": [
@@ -49,7 +50,9 @@
       "indent": [
         "warn",
         2
-      ]
+      ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-types": "off"
     }
   }
 }

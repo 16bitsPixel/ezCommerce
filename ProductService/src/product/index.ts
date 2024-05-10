@@ -20,6 +20,7 @@ export interface Product {
   id: UUID,
   name: string,
   description: string,
-  quantity: number,
-  price: number
+  price: number,
+  rating: number,
+  image: string
 }

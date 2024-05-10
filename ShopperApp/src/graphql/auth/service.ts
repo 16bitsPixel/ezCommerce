@@ -58,7 +58,7 @@ export class AuthService {
               }
               resolve({id: sessionUser.id});
             })
-            .catch((err) => {
+            .catch(() => {
               reject(new Error("Unauthorised"))
             });
         }

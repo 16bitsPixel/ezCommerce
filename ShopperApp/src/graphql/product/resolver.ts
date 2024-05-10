@@ -9,20 +9,16 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized, Ctx, Arg } from "type-graphql"
-import type { NextApiRequest } from 'next'
+import { Query, Resolver} from "type-graphql"
 
 import { Product } from "./schema"
 import { ProductService } from "./service"
 
 @Resolver()
-export class BookResolver {
-  @Authorized("member")
+export class ProductResolver {
   @Query(() => [Product])
-  async product(
-    @Ctx() request: NextApiRequest
-  ): Promise<Product[]> {
+  async product(): Promise<Product[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
-    return new ProductService().getAll(request)
+    return new ProductService().getAll()
   }
 }

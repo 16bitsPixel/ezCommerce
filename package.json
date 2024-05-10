@@ -7,9 +7,12 @@
   "repository": "none",
   "scripts": {
     "containerised": "npm run build && docker-compose up --build",
-    "docker": "npm run docker-accounts && npm run docker-products",
+    "docker-up": "npm run docker-accounts && npm run docker-products",
+    "docker-down": "npm run docker-down-accounts && npm run docker-down-products",
     "docker-accounts": "cd AccountService && docker-compose up -d", 
     "docker-products": "cd ProductService && docker-compose up -d",
+    "docker-down-accounts": "cd AccountService && docker-compose down", 
+    "docker-down-products": "cd ProductService && docker-compose down",
     "installs": "npm install && npm run install-adminapp &&  npm run install-vendorapp &&  npm run install-shopperapp && npm run install-accounts && npm run install-products",
     "install-adminapp": "cd AdminApp && npm install",
     "install-vendorapp": "cd VendorApp && npm install",
@@ -39,7 +42,7 @@
     "lint-products": "cd ProductService && npm run lint",
     "lint-shopperapp": "cd ShopperApp && npm run lint",
     "lint-vendorapp": "cd VendorApp && npm run lint",
-    "lint-adminapp" : "cd AdminApp && npm run build"
+    "lint-adminapp" : "cd AdminApp && npm run lint"
 
   },
   "devDependencies": {

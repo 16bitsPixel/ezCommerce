@@ -10,7 +10,9 @@ export class Product {
   @Field() 
     description!: string
   @Field()
-    quantity!: number
-  @Field()
     price!: number
+  @Field()
+    rating!: number
+  @Field()
+    image!: string
 }
