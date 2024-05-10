@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LoginContext } from '../../context/Login'
+//import { LoginContext } from '../../context/Login'
 import { Product } from '../../graphql/product/schema'
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -41,11 +41,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // };
 
 export function Gallery() {
-  const loginContext = React.useContext(LoginContext)
+  //const loginContext = React.useContext(LoginContext)
   // const [products, setProducts] = React.useState<Product[]>([]);
   // const [error, setError] = React.useState('Logged Out');
   const [slide, setSlide] = React.useState(0);
-  let products: any[] = [
+  const products: any[] = [
     {
       id: '1',
       name: 'test',
@@ -86,7 +86,8 @@ export function Gallery() {
     <div className='Gallery'>
       <ArrowBackIosIcon className ='arrow arrow-left' onClick={prevSlide}/>
       {products.map((product: Product, idx) => (
-        <img 
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           key = {product.id} 
           alt= {product.name} 
           src={product.image} 

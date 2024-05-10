@@ -42,7 +42,7 @@
     "lint-products": "cd ProductService && npm run lint",
     "lint-shopperapp": "cd ShopperApp && npm run lint",
     "lint-vendorapp": "cd VendorApp && npm run lint",
-    "lint-adminapp" : "cd AdminApp && npm run build"
+    "lint-adminapp" : "cd AdminApp && npm run lint"
 
   },
   "devDependencies": {

@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized} from "type-graphql"
+import { Query, Resolver} from "type-graphql"
 
 import { Product } from "./schema"
 import { ProductService } from "./service"
