@@ -8,25 +8,22 @@ import Link from 'next/link';
 
 export function SignUp() {
   const loginContext = React.useContext(LoginContext)
-  const [user, setUser] = React.useState({email: '', password: ''});
+  const [user, setUser] = React.useState({firstname: '', lastname: '', email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
   const { t } = useTranslation('common');
   const router = useRouter();
 
   const handleInputChange = (event: any) => {
-    const {value, name} = event.target;
-    const u = user;
-    if (name == 'email') {
-      u.email = value;
-    } else {
-      u.password = value;
-    }
-    setUser(u);
+    const { name, value } = event.target;
+    setUser(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname}"email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
+    const query = {query: `mutation signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname}"email: "${user.email}" password: "${user.password}")}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -40,9 +37,12 @@ export function SignUp() {
       .then((json) => {
         if (json.errors) {
           alert(`${json.errors[0].message}`)
+        } else if (json.data.signup) {
+          // Success message that prompts the user to log in
+          alert("Signup successful! You can now log in.");
         } else {
-          loginContext.setAccessToken(json.data.login.accessToken)
-          loginContext.setUserName(json.data.login.name)
+          // General failure message if signup wasn't successful
+          alert("Signup failed. Please try again.");
         }
       })
       .catch((e) => {

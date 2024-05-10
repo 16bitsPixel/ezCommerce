@@ -73,7 +73,7 @@ export class AccountService {
       return undefined;
     } else {
       let select = 
-      `INSERT INTO account(data) VALUES jsonb_build_object('email', $1,'name', $2,'pwhash',crypt('$3','87'),'role','$4'));`
+      `INSERT INTO account(data) VALUES (jsonb_build_object('email', $1::text,'name', $2::text,'pwhash',crypt($3::text,'87'),'role',$4::text));`
       let query = {
         text: select,
         values: [cred.email, `${cred.firstname} ${cred.lastname}`, cred.password, cred.role],
