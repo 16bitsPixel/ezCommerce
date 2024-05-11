@@ -13,10 +13,12 @@ import { Login } from './Login'
 import { SignUp } from './Signup'
 import { LoginProvider } from '../context/Login'
 import { TrendingList  } from './components/TrendingList';
+import {TopBar} from './components/TopBar'
 
 export function App() {
   return (
     <LoginProvider>
+      <TopBar/>
       <Login/>
       <SignUp/>
       <TrendingList/>

@@ -62,3 +62,62 @@ body {
 .indicator-inactive {
   background-color: grey;
 }
+
+/* Start TopBar css */
+.centerContainer {
+    display: flex;
+}
+
+.search {
+    position: relative;
+    background-color: white;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 5px;
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    
+}
+  .searchIcon {
+    background-color: #FEBD69;
+    color: black;
+    position: absolute;
+    right: 0;
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; 
+    
+  }
+  
+  .styledInputBase {
+    color: black;
+    width: 100%;
+  }
+  
+  .styledInputBase input {
+    padding: 8px 8px 8px 0; 
+    padding-left: calc(1em + 32px); 
+    transition: width 0.3s;
+  }
+  .english, .spanish {
+    color: grey
+  }
+  .english:hover, .spanish:hover {
+    cursor: pointer;
+    color: #FEBD69;
+}
+/* End TopBar css */
+
+
+
+a {
+    text-decoration: none;
+    color: inherit; 
+}

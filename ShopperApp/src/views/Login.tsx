@@ -66,9 +66,6 @@ export function Login() {
     return (
       <Container maxWidth="sm">
         <Box sx={{ mt: 2, textAlign: 'center' }}>
-          <Typography variant="h3" component="h1" >
-            ezCommerce
-          </Typography>
         </Box>
         <Card variant="outlined" sx={{ mt: 4 }}>
           <CardContent>

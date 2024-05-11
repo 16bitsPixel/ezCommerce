@@ -38,7 +38,6 @@ export default function Index() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h2 id='welcome'>{title}</h2>
       <App/>
     </Fragment>
   )

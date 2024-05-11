@@ -10,5 +10,9 @@
   "last-name": "Apellido",
   "old-to-ecommerce": "¿Ya tienes una cuenta?",
   "switch-login": "Inicia sesión aquí",
-  "change-locale": "Cambiar a Inglés"
+  "change-locale": "Cambiar a Inglés",
+  "sign-in": "Iniciar Sesión",
+  "orders": "Pedidos",
+  "cart": "Carro",
+  "search-ezCommerce": "Buscar EzCommerce"
 }
