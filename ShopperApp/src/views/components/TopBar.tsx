@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { LoginContext } from '@/context/Login';
 
 
 export function TopBar() {
@@ -18,8 +19,11 @@ export function TopBar() {
 
   const changeTo = router.locale === 'en' ? 'es' : 'en'
 
+  const {setPopup } = React.useContext(LoginContext);
 
-
+  const handleSignIn = () => {
+    setPopup(true)
+  }
 
 
   return (
@@ -43,7 +47,7 @@ export function TopBar() {
             />
           </div>
           <div className='topbar-buttons' style={{ flexGrow: 0, marginLeft: 'auto' }}>
-            <Button variant="outlined" style={{ color: 'white', marginRight: '8px' }}>{t('sign-in')}</Button>
+            <Button variant="outlined" onClick={handleSignIn} style={{ color: 'white', marginRight: '8px' }}>{t('sign-in')}</Button>
             <Button variant="outlined" style={{ color: 'white', marginRight: '8px' }}>{t('orders')}</Button>
             <Button variant="outlined" style={{ color: 'white' }}>{t('cart')}</Button>
           </div>

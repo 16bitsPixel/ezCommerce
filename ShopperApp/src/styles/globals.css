@@ -74,11 +74,6 @@ body {
     width: 50%;
     margin: 0 auto;
     border-radius: 5px;
-    flex-grow: 1;
-    justify-content: center;
-    display: flex;
-    max-width: 600px;
-    margin: 0 auto;
     
 }
   .searchIcon {
@@ -115,6 +110,15 @@ body {
 }
 /* End TopBar css */
 
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.closeLogin {
+    cursor: pointer;
+    margin-left: auto;
+}
 
 
 a {

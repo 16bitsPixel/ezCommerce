@@ -2,6 +2,8 @@ import React from 'react';
 import { TextField, Button, Card, CardContent, Typography, Container, Box, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 import { LoginContext } from '../context/Login'
 import Link from 'next/link';
@@ -10,6 +12,8 @@ export function SignUp() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({firstname: '', lastname: '', email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
+  const { popup, setPopup } = React.useContext(LoginContext);
+
   const { t } = useTranslation('common');
   const router = useRouter();
 
@@ -50,18 +54,21 @@ export function SignUp() {
       });
   };
 
+
+  const handleClose = () => {
+    setPopup(false)
+  }
+
   const changeTo = router.locale === 'en' ? 'es' : 'en'
 
-  if (loginContext.accessToken.length < 1 && view === 'Signup') {
+  if (loginContext.accessToken.length < 1 && view === 'Signup' && popup == true) {
     return (
       <Container maxWidth="sm">
-        <Box sx={{ mt: 2, textAlign: 'center' }}>
-          <Typography variant="h3" component="h1" >
-            ezCommerce
-          </Typography>
-        </Box>
         <Card variant="outlined" sx={{ mt: 4 }}>
-          <CardContent>
+          <CardContent className='loginContainer'>
+            <IconButton size='small' className='closeLogin'>
+              <CloseIcon onClick={handleClose}/>
+            </IconButton>
             <Typography variant="h4" component="h2" gutterBottom>
               {t('signup')}
             </Typography>
