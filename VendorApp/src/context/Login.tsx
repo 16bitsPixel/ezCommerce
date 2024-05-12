@@ -17,13 +17,16 @@ export const LoginContext = createContext({
   setUserName: (userName: string) => {},
   accessToken: '',
   setAccessToken: (accessToken: string) => {},
+  view: 'Login',
+  setView: (view: string) => {} ,
 });
 
 export const LoginProvider = ({ children }: PropsWithChildren<{}>) => {
   const [userName, setUserName] = useState('');
   const [accessToken, setAccessToken] = useState('');
+  const [view, setView] = useState('Login');
   return (
-    <LoginContext.Provider value={{ userName, setUserName, accessToken, setAccessToken}}>
+    <LoginContext.Provider value={{ userName, setUserName, accessToken, setAccessToken, view, setView}}>
       {children}
     </LoginContext.Provider>
   );

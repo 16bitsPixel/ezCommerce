@@ -8,10 +8,13 @@
 #
 #######################################################################
 */
-//import { LoginProvider } from '../context/Login'
+import Login from './Login'
+import { LoginProvider } from '../context/Login'
 
 export function App() {
   return (
-    <div>Hello vendor</div>
+    <LoginProvider>
+      <Login/>
+    </LoginProvider>
   )
 }
