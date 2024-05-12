@@ -120,6 +120,12 @@ body {
     margin-left: auto;
 }
 
+.bottomBarContainer {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    width: 100%;
+}
 
 a {
     text-decoration: none;
