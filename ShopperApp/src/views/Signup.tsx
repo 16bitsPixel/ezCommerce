@@ -1,12 +1,10 @@
 import React from 'react';
 import { TextField, Button, Card, CardContent, Typography, Container, Box, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
 import { LoginContext } from '../context/Login'
-import Link from 'next/link';
 
 export function SignUp() {
   const loginContext = React.useContext(LoginContext)
@@ -15,7 +13,6 @@ export function SignUp() {
   const { popup, setPopup } = React.useContext(LoginContext);
 
   const { t } = useTranslation('common');
-  const router = useRouter();
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target;
@@ -59,7 +56,6 @@ export function SignUp() {
     setPopup(false)
   }
 
-  const changeTo = router.locale === 'en' ? 'es' : 'en'
 
   if (loginContext.accessToken.length < 1 && view === 'Signup' && popup == true) {
     return (
@@ -138,9 +134,6 @@ export function SignUp() {
               >
                 {t('signup')}
               </Button>
-              <Link href="/" locale={changeTo} passHref>
-                <Button fullWidth variant="text">{t('change-locale', { changeTo })}</Button>
-              </Link>
             </form>
           </CardContent>
         </Card>
