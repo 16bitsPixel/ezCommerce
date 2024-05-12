@@ -9,12 +9,14 @@
 #######################################################################
 */
 import Login from './Login'
+import SignUp from './Signup'
 import { LoginProvider } from '../context/Login'
 
 export function App() {
   return (
     <LoginProvider>
       <Login/>
+      <SignUp/>
     </LoginProvider>
   )
 }
