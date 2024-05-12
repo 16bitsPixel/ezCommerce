@@ -61,7 +61,7 @@ export default function SignUp() {
             }}
             >
             <Typography component="h1" variant="h5">
-                Sign up
+                Sign Up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
@@ -118,7 +118,7 @@ export default function SignUp() {
                 </Button>
                 <Grid container justifyContent="flex-end">
                 <Grid item>
-                    <Link href="#" variant="body2" onClick={() => setView('Login')}>
+                    <Link variant="body2" onClick={() => setView('Login')}>
                     Already have an account? Sign in
                     </Link>
                 </Grid>

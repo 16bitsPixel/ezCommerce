@@ -2,8 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -65,7 +63,7 @@ export default function Login() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign In
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
@@ -88,10 +86,6 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
               <Button
                 type="submit"
                 fullWidth
@@ -102,7 +96,7 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="#" variant="body2" onClick={() => setView('Signup')}>
+                  <Link variant="body2" onClick={() => setView('Signup')}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
