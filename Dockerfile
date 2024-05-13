@@ -34,6 +34,11 @@ COPY VendorApp/package-lock.json /home/app/VendorApp/
 COPY VendorApp/next.config.js/ /home/app/VendorApp/
 COPY VendorApp/public/ /home/app/VendorApp/public/
 
+COPY VendorAPI/.next/ /home/app/VendorAPI/.next/
+COPY VendorAPI/package.json /home/app/VendorAPI/
+COPY VendorAPI/package-lock.json /home/app/VendorAPI/
+COPY VendorAPI/next.config.js/ /home/app/VendorAPI/
+COPY VendorAPI/public/ /home/app/VendorAPI/public/
 
 RUN npm run cis
 
