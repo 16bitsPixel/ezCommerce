@@ -27,6 +27,7 @@
     "bcrypt": "*",
     "dotenv": "*",
     "express": "*",
+    "joi": "^17.13.1",
     "jsonwebtoken": "*",
     "pg": "^8.11.5",
     "swagger-ui-express": "*",

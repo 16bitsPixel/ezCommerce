@@ -25,6 +25,7 @@
     "cors": "*",
     "dotenv": "*",
     "express": "*",
+    "joi": "^17.13.1",
     "pg": "^8.11.5",
     "swagger-ui-express": "*",
     "tsoa": "*"
