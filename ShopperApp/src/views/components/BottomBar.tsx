@@ -8,10 +8,13 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import { ScreenSizeContext } from '@/context/ScreenSize';
-
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 
 export function BottomBar() {
+  const { t } = useTranslation('common');
+  const router = useRouter();  
 
   const {isSmallScreen, setSmallScreen} = React.useContext(ScreenSizeContext)
   const [value, setValue] = React.useState(0);
@@ -29,6 +32,11 @@ export function BottomBar() {
       window.removeEventListener('resize', checkScreenSize);
     };
   })
+  const handleChangeLocale = () => {
+    const changeTo = router.locale === 'en' ? 'es' : 'en';
+    router.push(router.pathname, router.asPath, { locale: changeTo });
+  };
+  
 
   if (!isSmallScreen) {
     return null
@@ -42,12 +50,16 @@ export function BottomBar() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Sign In" icon={<LoginIcon />} />
-          <BottomNavigationAction label="Orders" icon={<LocalShippingIcon />} />
-          <BottomNavigationAction label="Cart" icon={<ShoppingCartIcon />} />
-          <BottomNavigationAction label="Switch to Spanish" icon={<SettingsBackupRestoreIcon />} />
-    
+          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('home')} icon={<HomeIcon />} />
+          <BottomNavigationAction
+            label={t('change-locale')}
+            icon={<SettingsBackupRestoreIcon />}
+            onClick={handleChangeLocale} 
+          />    
+          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('orders')} icon={<LocalShippingIcon />} />
+          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('cart')} icon={<ShoppingCartIcon />} />
+          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('sign-in')} icon={<LoginIcon />} />
+
         </BottomNavigation>
       </Box>
     );
