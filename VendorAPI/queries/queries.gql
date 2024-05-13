@@ -1,0 +1,20 @@
+query login {
+  login(
+    account: "molly"
+    password: "mollymember"
+  ) {
+    name, accessToken
+  }
+}
+
+query book {
+  book(isbn: "3628598842") { isbn, title, author, publisher }
+}
+
+query summaries {
+  summaries { isbn, title, author }
+}
+
+query details {
+  details { isbn, title, author, publisher }
+}

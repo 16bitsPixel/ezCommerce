@@ -1,3 +1,14 @@
+/*
+#######################################################################
+#
+# Copyright (C) 2022-2024 David C. Harrison. All right reserved.
+#
+# You may not use, distribute, publish, or modify this code without
+# the express written permission of the copyright holder.
+#
+#######################################################################
+*/
+
 import { Field, ObjectType, ArgsType } from "type-graphql"
 import { Length } from "class-validator";
 
@@ -18,18 +29,3 @@ export class Authenticated {
   @Field()
     accessToken!: string
 }
-
-@ArgsType()
-export class SignupCred {
-  @Field()
-    role!: string
-  @Field()
-    firstname!: string
-  @Field()
-    lastname!: string
-  @Field()
-    email!: string
-  @Field()
-    password!: string
-}
-

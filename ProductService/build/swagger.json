@@ -23,21 +23,25 @@
 					"description": {
 						"type": "string"
 					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"image": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"id",
 					"name",
 					"description",
-					"quantity",
-					"price"
+					"price",
+					"rating",
+					"image"
 				],
 				"type": "object",
 				"additionalProperties": false
