@@ -26,3 +26,54 @@ services:
       - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.data.sql
       - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
       - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
+
+############################# DOCkerfile to create proper images for EC2 instances
+# version: "3.7"
+# services:
+#   app:
+#     container_name: app
+#     env_file: .env
+#     build: .
+#     platform: linux/amd64
+#     depends_on:
+#       - postgres
+#     ports:
+#       - "3000:3000"
+#       - "3001:3001"
+#       - "3002:3002"
+#       - "3003:3003"
+
+#   postgres:
+#     container_name: database
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.postgres
+#     platform: linux/amd64
+#     environment:
+#       POSTGRES_PORT: ${POSTGRES_PORT}
+#       POSTGRES_DB: ${POSTGRES_DB}
+#       POSTGRES_USER: ${POSTGRES_USER}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+################################################### This is the docker file the ec2 has to test if images work properly
+# version: "3.7"
+# services:
+#   app:
+#     container_name: app
+#     env_file: .env
+#     image: ezcommerce-app  # Specify the pre-built image
+#     depends_on:
+#       - postgres
+#     ports:
+#       - "3000:3000"
+#       - "3001:3001"
+#       - "3002:3002"
+#       - "3003:3003"
+
+#   postgres:
+#     container_name: database
+#     image: ezcommerce-postgres
+#     environment:
+#       POSTGRES_PORT: ${POSTGRES_PORT}
+#       POSTGRES_DB: ${POSTGRES_DB}
+#       POSTGRES_USER: ${POSTGRES_USER}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
