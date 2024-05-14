@@ -9,16 +9,32 @@
     "dev": "next dev -p 3000",
     "lint": "next lint --fix",
     "build": "next build",
-    "start": "next start -p 3000"
+    "start": "next start -p 3000",
+    "test": "jest --runInBand --detectOpenHandles --forceExit"
   },
   "devDependencies": {
+    "@jest/globals": "*",
+    "@testing-library/jest-dom": "*",
+    "@testing-library/react": "*",
+    "@testing-library/user-event": "*",
+    "@types/glob": "*",
+    "@types/jest": "*",
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "@types/supertest": "*",
+    "dotenv": "*",
     "eslint": "*",
     "eslint-config-next": "*",
     "eslint-config-typescript": "*",
+    "jest": "*",
+    "jest-environment-jsdom": "*",
+    "msw": "*",
+    "next-router-mock": "*",
+    "supertest": "*",
+    "ts-jest": "*",
     "ts-node": "*",
+    "ts-postgres": "*",
     "typescript": "*"
   },
   "dependencies": {
