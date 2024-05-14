@@ -59,7 +59,7 @@ export function SignUp() {
 
   if (loginContext.accessToken.length < 1 && view === 'Signup' && popup == true) {
     return (
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" className='login-signup'>
         <Card variant="outlined" sx={{ mt: 4 }}>
           <CardContent className='loginContainer'>
             <IconButton size='small' className='closeLogin'>
