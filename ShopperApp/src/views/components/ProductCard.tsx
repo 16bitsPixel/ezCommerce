@@ -41,6 +41,7 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        aria-label='cardImage'
       />
       <CardContent>
         <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }} component="div">

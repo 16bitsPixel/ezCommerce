@@ -10,7 +10,6 @@
 */
 import React from 'react';
 
-import { LoginContext } from '../../context/Login'
 import { Product } from '../../graphql/product/schema'
 import ProductCard from './ProductCard';
 import Grid from '@mui/material/Grid';
@@ -18,16 +17,19 @@ import Grid from '@mui/material/Grid';
 interface FetchProductsParams {
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
-  accessToken: string;
 }
 
-const fetchProducts = ({ setProducts, setError, accessToken }: FetchProductsParams) => {
-  const query = {query: `query product {product {id, name, price, rating, image}}`}
+const fetchProducts = ({ setProducts, setError }: FetchProductsParams) => {
+  const query = {
+    query: `query product {
+      product {
+        id, name, price, rating, image
+      }
+    }`}
   fetch('/api/graphql', {
     method: 'POST',
     body: JSON.stringify(query),
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   })
@@ -35,13 +37,8 @@ const fetchProducts = ({ setProducts, setError, accessToken }: FetchProductsPara
       return res.json()
     })
     .then((json) => {
-      if (json.errors) {
-        setError(`${json.errors[0].message}`)
-        setProducts([])
-      } else {
-        setError('')
-        setProducts(json.data.product)
-      }
+      setError('')
+      setProducts(json.data.product)
     })
     .catch((e) => {
       setError(e.toString())
@@ -50,15 +47,14 @@ const fetchProducts = ({ setProducts, setError, accessToken }: FetchProductsPara
 };
 
 export function TrendingList() {
-  const loginContext = React.useContext(LoginContext)
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out')
 
   console.log(error);
 
   React.useEffect(() => {
-    fetchProducts({setProducts, setError, accessToken: loginContext.accessToken});
-  }, [loginContext.accessToken]);
+    fetchProducts({setProducts, setError});
+  }, []);
 
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
