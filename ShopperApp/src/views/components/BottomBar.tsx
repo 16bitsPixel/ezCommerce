@@ -10,8 +10,6 @@ import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore
 import { ScreenSizeContext } from '@/context/ScreenSize';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { LoginContext } from '@/context/Login';
-
 
 export function BottomBar() {
   const { t } = useTranslation('common');
