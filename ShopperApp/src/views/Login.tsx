@@ -14,7 +14,6 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 import { LoginContext } from '../context/Login'
-import Link from 'next/link';
 
 export function Login() {
   const loginContext = React.useContext(LoginContext)
@@ -53,6 +52,7 @@ export function Login() {
         } else {
           loginContext.setAccessToken(json.data.login.accessToken)
           loginContext.setUserName(json.data.login.name)
+          router.push('/');
         }
       })
       .catch((e) => {
@@ -62,7 +62,7 @@ export function Login() {
 
   if (loginContext.accessToken.length < 1 && view === 'Login') {
     return (
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" className='login-signup'>
         <Card variant="outlined" sx={{ mt: 4 }}>
           <CardContent>
             <Typography variant="h4" component="h2" gutterBottom>

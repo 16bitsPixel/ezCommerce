@@ -1,17 +1,14 @@
 import React from 'react';
 import { TextField, Button, Card, CardContent, Typography, Container, Box, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
 
 import { LoginContext } from '../context/Login'
-import Link from 'next/link';
 
 export function SignUp() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({firstname: '', lastname: '', email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
   const { t } = useTranslation('common');
-  const router = useRouter();
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target;
@@ -52,7 +49,7 @@ export function SignUp() {
 
   if (loginContext.accessToken.length < 1 && view === 'Signup') {
     return (
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" className='login-signup'>
         <Card variant="outlined" sx={{ mt: 4 }}>
           <CardContent>
             <Typography variant="h4" component="h2" gutterBottom>
