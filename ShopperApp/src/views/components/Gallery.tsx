@@ -84,22 +84,28 @@ export function Gallery() {
 
   return (
     <div className='Gallery'>
-      <ArrowBackIosIcon className ='arrow arrow-left' onClick={prevSlide}/>
+      <ArrowBackIosIcon className ='arrow arrow-left'
+        aria-label='arrow-left'
+        onClick={prevSlide} />
       {products.map((product: Product, idx) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           key = {product.id} 
           alt= {product.name} 
-          src={product.image} 
+          src={product.image}
+          data-testid = {product.id} 
           className={slide === idx ? 'slide' : 'slide slide-hidden'} />
       ))}
-      <ArrowForwardIosIcon className='arrow arrow-right' onClick={nextSlide} />
+      <ArrowForwardIosIcon className='arrow arrow-right'
+        onClick={nextSlide}
+        aria-label='arrow-right' />
       <span className = 'indicators'>
         {products.map((_, idx) => {
           return <button 
             key={idx} 
             onClick={() => {setSlide(idx)}} 
-            className={slide === idx ? 'indicator' : 'indicator indicator-inactive'} />
+            className={slide === idx ? 'indicator' : 'indicator indicator-inactive'}
+            data-testid={`indicator-${idx}`} />
         })}
       </span>
     </div>
