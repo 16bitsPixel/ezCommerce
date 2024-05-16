@@ -25,7 +25,7 @@ export class AccountService {
       ` SELECT jsonb_build_object('id', id, 'name', data->>'name', 'role', data->>'role')` +
       ` AS account FROM account` +
       ` WHERE data->>'email' = $1` +
-      ` AND data->>'pwhash' = crypt($2,'87')`
+      ` AND data->>'pwhash' = crypt($2,'87');`
     const query = {
       text: select,
       values: [creds.email, creds.password],
@@ -36,6 +36,7 @@ export class AccountService {
 
   public async login(credentials: Credentials): Promise<Authenticated|undefined>  {
     const account = await this.find(credentials);
+    
     if (account) {
       const accessToken = jwt.sign(
         {id: account.id, role: account.role}, 
@@ -43,7 +44,7 @@ export class AccountService {
           expiresIn: '30m',
           algorithm: 'HS256'
         });
-      return {id: account.id, name: account.name, accessToken: accessToken};
+      return {id: account.id, name: account.name, accessToken: accessToken, role: account.role};
     } else {
       return undefined;
     }

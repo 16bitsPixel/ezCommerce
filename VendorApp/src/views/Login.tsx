@@ -18,14 +18,19 @@ export default function Login() {
   const [user, setUser] = React.useState({email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handleInputChange = (event: any) => {
+    const {value, name} = event.target;
     const u = user;
-    u.email = `${data.get('email')}`;
-    u.password = `${data.get('password')}`;
+    if (name == 'email') {
+      u.email = value;
+    } else {
+      u.password = value;
+    }
     setUser(u);
-    const query = {query: `query login{login(email: "${data.get('email')}" password: "${data.get('password')}") { name, accessToken }}`}
+  };
+  const onSubmit = (event: any) => {
+    event.preventDefault();
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -39,7 +44,10 @@ export default function Login() {
       .then((json) => {
         if (json.errors) {
           alert(`${json.errors[0].message}`)
-        } else {
+        } else if(json.data.login.role != "vendor") {
+          alert('Only vendors can log in')
+        } 
+        else {
           loginContext.setAccessToken(json.data.login.accessToken)
           loginContext.setUserName(json.data.login.name)
         }
@@ -65,7 +73,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Sign In
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -74,6 +82,7 @@ export default function Login() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleInputChange}
                 autoFocus
               />
               <TextField
@@ -84,6 +93,7 @@ export default function Login() {
                 label="Password"
                 type="password"
                 id="password"
+                onChange={handleInputChange}
                 autoComplete="current-password"
               />
               <Button

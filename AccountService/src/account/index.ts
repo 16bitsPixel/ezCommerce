@@ -12,6 +12,7 @@
 export interface Authenticated {
   id: string,
   name: string,
+  role: string,
   accessToken: string
 }
 

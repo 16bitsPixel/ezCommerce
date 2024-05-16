@@ -17,6 +17,8 @@ export class Authenticated {
     name!: string
   @Field()
     accessToken!: string
+  @Field()
+    role!: string
 }
 
 @ArgsType()
