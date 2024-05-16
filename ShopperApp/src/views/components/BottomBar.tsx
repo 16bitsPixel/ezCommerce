@@ -38,11 +38,10 @@ export function BottomBar() {
     router.push(router.pathname, router.asPath, { locale: changeTo });
   };
 
-  const {setPopup } = React.useContext(LoginContext);
-
   const handleSignIn = () => {
-    setPopup(true)
+    router.push('/login');
   }
+
   if (!isSmallScreen) {
     return null
   } else {
@@ -63,7 +62,7 @@ export function BottomBar() {
           />    
           <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('orders')} icon={<LocalShippingIcon />} />
           <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('cart')} icon={<ShoppingCartIcon />} />
-          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('sign-in')} icon={<LoginIcon />} onClick={handleSignIn} />
+          <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('sign-in')} icon={<LoginIcon />} onClick={handleSignIn}/>
 
         </BottomNavigation>
       </Box>
