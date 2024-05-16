@@ -9,8 +9,6 @@
 #######################################################################
 */
 import { Books } from './Books'
-import { Login } from './Login'
-import { SignUp } from './Signup'
 import { LoginProvider } from '../context/Login'
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { TrendingList  } from './components/TrendingList';
@@ -24,8 +22,6 @@ export function App() {
         <TopBar/>
         <BottomBar/>
       </ScreenSizeProvider>
-      <Login/>
-      <SignUp/>
       <TrendingList/>
       <Books/>
     </LoginProvider>

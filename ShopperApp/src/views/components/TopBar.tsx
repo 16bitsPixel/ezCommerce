@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { LoginContext } from '@/context/Login';
 import { ScreenSizeContext } from '@/context/ScreenSize';
 
 
@@ -20,12 +19,11 @@ export function TopBar() {
 
   const changeTo = router.locale === 'en' ? 'es' : 'en'
 
-  const {setPopup } = React.useContext(LoginContext);
   const {isSmallScreen} = React.useContext(ScreenSizeContext)
 
 
   const handleSignIn = () => {
-    setPopup(true)
+    router.push('/login');
   }
 
   if (isSmallScreen) {
@@ -80,5 +78,4 @@ export function TopBar() {
       </Box>
     );
   }
-
 }

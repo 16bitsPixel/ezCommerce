@@ -110,16 +110,6 @@ body {
 }
 /* End TopBar css */
 
-.loginContainer {
-    display: flex;
-    flex-direction: column;
-}
-
-.closeLogin {
-    cursor: pointer;
-    margin-left: auto;
-}
-
 .bottomBarContainer {
     position: fixed;
     bottom: 0;
