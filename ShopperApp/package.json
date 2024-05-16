@@ -30,7 +30,7 @@
     "jest": "*",
     "jest-environment-jsdom": "*",
     "msw": "*",
-    "next-router-mock": "*",
+    "next-router-mock": "^0.9.13",
     "supertest": "*",
     "ts-jest": "*",
     "ts-node": "*",
