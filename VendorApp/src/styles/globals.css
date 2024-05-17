@@ -38,3 +38,48 @@ body {
 label {
   padding: 6px 8px;
 }
+
+
+.root {
+    display: flex;
+  }
+  
+  .toolbar {
+    padding-right: 24px;
+  }
+  
+  .toolbarIcon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+  }
+  
+  .menuButton {
+    margin-left: 12px;
+    margin-right: 36px;
+  }
+  
+  .menuButtonHidden {
+    display: none;
+  }
+  
+  .title {
+    flex-grow: 1;
+  }
+  
+  .appBarSpacer {
+    min-height: 64px; 
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 24px;
+    height: 100vh;
+    overflow: auto;
+  }
+  
+  .chartContainer {
+    margin-left: -22px;
+  }
+  

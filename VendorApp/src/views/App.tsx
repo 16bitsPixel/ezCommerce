@@ -11,12 +11,14 @@
 import Login from './Login'
 import SignUp from './Signup'
 import { LoginProvider } from '../context/Login'
+import Dashboard from '@/components/Dashboard'
 
 export function App() {
   return (
     <LoginProvider>
       <Login/>
       <SignUp/>
+      <Dashboard/>
     </LoginProvider>
   )
 }

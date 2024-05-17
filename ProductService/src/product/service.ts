@@ -23,6 +23,7 @@ export class ProductService {
     };
     const {rows} = await pool.query(query);
     const products = [];
+
     for (const row of rows) {
       const product = row.product;
       product.id = row.id;

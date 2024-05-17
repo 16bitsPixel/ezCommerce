@@ -15,15 +15,12 @@ import { Fragment } from 'react'
 import { App } from '../views/App'
 
 export default function Index() {
-  const title = 'ezCommerce Vendor Portal'
   return (
     <Fragment>
       <Head>
-        <title>{title}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h2 id='welcome'>{title}</h2>
       <App/>
     </Fragment>
   )
