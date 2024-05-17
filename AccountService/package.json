@@ -8,16 +8,18 @@
   "devDependencies": {
     "@types/bcrypt": "*",
     "@types/express": "*",
+    "@types/jest": "*",
     "@types/jsonwebtoken": "*",
     "@types/node": "*",
     "@types/pg": "*",
+    "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "*",
     "concurrently": "*",
     "eslint": "*",
     "eslint-config-typescript": "^3.0.0",
-    "jest": "*",
+    "jest": "^29.7.0",
     "nodemon": "*",
-    "supertest": "*",
+    "supertest": "^7.0.0",
     "ts-jest": "*",
     "ts-node": "*",
     "ts-postgres": "*",
@@ -67,7 +69,15 @@
     ],
     "testPathIgnorePatterns": [
       "build"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   },
   "eslintConfig": {
     "extends": [

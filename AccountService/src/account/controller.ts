@@ -77,7 +77,7 @@ export class VerifyController extends Controller {
   @Post()
   @Response('403', 'Forbidden')
   public async Verified(
-    @Body() cred: SignupCred,
+    @Body() cred: Credentials,
   ): Promise<boolean|undefined> {
     return new AccountService().isVerified(cred)
       .then(async (status: boolean|undefined): Promise<boolean|undefined> => {

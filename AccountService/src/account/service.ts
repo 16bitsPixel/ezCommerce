@@ -50,20 +50,20 @@ export class AccountService {
     }
   }
 
-  public async check(accessToken: string): Promise<SessionUser>  {
-    return new Promise((resolve, reject) => {
+  public async check(accessToken: string): Promise<SessionUser | undefined>  {
+    return new Promise((resolve) => {
       try {
         jwt.verify(accessToken, 
           `${process.env.MASTER_SECRET}`, 
           (err: jwt.VerifyErrors | null, decoded?: object | string) => {
             if (err) {
-              reject(err);
+              resolve(undefined);
             } 
             const account = decoded as Account
             resolve({id: account.id, role: account.role});
           });
       } catch (e) {
-        reject(e);
+        resolve(undefined);
       }
     });
   }
@@ -104,7 +104,7 @@ export class AccountService {
         values: [account.id],
       };
       const res = await pool.query(query);
-      return res.rows[0]?.verified === 't';
+      return res.rows[0]?.verified === true;
     } else {
       return undefined;
     }
