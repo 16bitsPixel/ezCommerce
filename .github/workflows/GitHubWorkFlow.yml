@@ -29,5 +29,7 @@ jobs:
       - run: npm run docker-up
       - name: Sleep for 20 seconds
         run: sleep 20s
+      - name: Run All tests
+        run: npm run tests  
         shell: bash
       - run: npm run docker-down
