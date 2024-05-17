@@ -62,7 +62,9 @@
     "lint-vendorapp": "cd VendorApp && npm run lint",
     "lint-adminapp" : "cd AdminApp && npm run lint",
     "lint-vendorapi": "cd VendorAPI && npm run lint",
-    "lint-apikey": "cd APIKeyService && npm run lint"
+    "lint-apikey": "cd APIKeyService && npm run lint",
+    "tests":"npm run AccountService-test",
+    "AccountService-test": "cd AccountService && npm run test"
   },
   "devDependencies": {
     "concurrently": "*"
