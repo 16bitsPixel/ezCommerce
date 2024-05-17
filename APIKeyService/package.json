@@ -1,0 +1,86 @@
+{
+  "name": "account-microservice",
+  "version": "1.0.0",
+  "description": "CSE187 Account Micro Service",
+  "author": "David Harrison <dcharris@ucsc.edu>",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "devDependencies": {
+    "@types/bcrypt": "*",
+    "@types/express": "*",
+    "@types/jsonwebtoken": "*",
+    "@types/node": "*",
+    "@types/pg": "*",
+    "@types/swagger-ui-express": "*",
+    "concurrently": "*",
+    "eslint": "*",
+    "eslint-config-typescript": "^3.0.0",
+    "jest": "*",
+    "nodemon": "*",
+    "supertest": "*",
+    "ts-jest": "*",
+    "ts-node": "*",
+    "ts-postgres": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "bcrypt": "*",
+    "dotenv": "*",
+    "express": "*",
+    "joi": "^17.13.1",
+    "jsonwebtoken": "*",
+    "pg": "^8.11.5",
+    "swagger-ui-express": "*",
+    "tsoa": "*"
+  },
+  "scripts": {
+    "not-prestart": "npm run build",
+    "start": "node build/src/server.js",
+    "prebuild": "npm run swagger",
+    "build": "tsc",
+    "predev": "npm run swagger",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "swagger": "tsoa spec-and-routes",
+    "pretest": "npm run swagger",
+    "test": "jest --runInBand --coverage --verbose --no-cache --forceExit",
+    "lint": "eslint ./src/**/*.[jt]s --fix"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/server.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testTimeout": 500,
+    "collectCoverageFrom": [
+      "src/**/*.[jt]s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/server.[jt]s"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "build"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "typescript"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 13
+    },
+    "rules": {
+      "indent": [
+        "warn",
+        2
+      ]
+    }
+  }
+}
