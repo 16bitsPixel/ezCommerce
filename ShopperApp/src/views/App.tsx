@@ -8,7 +8,6 @@
 #
 #######################################################################
 */
-import { Books } from './Books'
 import { LoginProvider } from '../context/Login'
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { TrendingList  } from './components/TrendingList';
@@ -23,7 +22,6 @@ export function App() {
         <BottomBar/>
       </ScreenSizeProvider>
       <TrendingList/>
-      <Books/>
-    </LoginProvider>
+\    </LoginProvider>
   )
 }
