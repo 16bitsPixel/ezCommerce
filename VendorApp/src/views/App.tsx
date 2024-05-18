@@ -11,7 +11,7 @@
 import Login from './Login'
 import SignUp from './Signup'
 import { LoginProvider } from '../context/Login'
-import Dashboard from '@/components/Dashboard'
+import Dashboard from '@/views/components/Dashboard'
 
 export function App() {
   return (

@@ -20,7 +20,7 @@ const data = [
   { name: 'Sun', Visits: 4490, Orders: 4300 },
 ];
 
-function SimpleLineChart() {
+const SimpleLineChart = () => {
   return (
     <ResponsiveContainer width="99%" height={320}>
       <LineChart data={data}>
