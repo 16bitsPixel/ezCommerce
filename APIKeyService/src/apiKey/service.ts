@@ -42,9 +42,9 @@ export class ApiService {
         expiresIn: '1y',
         algorithm: 'HS256'
       });
-    let select = 
+    const select = 
       `INSERT INTO APIKEYS(vendor, apikey) VALUES ($1, $2);`
-    let query = {
+    const query = {
       text: select,
       values: [vendorid, apikey],
     };

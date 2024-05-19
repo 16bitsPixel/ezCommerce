@@ -22,11 +22,11 @@ export class APIKEYController extends Controller {
 
   @Get()
   @SuccessResponse('200',"Vendor API Keys")
-  public async getkey(
+    public async getkey(
     @Query() vendorid: string,
-  ): Promise<APIKey []> {
-    return new ApiService().getvendorkey(vendorid);
-  }
+    ): Promise<APIKey []> {
+      return new ApiService().getvendorkey(vendorid);
+    }
 
   @Post()
   @SuccessResponse('201',"Vendor API Key Created")
