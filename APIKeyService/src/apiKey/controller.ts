@@ -3,6 +3,9 @@ import {
   Get,
   Route,
   SuccessResponse,
+  Query,
+  Post,
+  Body,
 } from 'tsoa';
   
 import { APIKey } from '.';
@@ -15,6 +18,22 @@ export class APIKEYController extends Controller {
   public async getkeys(
   ): Promise<APIKey []>{
     return new ApiService().getkeys();
+  }
+
+  @Get()
+  @SuccessResponse('200',"Vendor API Keys")
+  public async getkey(
+    @Query() vendorid: string,
+  ): Promise<APIKey []> {
+    return new ApiService().getvendorkey(vendorid);
+  }
+
+  @Post()
+  @SuccessResponse('201',"Vendor API Key Created")
+  public async createapikey(
+    @Body() vendorid: string,
+  ): Promise<string|undefined> {
+    return new ApiService().createkey(vendorid);
   }
 }
   
