@@ -8,7 +8,6 @@
 #
 #######################################################################
 */
-import { LoginProvider } from '../context/Login'
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { TrendingList  } from './components/TrendingList';
 import { BottomBar } from './components/BottomBar';
