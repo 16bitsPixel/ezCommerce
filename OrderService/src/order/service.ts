@@ -60,7 +60,7 @@ export class OrderService {
       text: insert,
       values: [`${userId}`,
         `${productId}`,
-       current.toISOString()],
+        current.toISOString()],
     };
     const {rows} = await pool.query(query);
     return {order_id: rows[0].id,
