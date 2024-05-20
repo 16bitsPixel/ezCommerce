@@ -13,14 +13,14 @@ import { ApiService } from './service';
 
 @Route('vendor/api')
 export class APIKEYController extends Controller {
-    @Get()
+    @Get('all-keys')
     @SuccessResponse('200',"All API Keys")
   public async getkeys(
   ): Promise<APIKey []>{
     return new ApiService().getkeys();
   }
 
-  @Get()
+  @Get('vendor-keys')
   @SuccessResponse('200',"Vendor API Keys")
     public async getkey(
     @Query() vendorid: string,
