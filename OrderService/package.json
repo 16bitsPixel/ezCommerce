@@ -2,7 +2,7 @@
   "name": "order-microservice",
   "version": "1.0.0",
   "description": "Order Micro Service",
-  "author": "Christian Wylie <cwylie@ucsc.edu>",
+  "author": "CSE187 Group 3",
   "license": "UNLICENSED",
   "repository": "none",
   "devDependencies": {
