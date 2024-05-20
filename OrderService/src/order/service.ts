@@ -38,6 +38,7 @@ export class OrderService {
     return orders;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create(productId: any, request: any): Promise<Order | undefined> {
     const userId = request.user?.id;
     const select = `SELECT id, data FROM account WHERE id = $1`;
