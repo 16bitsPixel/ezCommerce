@@ -10,21 +10,24 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ScreenSizeContext } from '@/context/ScreenSize';
-
+import { LoginContext } from '../../context/Login';
 
 export function TopBar() {
-
   const { t } = useTranslation('common');
   const router = useRouter();
-
   const changeTo = router.locale === 'en' ? 'es' : 'en'
-
+  const loginContext = React.useContext(LoginContext)
   const {isSmallScreen} = React.useContext(ScreenSizeContext)
-
 
   const handleSignIn = () => {
     router.push('/login');
   }
+
+  const handleLogout = () => {
+    loginContext.setAccessToken('');
+    loginContext.setUserName('');
+    router.push('/');
+  };
 
   return (
     <Box className="centerContainer">
@@ -50,9 +53,15 @@ export function TopBar() {
           </div>
           {!isSmallScreen && (
             <div className="topbar-buttons" style={{ flexGrow: 0, marginLeft: 'auto' }}>
-              <Button variant="outlined" onClick={handleSignIn} style={{ color: 'white', marginRight: '8px' }}>
-                {t('sign-in')}
-              </Button>
+              {loginContext.accessToken.length < 1 ? (
+                <Button variant="outlined" onClick={handleSignIn} style={{ color: 'white', marginRight: '8px' }}>
+                  {t('sign-in')}
+                </Button>
+              ) : (
+                <Button variant="outlined" onClick={handleLogout} style={{ color: 'white', marginRight: '8px' }}>
+                  {t('logout')}
+                </Button>
+              )}
               <Button variant="outlined" style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>

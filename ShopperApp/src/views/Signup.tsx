@@ -117,6 +117,7 @@ export function SignUp() {
                 fullWidth
                 variant="contained"
                 color="primary"
+                data-testid="signup-button"
                 sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
               >
                 {t('signup')}
@@ -142,6 +143,7 @@ export function SignUp() {
           <Button
             variant="outlined"
             fullWidth
+            data-testid="signin-button"
             sx={{
               mt: 2, 
               mb: 2, 

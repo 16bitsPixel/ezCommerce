@@ -102,6 +102,7 @@ export function Login() {
                 fullWidth
                 variant="contained"
                 color="primary"
+                data-testid="login-button"
                 sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
               >
                 {t('login')}
@@ -127,6 +128,7 @@ export function Login() {
           <Button
             variant="outlined"
             fullWidth
+            data-testid="create-button"
             sx={{
               mt: 2, 
               mb: 2, 

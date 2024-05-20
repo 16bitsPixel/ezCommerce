@@ -16,12 +16,12 @@ import {TopBar} from './components/TopBar'
 
 export function App() {
   return (
-    <LoginProvider>
+    <>
       <ScreenSizeProvider>
         <TopBar/>
         <BottomBar/>
       </ScreenSizeProvider>
       <TrendingList/>
-\    </LoginProvider>
+    </>
   )
 }
