@@ -63,8 +63,9 @@
     "lint-adminapp" : "cd AdminApp && npm run lint",
     "lint-vendorapi": "cd VendorAPI && npm run lint",
     "lint-apikey": "cd APIKeyService && npm run lint",
-    "tests":"npm run AccountService-test",
-    "AccountService-test": "cd AccountService && npm run test"
+    "tests":"npm run AccountService-test && npm run shopperapp-tests",
+    "AccountService-test": "cd AccountService && npm run test",
+    "shopperapp-tests": "cd ShopperApp && npm run test -- --silent"
   },
   "devDependencies": {
     "concurrently": "*"

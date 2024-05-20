@@ -26,7 +26,15 @@ const customJestConfig = {
   ],
   testMatch: [
     "**/?(*.)+(spec|test).[jt]s?(x)"
-  ]
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 24,
+      "functions": 40,
+      "lines": 40,
+      "statements": 40
+    }
+  }
 }
 
 export default createJestConfig(customJestConfig)
