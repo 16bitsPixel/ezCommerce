@@ -10,17 +10,11 @@
 */
 
 import { Field, ObjectType } from "type-graphql"
-import { Matches } from "class-validator";
 
 @ObjectType()
-export class Book {
+export class Key {
   @Field()
-  @Matches(/^(97(8|9))?\d{9}(\d|X)$/)
-    isbn!: string 
+    id!: string 
   @Field()
-    title!: string
-  @Field()
-    author!: string
-  @Field()
-    publisher!: string
+    key!: string
 }

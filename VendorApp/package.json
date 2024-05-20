@@ -35,6 +35,7 @@
     "@mui/material": "^5.15.18",
     "@testing-library/react": "^15.0.7",
     "class-validator": "*",
+    "classnames": "^2.5.1",
     "graphql": "*",
     "graphql-request": "*",
     "graphql-yoga": "*",

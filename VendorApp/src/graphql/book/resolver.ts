@@ -9,20 +9,39 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized, Ctx } from "type-graphql"
-import type { NextApiRequest } from 'next'
-
-import { Book } from "./schema"
-import { BookService } from "./service"
+import { Query, Resolver, Authorized, Mutation, Arg } from "type-graphql"
+import { Key } from "./schema"
+import { ApikeyService } from "./service"
 
 @Resolver()
 export class BookResolver {
-  @Authorized("member")
-  @Query(() => [Book])
-  async book(
-    @Ctx() request: NextApiRequest
-  ): Promise<Book[]> {
-    console.log(`User requesting books is: ${request.user.id})`)
-    return new BookService().all()
+  @Authorized("vendor")
+  @Query(() => [Key])
+  async allkeys(
+  // @Ctx() request: NextApiRequest
+  ): Promise<Key[]> {
+    return new ApikeyService().all()
+  }
+  
+  @Authorized("vendor")
+  @Query(() => [Key], { nullable: true })
+  async vendorkeys(
+    @Arg("vendorId") vendorId: string,
+    // @Ctx() request: NextApiRequest
+  ): Promise<Key[] | null> {
+    return new ApikeyService().one(vendorId);
+  }
+
+  @Authorized("vendor")
+  @Mutation(() => String)
+  async createKey(
+    @Arg("vendorId") vendorId: string,
+    // @Ctx() request: NextApiRequest
+  ): Promise<string> {
+    const key = await new ApikeyService().create(vendorId);
+    if (!key) {
+      throw new Error("Key creation failed");
+    }
+    return key;
   }
 }
