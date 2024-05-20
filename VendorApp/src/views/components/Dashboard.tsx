@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import SimpleLineChart from './SimpleLineChart';
 import SimpleTable from './SimpleTable';
 import { LoginContext } from '@/context/Login';
-import { AddProduct } from './addProduct';
+import { AddProduct } from './AddProduct';
 const Dashboard = () => {
   const loginContext = React.useContext(LoginContext);
 
