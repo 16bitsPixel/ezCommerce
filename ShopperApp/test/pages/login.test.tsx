@@ -1,19 +1,7 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2022-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without 
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
-
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react';
 import { GetServerSidePropsContext } from 'next';
-import Index, { getServerSideProps } from '../../src/pages/index';
+import Login, { getServerSideProps } from '../../src/pages/login';
 import React from 'react';
-
 
 // Mock useTranslation
 jest.mock('react-i18next', () => ({
@@ -27,7 +15,7 @@ jest.mock('next-i18next/serverSideTranslations', () => ({
   serverSideTranslations: jest.fn(),
 }));
 
-describe('Index', () => {
+describe('Login', () => {
   beforeEach(() => {
     jest.spyOn(require('next/router'), 'useRouter').mockImplementation(() => ({
       route: '/',
@@ -50,7 +38,7 @@ describe('Index', () => {
   });
 
   it('Renders', async () => {
-    render(<Index />)
+    render(<Login />);
   });
 
   it('returns expected props', async () => {
