@@ -16,7 +16,7 @@ import { Fragment } from 'react'
 import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { TopBar } from '@/views/components/TopBar';
+import { Order } from '@/views/Order';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
@@ -35,7 +35,7 @@ export default function OrderPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TopBar/>
+      <Order/>
     </Fragment>
   )
 }
