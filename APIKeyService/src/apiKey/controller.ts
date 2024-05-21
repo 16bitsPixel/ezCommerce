@@ -8,7 +8,7 @@ import {
   Body,
 } from 'tsoa';
   
-import { APIKey } from '.';
+import { APIKey, Vendor } from '.';
 import { ApiService } from './service';
 
 @Route('vendor/api')
@@ -28,10 +28,10 @@ export class APIKEYController extends Controller {
       return new ApiService().getvendorkey(vendorid);
     }
 
-  @Post()
+  @Post('genrate-key')
   @SuccessResponse('201',"Vendor API Key Created")
   public async createapikey(
-    @Body() vendorid: string,
+    @Body() vendorid: Vendor,
   ): Promise<string|undefined> {
     return new ApiService().createkey(vendorid);
   }

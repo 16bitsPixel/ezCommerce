@@ -1,6 +1,7 @@
 import { APIKey } from ".";
 import { pool } from '../db';
 import * as jwt from "jsonwebtoken";
+import { Vendor } from ".";
 
 export class ApiService {
   public async getkeys(): Promise<APIKey []>{
@@ -35,9 +36,9 @@ export class ApiService {
     return result
   }
 
-  public async createkey(vendorid: string): Promise<string>{
+  public async createkey(vendorid: Vendor): Promise<string>{
     const apikey = jwt.sign(
-      {id: vendorid}, 
+      {id: vendorid.id , name: vendorid.name, email: vendorid.email}, 
       `${process.env.MASTER_SECRET}`, {
         expiresIn: '1y',
         algorithm: 'HS256'
@@ -46,7 +47,7 @@ export class ApiService {
       `INSERT INTO APIKEYS(vendor, apikey) VALUES ($1, $2);`
     const query = {
       text: select,
-      values: [vendorid, apikey],
+      values: [vendorid.id, apikey],
     };
     await pool.query(query);
     return apikey

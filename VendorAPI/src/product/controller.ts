@@ -17,6 +17,7 @@ export class AccountController extends Controller {
   @Security('jwt',["member"])
   @Response('401', 'Unauthorized')
   public async postProduct(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       @Body() product: Product,
   ): Promise<Product|undefined> {
     return {

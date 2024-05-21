@@ -15,8 +15,8 @@ import {SessionUser} from '../types/express';
 
 export function expressAuthentication(
   request: Request,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   securityName: string,
-  scopes?: string[]
 ): Promise<SessionUser> {
-  return new AuthService().check(request.headers.authorization, scopes);
+  return new AuthService().check(request.headers.authorization);
 }

@@ -17,30 +17,41 @@ import { User} from '.';
 
 export class AuthService {
 
-  public async check(authHeader?: string, scopes?: string[]): Promise<SessionUser>  {
+  public async check(authHeader?: string): Promise<SessionUser>  {
     return new Promise((resolve, reject) => {
       if (!authHeader) {
-        reject(new Error("Unauthorised"));
+        return reject(new Error("Unauthorized"));
       }
-      else {
-        const token = authHeader.split(' ')[1];
-        jwt.verify(token, 
-          `${process.env.MASTER_SECRET}`, 
-          (err: jwt.VerifyErrors | null, decoded?: object | string) => 
-          {
-            const user = decoded as User
+  
+      const token = authHeader.split(' ')[1];
+      fetch('http://localhost:3013/api/v0/vendor/verify', {
+        method: 'POST',
+        body: JSON.stringify({ apikey: token }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw res;
+          }
+          return res.json();
+        })
+        .then((authenticated) => {
+          console.log("Server replied", authenticated);
+  
+          jwt.verify(token, `${process.env.MASTER_SECRET}`, (err: jwt.VerifyErrors | null, decoded?: object | string) => {
             if (err) {
-              reject(err);
-            } else if (scopes){
-              for (const scope of scopes) {
-                if (!user.roles || !user.roles.includes(scope)) {
-                  reject(new Error("Unauthorised"));
-                }
-              }
+              return reject(err);
             }
-            resolve({email: user.email, name: user.name, id: user.id});
+  
+            const user = decoded as User;
+            resolve({ email: user.email, name: user.name, id: user.id });
           });
-      }
+        })
+        .catch(() => {
+          reject(new Error("Unauthorized"));
+        });
     });
   }
 }
