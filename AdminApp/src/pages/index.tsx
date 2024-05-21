@@ -15,7 +15,7 @@ import { Fragment } from 'react'
 import { App } from '../views/App'
 
 export default function Index() {
-  const title = 'CSE187 Micro Service Book Example'
+  const title = 'Admin App'
   return (
     <Fragment>
       <Head>

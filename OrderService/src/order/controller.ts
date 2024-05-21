@@ -12,7 +12,7 @@ import {
 
 import * as express from 'express';
 
-import { Order, UUID } from '.'
+import { Order, UUID, InputOrder } from '.'
 import { OrderService } from './service'
 
 @Route('order')
@@ -38,13 +38,12 @@ export class OrderController extends Controller {
   }
 
   @Post()
-  @Response('404', 'Unknown Account')
   @SuccessResponse('201', 'Order Created')
   public async createOrder(
-    @Body() productId: UUID,
-    @Request() request: express.Request
+    @Body() product: InputOrder,
+    // @Request() request: express.Request
   ): Promise<Order | undefined> {
-    return new OrderService().create(productId,request)
+    return new OrderService().create(product)
       .then((order: Order | undefined): Order|undefined => {
         if (!order) {
           this.setStatus(404);
