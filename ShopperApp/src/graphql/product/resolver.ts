@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver} from "type-graphql"
+import { Query, Resolver, Arg} from "type-graphql"
 
 import { Product } from "./schema"
 import { ProductService } from "./service"
@@ -20,5 +20,13 @@ export class ProductResolver {
   async product(): Promise<Product[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
     return new ProductService().getAll()
+  }
+
+  @Query(() => [Product], { nullable: true })
+  async vendorkeys(
+    @Arg("productId") productId: string,
+    // @Ctx() request: NextApiRequest
+  ): Promise<Product[] | null> {
+    return new ProductService().get(productId);
   }
 }
