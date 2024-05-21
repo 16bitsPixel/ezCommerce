@@ -9,8 +9,16 @@ import SimpleLineChart from './SimpleLineChart';
 import SimpleTable from './SimpleTable';
 import { LoginContext } from '@/context/Login';
 import { AddProduct } from './AddProduct';
+import { VendorKeys } from './VendorKeys';
 const Dashboard = () => {
   const loginContext = React.useContext(LoginContext);
+
+  const handleLogout = () => {
+    loginContext.setAccessToken('')
+    loginContext.setUserName('')
+    loginContext.setUserId('')
+    loginContext.setView('Login')
+  };
 
   if (loginContext.accessToken.length > 1) {
     return (
@@ -20,7 +28,7 @@ const Dashboard = () => {
           position="absolute"
           className={classNames('appBar')}
         >
-          <Toolbar disableGutters={!open} className="toolbar">
+          <Toolbar disableGutters={!true} className="toolbar">
             <IconButton
               color="inherit"
               aria-label="Open drawer"
@@ -36,6 +44,7 @@ const Dashboard = () => {
             >
               Vendor Dashboard
             </Typography>
+            <IconButton aria-label="Logout" onClick={handleLogout}>Logout</IconButton>
           </Toolbar>
         </AppBar>
 
@@ -54,6 +63,10 @@ const Dashboard = () => {
             <SimpleTable />
           </div>
           <AddProduct />
+          <Typography variant="h4" gutterBottom component="h2">
+            Vendor Keys
+          </Typography>
+          <VendorKeys />
         </main>
 
 
