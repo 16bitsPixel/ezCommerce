@@ -22,11 +22,11 @@ export class ProductResolver {
     return new ProductService().getAll()
   }
 
-  @Query(() => [Product], { nullable: true })
-  async vendorkeys(
+  @Query(() => Product, { nullable: true })
+  async productInfo(
     @Arg("productId") productId: string,
     // @Ctx() request: NextApiRequest
-  ): Promise<Product[] | null> {
+  ): Promise<Product | undefined> {
     return new ProductService().get(productId);
   }
 }

@@ -14,7 +14,7 @@ import {
   Get,
   Route,
   Response,
-  Path
+  Query
 } from 'tsoa'
 
 import { Product, UUID } from '.'
@@ -29,17 +29,15 @@ export class ProductController extends Controller {
     return new ProductService().getAll()
   }
 
-  @Get('{productId}')
-  @Response('404', 'Order Not Found')
-  public async get(
-    @Path() productId: UUID
+  @Get('product')
+  @Response('404', 'Product Not Found')
+  public async getProductById(
+    @Query() productId: string
   ): Promise<Product | undefined> {
-    return new ProductService().get(productId)
-      .then((order: Product | undefined): Product|undefined => {
-        if (!order) {
-          this.setStatus(404);
-        }
-        return order;
-      }) 
+    const product = await new ProductService().get(productId);
+    if (!product) {
+      this.setStatus(404);
+    }
+    return product;
   }
 }

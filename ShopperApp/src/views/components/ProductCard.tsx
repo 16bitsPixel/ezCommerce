@@ -8,13 +8,14 @@ import StarIcon from '@mui/icons-material/Star';
 import Link from 'next/link';
 
 interface ProductCardProps {
+  id: string;
   name: string;
   price: number;
   rating: number;
   image: string;
 }
 
-export default function ProductCard({name, price, rating, image}: ProductCardProps) {
+export default function ProductCard({id, name, price, rating, image}: ProductCardProps) {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseEnter = () => {
@@ -24,14 +25,10 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
-  const stars = Array.from({ length: rating }, (_, index) => (
-    <StarIcon key={index} />
-  ));
   
   return (
     <Card>
-      <Link href="/product">
+      <Link href={`/product?id=${id}`}>
         <CardMedia
           component="img"
           height="200"
@@ -52,7 +49,6 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
         </Typography>
       </CardContent>
       <CardActions style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-        <Box>{stars}</Box>
         <Typography variant="h6" color="text.primary">
           ${price}
         </Typography>
