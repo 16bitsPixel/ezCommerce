@@ -29,6 +29,10 @@ export function TopBar() {
     router.push('/');
   };
 
+  const handleOrder = () => {
+    router.push('/order');
+  };
+
   return (
     <Box className="centerContainer">
       <CssBaseline />
@@ -62,7 +66,7 @@ export function TopBar() {
                   {t('logout')}
                 </Button>
               )}
-              <Button variant="outlined" style={{ color: 'white', marginRight: '8px' }}>
+              <Button variant="outlined" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>
               <Button variant="outlined" style={{ color: 'white' }}>{t('cart')}</Button>
