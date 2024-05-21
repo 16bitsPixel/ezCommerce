@@ -1,0 +1,63 @@
+/*
+#######################################################################
+#
+# Copyright (C) 2020-2024 David C. Harrison. All right reserved.
+#
+# You may not use, distribute, publish, or modify this code without
+# the express written permission of the copyright holder.
+#
+#######################################################################
+*/
+import React from 'react';
+
+import { Product } from '../../../graphql/product/schema'
+import { Box } from '@mui/material';
+
+interface FetchProductsParams {
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const fetchProducts = ({ setProducts, setError }: FetchProductsParams) => {
+  const query = {
+    query: `query product {
+      product {
+        id, name, price, rating, image
+      }
+    }`}
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((json) => {
+      setError('')
+      setProducts(json.data.product)
+    })
+    .catch((e) => {
+      setError(e.toString())
+      setProducts([])
+    })
+};
+
+export function ProductInformation() {
+  const [products, setProducts] = React.useState<Product[]>([]);
+  const [error, setError] = React.useState('Logged Out')
+
+  console.log(error);
+
+  React.useEffect(() => {
+    fetchProducts({setProducts, setError});
+  }, []);
+
+  return (
+    <Box>
+      Test
+    </Box>
+  )
+}

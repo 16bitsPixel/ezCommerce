@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {Box, CardActions} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import Link from 'next/link';
 
 interface ProductCardProps {
   name: string;
@@ -30,19 +31,21 @@ export default function ProductCard({name, price, rating, image}: ProductCardPro
   
   return (
     <Card>
-      <CardMedia
-        component="img"
-        height="200"
-        image={image}
-        alt={name}
-        sx={{
-          ...styles.cardMedia,
-          ...(isHovered && styles.cardMediaHovered),
-        }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        aria-label='cardImage'
-      />
+      <Link href="/product">
+        <CardMedia
+          component="img"
+          height="200"
+          image={image}
+          alt={name}
+          sx={{
+            ...styles.cardMedia,
+            ...(isHovered && styles.cardMediaHovered),
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          aria-label='cardImage'
+        />
+      </Link>
       <CardContent>
         <Typography sx={{ overflow: 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }} component="div">
           {name}
