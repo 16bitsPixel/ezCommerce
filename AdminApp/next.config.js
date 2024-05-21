@@ -8,7 +8,8 @@ const nextConfig = {
     },
     eslint: {
       ignoreDuringBuilds: true
-    }
+    },
+    assetPrefix: '/vendor',
   };
   
   module.exports = nextConfig;

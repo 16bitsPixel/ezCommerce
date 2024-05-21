@@ -1,1 +1,1 @@
-DELETE FROM order;
+DELETE FROM orders;
