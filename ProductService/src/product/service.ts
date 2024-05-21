@@ -31,4 +31,20 @@ export class ProductService {
     }
     return products
   }
+
+  public async get(productId: UUID): Promise<Product | undefined> {
+    const select = 'SELECT * FROM product WHERE id = $1';
+    const query = {
+      text: select,
+      values: [productId],
+    };
+    const {rows} = await pool.query(query);
+    if (rows.length === 0) {
+      return undefined;
+    }
+
+    const product = rows[0].product;
+    product.id = rows[0].id;
+    return product;
+  }
 }
