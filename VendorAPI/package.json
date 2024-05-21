@@ -1,36 +1,27 @@
 {
-  "name": "vendorapi-webapp",
-  "version": "1.1.0",
-  "description": "CSE187 NextJS Book Example Microservices",
+  "name": "cse187-assignment1",
+  "version": "1.0.0",
+  "description": "CSE187 Assignment 1",
   "author": "David Harrison <dcharris@ucsc.edu>",
   "license": "UNLICENSED",
   "repository": "none",
-  "scripts": {
-    "dev": "next dev -p 3003",
-    "start": "next start -p 3003",
-    "build": "next build",
-    "lint": "next lint --fix",
-    "test": "jest --runInBand --detectOpenHandles --forceExit"
-  },
   "devDependencies": {
-    "@jest/globals": "*",
-    "@testing-library/jest-dom": "*",
-    "@testing-library/react": "*",
-    "@testing-library/user-event": "*",
-    "@types/glob": "*",
+    "@types/bcrypt": "*",
+    "@types/cors": "*",
+    "@types/express": "*",
     "@types/jest": "*",
+    "@types/jsonwebtoken": "*",
     "@types/node": "*",
-    "@types/react": "*",
-    "@types/react-dom": "*",
+    "@types/pg": "*",
     "@types/supertest": "*",
-    "dotenv": "*",
+    "@types/swagger-ui-express": "*",
+    "bestzip": "*",
+    "concurrently": "*",
     "eslint": "*",
-    "eslint-config-next": "*",
     "eslint-config-typescript": "*",
     "jest": "*",
-    "jest-environment-jsdom": "*",
-    "msw": "*",
-    "next-router-mock": "*",
+    "joi": "*",
+    "nodemon": "*",
     "supertest": "*",
     "ts-jest": "*",
     "ts-node": "*",
@@ -38,32 +29,65 @@
     "typescript": "*"
   },
   "dependencies": {
-    "@emotion/react": "*",
-    "@emotion/styled": "*",
-    "@mui/material": "*",
-    "class-validator": "*",
-    "graphql": "*",
-    "graphql-request": "*",
-    "graphql-yoga": "*",
-    "next": "*",
-    "react": "*",
-    "react-dom": "*",
-    "reflect-metadata": "*",
-    "type-graphql": "*"
+    "cors": "*",
+    "dotenv": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "pg": "*",
+    "swagger-ui-express": "*",
+    "tsoa": "*"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/server.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testTimeout": 2000,
+    "collectCoverageFrom": [
+      "src/**/**.[jt]s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/server.[jt]s",
+      "index.d.ts"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "build"
+    ]
   },
   "eslintConfig": {
     "extends": [
-      "next/core-web-vitals",
       "typescript"
     ],
     "parserOptions": {
       "ecmaVersion": 14
     },
+    "noInlineConfig": true,
     "rules": {
       "indent": [
         "warn",
         2
       ]
     }
+  },
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "node build/src/server.js",
+    "prebuild": "npm run swagger",
+    "build": "tsc",
+    "predev": "npm run swagger",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "swagger": "tsoa spec-and-routes",
+    "pretest": "npm run swagger",
+    "test": "jest --runInBand --coverage --verbose --forceExit",
+    "lint": "eslint test/**/*.[jt]s src/**/*.[jt]s --fix",
+    "zip": "bestzip CSE187.Assignment1.Submission.zip test/* src/*/* sql/schema.sql"
   }
 }
