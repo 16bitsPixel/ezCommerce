@@ -18,6 +18,7 @@ import Grid from '@mui/material/Grid';
 
 import { Product } from '@/graphql/product/schema';
 import {ProductImage} from './components/Product/ProductImage';
+import Link from 'next/link';
 
 interface FetchProductParams {
   id: string|string[]|undefined;
@@ -29,7 +30,7 @@ const fetchProduct = ({id, setProduct, setError }: FetchProductParams) => {
   const query = {
     query: `query GetProduct {
       productInfo(productId: "${id}") {
-        id, name, price, rating, image
+        id, name, description, price, rating, image
       }
     }`}
   fetch('/api/graphql', {
@@ -59,11 +60,22 @@ interface ProductProps {
 
 export function ProductView({id}: ProductProps) {
   const [product, setProduct] = React.useState<Product|undefined>(undefined);
+  const [cart, setCart] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out')
 
   React.useEffect(() => {
     fetchProduct({id, setProduct, setError});
   }, [id]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      // Add the product to the cart
+      const updatedCart = [...cart, product];
+      setCart(updatedCart);
+      // Update localStorage with the updated cart
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    }
+  };
 
   return (
     <>
@@ -75,10 +87,13 @@ export function ProductView({id}: ProductProps) {
                 <ProductImage image={product.image}/>
               </Grid>
               <Grid item xs={4} sm={4} md={4}>
-                <ProductInformation name={product.name} price={product.price} rating={product.rating}/>
+                <ProductInformation name={product.name} description={product.description} price={product.price} rating={product.rating}/>
               </Grid>
               <Grid item xs={12} sm={3} md={3}>
-                Order
+                {/*TODO: STYLIZE BUTTON ADD TO CART */}
+                <Link href={`/order`}>
+                  <button onClick={handleAddToCart}>Add to Cart</button>
+                </Link>
               </Grid>
           </Grid> :
           null

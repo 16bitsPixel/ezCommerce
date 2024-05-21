@@ -9,7 +9,6 @@
 #######################################################################
 */
 import { ScreenSizeProvider } from '@/context/ScreenSize'
-import { TrendingList  } from './components/TrendingList';
 import { BottomBar } from './components/BottomBar';
 import {TopBar} from './components/TopBar'
 
