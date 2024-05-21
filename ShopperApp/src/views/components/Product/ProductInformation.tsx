@@ -10,54 +10,22 @@
 */
 import React from 'react';
 
-import { Product } from '../../../graphql/product/schema'
-import { Box } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 
-interface FetchProductsParams {
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
+interface ProductInfoProps {
+  name: string;
+  price: number;
+  rating: number;
 }
 
-const fetchProducts = ({ setProducts, setError }: FetchProductsParams) => {
-  const query = {
-    query: `query product {
-      product {
-        id, name, price, rating, image
-      }
-    }`}
-  fetch('/api/graphql', {
-    method: 'POST',
-    body: JSON.stringify(query),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((json) => {
-      setError('')
-      setProducts(json.data.product)
-    })
-    .catch((e) => {
-      setError(e.toString())
-      setProducts([])
-    })
-};
-
-export function ProductInformation() {
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [error, setError] = React.useState('Logged Out')
-
-  console.log(error);
-
-  React.useEffect(() => {
-    fetchProducts({setProducts, setError});
-  }, []);
-
+export function ProductInformation({name, price, rating}: ProductInfoProps) {
+  console.log(name);
   return (
     <Box>
-      Test
+      <Typography variant="h6" gutterBottom>
+        {name}
+      </Typography>
+      <Divider/>
     </Box>
   )
 }

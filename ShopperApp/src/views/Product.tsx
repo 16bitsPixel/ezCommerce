@@ -14,8 +14,10 @@ import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { BottomBar } from './components/BottomBar';
 import { ProductInformation } from './components/Product/ProductInformation';
 import {TopBar} from './components/TopBar'
+import Grid from '@mui/material/Grid';
 
 import { Product } from '@/graphql/product/schema';
+import {ProductImage} from './components/Product/ProductImage';
 
 interface FetchProductParams {
   id: string|string[]|undefined;
@@ -43,7 +45,7 @@ const fetchProduct = ({id, setProduct, setError }: FetchProductParams) => {
     .then((json) => {
       console.log(json);
       setError('')
-      setProduct(json.data.product)
+      setProduct(json.data.productInfo)
     })
     .catch((e) => {
       setError(e.toString())
@@ -67,7 +69,20 @@ export function ProductView({id}: ProductProps) {
     <>
       <ScreenSizeProvider>
         <TopBar/>
-        <ProductInformation/>
+        {product?
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item xs={8} sm={5} md={5}>
+                <ProductImage image={product.image}/>
+              </Grid>
+              <Grid item xs={4} sm={4} md={4}>
+                <ProductInformation name={product.name} price={product.price} rating={product.rating}/>
+              </Grid>
+              <Grid item xs={12} sm={3} md={3}>
+                Order
+              </Grid>
+          </Grid> :
+          null
+        }
         <BottomBar/>
       </ScreenSizeProvider>
     </>
