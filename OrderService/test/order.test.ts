@@ -1,10 +1,12 @@
 import supertest from 'supertest';
 import * as http from 'http';
 
+
 import * as db from './db';
 import app from '../src/app';
-import test from 'node:test';
 
+import dotenv from 'dotenv'
+dotenv.config()
 let server: http.Server<
   typeof http.IncomingMessage,
   typeof http.ServerResponse

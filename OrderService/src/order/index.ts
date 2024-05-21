@@ -12,3 +12,9 @@ export interface Order {
   date: Date,
   status: string,
 }
+export interface InputOrder {
+  account_id: UUID,
+  product_id: UUID,
+  date: Date,
+  status: string,
+}
