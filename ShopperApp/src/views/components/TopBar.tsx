@@ -33,11 +33,22 @@ export function TopBar() {
     router.push('/order');
   };
 
+  const handleCart = () => {
+    router.push('/cart');
+  };
+
+  const handleHome = () => {
+    router.push('/');
+  };
+
   return (
     <Box className="centerContainer">
       <CssBaseline />
       <AppBar position="static" sx={{ bgcolor: '#131921' }}>
         <Toolbar className="topBar" style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button onClick={handleHome} style={{ color: 'white', marginRight: '8px' }}>
+            ezCommerce
+          </Button>
           {!isSmallScreen && (
             <div style={{ flexGrow: 0, marginRight: 'auto' }}>
               <Link href="/" locale={changeTo} passHref>
@@ -69,7 +80,7 @@ export function TopBar() {
               <Button variant="outlined" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>
-              <Button variant="outlined" style={{ color: 'white' }}>{t('cart')}</Button>
+              <Button variant="outlined" onClick={handleCart} style={{ color: 'white' }}>{t('cart')}</Button>
             </div>
           )}
         </Toolbar>
