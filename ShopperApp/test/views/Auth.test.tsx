@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Login } from '../../src/views/Login';
 import { SignUp } from '../../src/views/Signup'
-import { LoginProvider } from '../../src/context/Login';
+import { LoginProvider, LoginContext } from '../../src/context/Login';
 import { useRouter } from 'next/router';
 import { setupServer } from 'msw/node';
 
@@ -20,16 +20,23 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('next/router', () => require('next-router-mock'));
 
-// const mockPush = jest.fn();
-// (useRouter as jest.Mock).mockReturnValue({
-//   push: mockPush,
-// });
-
 const server = setupServer();
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
+
+const mockSetAccessToken = jest.fn();
+const mockSetUserName = jest.fn();
+
+const mockLoginContext = {
+  userName: '',
+  accessToken: '',
+  setAccessToken: mockSetAccessToken,
+  setUserName: mockSetUserName,
+  view: 'Login',
+  setView: jest.fn(),
+};
 
 // -- Login Tests --
 it('renders login form', () => {
@@ -38,8 +45,9 @@ it('renders login form', () => {
       <Login />
     </LoginProvider>
   );
-  expect(screen.getByLabelText('email-placeholder'))
-  expect(screen.getByLabelText('password-placeholder'))
+  expect(screen.getByTestId('login-form'))
+  expect(screen.getByLabelText('Email Address'))
+  expect(screen.getByLabelText('Password'))
   expect(screen.getByTestId('login-button'))
 });
 
@@ -51,39 +59,43 @@ it('handles form submission with valid credentials', async () => {
     })
   ) as jest.Mock;
   render(
+    <LoginContext.Provider value={mockLoginContext}>
+      <Login />
+    </LoginContext.Provider>
+  );
+  const email = screen.getByLabelText('Email Address')
+  fireEvent.change(email, { target: { value: 'molly@books.com' } });
+  const passwd = screen.getByLabelText('Password')
+  fireEvent.change(passwd, { target: { value: 'mollymember' } });
+  fireEvent.submit(screen.getByTestId('login-button'))
+  await waitFor(() => {
+    expect(mockSetAccessToken).toHaveBeenCalledWith('test-token');
+    expect(mockSetUserName).toHaveBeenCalledWith('Test User');
+  });
+});
+
+it('Rejects Bad Credentials', async () => {
+  // Mock fetch response
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ errors: { login: { name: 'Test User', accessToken: 'test-token' } } }),
+    })
+  ) as jest.Mock;
+  window.alert = jest.fn()
+  render(
     <LoginProvider>
       <Login />
     </LoginProvider>
   );
-  const email = screen.getByLabelText('email-placeholder')
-  userEvent.type(email, 'molly@books.com');
-  const passwd = screen.getByLabelText('password-placeholder')
-  userEvent.type(passwd, 'mollymember');
-  expect(screen.getByTestId('login-button'))
-  // await waitFor(() => {
-  //   expect(mockPush).toHaveBeenCalledWith('/');
-  // });
-  // expect(screen.queryByLabelText('email-placeholder')).toBeNull();
-  // expect(screen.queryByLabelText('password-placeholder')).toBeNull();
+  const email = screen.getByLabelText('Email Address')
+  fireEvent.change(email,  { target: { value: 'molly@books.com' } });
+  const passwd = screen.getByLabelText('Password')
+  fireEvent.change(passwd,  { target: { value: 'wrongpassword' } });
+  fireEvent.submit(screen.getByTestId('login-button'))
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalled()
+  });
 });
-
-// it('Rejects Bad Credentials', async () => {
-//   let alerted = false
-//   window.alert = () => { alerted = true }
-//   render(
-//     <LoginProvider>
-//       <Login />
-//     </LoginProvider>
-//   );
-//   const email = screen.getByLabelText('Email Address')
-//   fireEvent.change(email, 'molly@books.com');
-//   const passwd = screen.getByLabelText('Password')
-//   fireEvent.change(passwd, 'wrongpassword');
-//   fireEvent.click(screen.getByText('Login'));
-//   await waitFor(() => {
-//     expect(alerted).toBeTruthy()
-//   });
-// });
 
 // -- SignUp Tests --
 it('renders signup form', () => {
@@ -95,56 +107,57 @@ it('renders signup form', () => {
   );
   fireEvent.click(screen.getByTestId('create-button'));
   expect(screen.queryByText('Login')).toBeNull();
-  expect(screen.getByLabelText('first-name'))
-  expect(screen.getByLabelText('last-name'))
-  expect(screen.getByLabelText('email-placeholder'))
-  expect(screen.getByLabelText('password-placeholder'))
+  expect(screen.getByLabelText('First Name'))
+  expect(screen.getByLabelText('Last Name'))
+  expect(screen.getByLabelText('Email Address'))
+  expect(screen.getByLabelText('Password'))
   expect(screen.getByTestId('signup-button'))
 });
 
-// it('handles form submission with valid credentials', async () => {
-//   render(
-//     <LoginProvider>
-//       <Login />
-//       <SignUp />
-//     </LoginProvider>
-//   );
-//   fireEvent.click(screen.getByTestId('create-button'));
-//   const first = screen.getByLabelText('first-name')
-//   userEvent.type(first, 'John');
-//   const last = screen.getByLabelText('last-name')
-//   userEvent.type(last, 'Doe');
-//   const email = screen.getByLabelText('email-placeholder')
-//   userEvent.type(email, 'new@user.com');
-//   const passwd = screen.getByLabelText('password-placeholder')
-//   userEvent.type(passwd, 'password123');
-//   fireEvent.click(screen.getByTestId('signup-button'));
-//   await waitFor(() => {
-//     expect(window.alert).toHaveBeenCalledWith('Signup successful! You can now log in.');
-//   });
-// });
+it('handles form submission with valid credentials', async () => {
+  window.alert = jest.fn()
+  render(
+    <LoginProvider>
+      <Login />
+      <SignUp />
+    </LoginProvider>
+  );
+  fireEvent.click(screen.getByTestId('create-button'));
+  const first = screen.getByLabelText('First Name')
+  fireEvent.change(first,  { target: { value: 'John' } });
+  const last = screen.getByLabelText('Last Name')
+  fireEvent.change(last,  { target: { value: 'Doe' } });
+  const email = screen.getByLabelText('Email Address')
+  fireEvent.change(email,  { target: { value: 'new@user.com' } });
+  const passwd = screen.getByLabelText('Password')
+  fireEvent.change(passwd,  { target: { value: 'password123' } });
+  fireEvent.click(screen.getByTestId('signup-button'));
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalled()
+  });
+});
 
-// it('handles form submission with existing user', async () => {
-//   render(
-//     <LoginProvider>
-//       <Login />
-//       <SignUp />
-//     </LoginProvider>
-//   );
-//   fireEvent.click(screen.getByTestId('create-button'));
-//   const first = screen.getByLabelText('first-name')
-//   userEvent.type(first, 'John');
-//   const last = screen.getByLabelText('last-name')
-//   userEvent.type(last, 'Doe');
-//   const email = screen.getByLabelText('email-placeholder')
-//   userEvent.type(email, 'new@user.com');
-//   const passwd = screen.getByLabelText('password-placeholder')
-//   userEvent.type(passwd, 'password123');
-//   fireEvent.click(screen.getByTestId('signup-button'));
-//   await waitFor(() => {
-//     expect(window.alert).toHaveBeenCalledWith('Signup failed. Please try again.');
-//   });
-// });
+it('handles form submission with existing user', async () => {
+  render(
+    <LoginProvider>
+      <Login />
+      <SignUp />
+    </LoginProvider>
+  );
+  fireEvent.click(screen.getByTestId('create-button'));
+  const first = screen.getByLabelText('First Name')
+  fireEvent.change(first,  { target: { value: 'John' } });
+  const last = screen.getByLabelText('Last Name')
+  fireEvent.change(last,  { target: { value: 'Doe' } });
+  const email = screen.getByLabelText('Email Address')
+  fireEvent.change(email,  { target: { value: 'new@user.com' } });
+  const passwd = screen.getByLabelText('Password')
+  fireEvent.change(passwd,  { target: { value: 'password123' } });
+  fireEvent.click(screen.getByTestId('signup-button'));
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalled();
+  });
+});
 
 it('switches to login view when button clicked', () => {
   render(

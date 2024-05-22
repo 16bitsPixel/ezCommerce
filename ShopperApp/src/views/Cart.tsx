@@ -24,7 +24,7 @@ export function Cart() {
       <ScreenSizeProvider>
         <TopBar/>
         <Typography variant="h5" gutterBottom>
-            {t('shopping-cart')}
+          {t('shopping-cart')}
         </Typography>
         <CartList/>
         <BottomBar/>

@@ -62,8 +62,10 @@ export function SignUp() {
               <TextField
                 type="text"
                 name="firstname"
-                aria-label={t('first-name') || 'First Name'}
                 placeholder={t('first-name') || 'First Name'}
+                inputProps={{
+                  "aria-label": "First Name",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}
@@ -76,8 +78,10 @@ export function SignUp() {
               <TextField
                 type="text"
                 name="lastname"
-                aria-label={t('last-name') || 'Last Name'}
                 placeholder={t('last-name') || 'Last Name'}
+                inputProps={{
+                  "aria-label": "Last Name",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}
@@ -90,8 +94,10 @@ export function SignUp() {
               <TextField
                 type="email"
                 name="email"
-                aria-label={t('email-placeholder') || 'Email Address'}
                 placeholder={t('email-placeholder') || 'Email Address'}
+                inputProps={{
+                  "aria-label": "Email Address",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}
@@ -104,8 +110,10 @@ export function SignUp() {
               <TextField
                 type="password"
                 name="password"
-                aria-label={t('password-placeholder') || 'Password'}
                 placeholder={t('password-placeholder') || 'Password'}
+                inputProps={{
+                  "aria-label": "Password",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}

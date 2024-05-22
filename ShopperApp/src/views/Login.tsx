@@ -35,6 +35,9 @@ export function Login() {
 
   const onSubmit = (event: any) => {
     event.preventDefault();
+    // console.log("*********************");
+    // console.log(user.email);
+    // console.log(user.password);
     const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
     fetch('/api/graphql', {
       method: 'POST',
@@ -68,15 +71,18 @@ export function Login() {
             <Typography variant="h4" component="h2" gutterBottom>
               {t('login')}
             </Typography>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} data-testid="login-form">
               <Typography variant="subtitle1" component="h2" gutterBottom sx={{ mt: 4, fontWeight: 'bold' }}>
                 {t('email-placeholder')}
               </Typography>
               <TextField
                 type="email"
                 name="email"
-                aria-label={t('email-placeholder') || 'Email Address'}
+                // aria-label="Email Address"
                 placeholder={t('email-placeholder') || 'Email Address'}
+                inputProps={{
+                  "aria-label": "Email Address",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}
@@ -89,8 +95,11 @@ export function Login() {
               <TextField
                 type="password"
                 name="password"
-                aria-label={t('password-placeholder') || 'Password'}
+                // aria-label="Password"
                 placeholder={t('password-placeholder') || 'Password'}
+                inputProps={{
+                  "aria-label": "Password",
+                }}
                 margin="normal"
                 fullWidth
                 onChange={handleInputChange}
