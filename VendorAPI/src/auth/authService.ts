@@ -37,16 +37,13 @@ export class AuthService {
           }
           return res.json();
         })
-        .then((authenticated) => {
-          console.log("Server replied", authenticated);
-            console.log("secret: ", process.env.MASTER_SECRET)
+        .then(() => {
           jwt.verify(token, `${process.env.MASTER_SECRET}`, (err: jwt.VerifyErrors | null, decoded?: object | string) => {
             if (err) {
               return reject(err);
             }
   
             const user = decoded as User;
-            console.log("user: ", user)
             resolve({ email: user.email, name: user.name, id: user.id });
           });
         })
