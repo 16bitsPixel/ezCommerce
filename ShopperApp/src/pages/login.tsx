@@ -8,9 +8,13 @@ import type { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  let language = 'en'
+  if (context.locale) {
+    language = context.locale
+  }
   return {
     props: {
-      ...(await serverSideTranslations(context.locale ?? 'en', [
+      ...(await serverSideTranslations(language, [
         'common',
       ])),
     },
