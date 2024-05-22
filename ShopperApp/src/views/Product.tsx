@@ -19,6 +19,7 @@ import Grid from '@mui/material/Grid';
 import { Product } from '@/graphql/product/schema';
 import {ProductImage} from './components/Product/ProductImage';
 import Link from 'next/link';
+import { Typography } from '@mui/material';
 
 interface FetchProductParams {
   id: string|string[]|undefined;
@@ -60,7 +61,7 @@ interface ProductProps {
 
 export function ProductView({id}: ProductProps) {
   const [product, setProduct] = React.useState<Product|undefined>(undefined);
-  const [error, setError] = React.useState('Logged Out')
+  const [error, setError] = React.useState('')
 
   React.useEffect(() => {
     fetchProduct({id, setProduct, setError});
@@ -79,6 +80,14 @@ export function ProductView({id}: ProductProps) {
     }
   };
 
+  if (error !== '') {
+    return (
+      <Typography>
+        {error}
+      </Typography>
+    )
+  }
+
   return (
     <>
       <ScreenSizeProvider>
@@ -89,7 +98,7 @@ export function ProductView({id}: ProductProps) {
               <ProductImage image={product.image}/>
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
-              <ProductInformation name={product.name} description={product.description} price={product.price} rating={product.rating}/>
+              <ProductInformation name={product.name} description={product.description} price={product.price} /*rating={product.rating}*//>
             </Grid>
             <Grid item xs={12} sm={3} md={3}>
               {/*TODO: STYLIZE BUTTON ADD TO CART */}

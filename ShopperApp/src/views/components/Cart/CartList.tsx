@@ -1,6 +1,5 @@
-import React, {useContext, useEffect} from 'react';
-import {List, ListItem, ListItemButton,
-  ListItemText, Typography, Box, Divider} from '@mui/material';
+import React from 'react';
+import {List, Typography, Box} from '@mui/material';
 import { Product } from '../../../graphql/product/schema'
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -49,17 +48,17 @@ export function CartList() {
               </Card>
             </Grid>
             <Grid item xs={6} sm={7} md={8}>
-            <Typography>
-              {item.name}
-            </Typography>
-            <Button onClick={() => handleDeleteItem(index)}>
+              <Typography>
+                {item.name}
+              </Typography>
+              <Button onClick={() => handleDeleteItem(index)}>
               Delete
-            </Button>
+              </Button>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
-            <Typography variant="h6">
+              <Typography variant="h6">
               ${item.price}
-            </Typography>
+              </Typography>
             </Grid>
           </Grid>
         ))}

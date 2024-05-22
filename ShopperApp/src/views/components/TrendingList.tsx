@@ -60,7 +60,7 @@ export function TrendingList() {
     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
       {products.map((product: Product, index) => (
         <Grid item xs={2} sm={2} md={2} key={index}>
-          <ProductCard key = {product.id} id={product.id} name={product.name} price={product.price} rating={product.rating} image={product.image}/>
+          <ProductCard key = {product.id} id={product.id} name={product.name} price={product.price} /*rating={product.rating}*/ image={product.image}/>
         </Grid>
       ))}
     </Grid>

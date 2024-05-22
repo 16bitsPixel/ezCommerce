@@ -3,19 +3,18 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import {Box, CardActions} from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+import {CardActions} from '@mui/material';
 import Link from 'next/link';
 
 interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  rating: number;
+  //rating: number;
   image: string;
 }
 
-export default function ProductCard({id, name, price, rating, image}: ProductCardProps) {
+export default function ProductCard({id, name, price, /*rating,*/ image}: ProductCardProps) {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseEnter = () => {

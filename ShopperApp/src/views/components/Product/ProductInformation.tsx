@@ -16,10 +16,10 @@ interface ProductInfoProps {
   name: string;
   description: string;
   price: number;
-  rating: number;
+  // rating: number;
 }
 
-export function ProductInformation({name, description, price, rating}: ProductInfoProps) {
+export function ProductInformation({name, description, price/*, rating*/}: ProductInfoProps) {
   console.log(name);
   return (
     <Box>
