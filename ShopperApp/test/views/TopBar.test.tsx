@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { TopBar } from '@/views/components/TopBar';
 import { useRouter } from 'next/router';
 import { ScreenSizeContext } from '@/context/ScreenSize';
+import { LoginContext } from '@/context/Login';
 import React from 'react';
 import '@testing-library/jest-dom'; 
 
@@ -138,5 +139,34 @@ describe('TopBar Component', () => {
     expect(screen.getByText('change-locale')).toBeInTheDocument();
     fireEvent.click(screen.getByText('change-locale'));
     expect(useRouter().push).not.toHaveBeenCalled();
+  });
+});
+
+it('Test handleLogout', async () => {
+  const push = useRouter().push;
+  const isSmallScreen = false;
+  const setSmallScreen = jest.fn();
+  const mockSetAccessToken = jest.fn();
+  const mockSetUserName = jest.fn();
+  const mockLoginContext = {
+    userName: 'Test User',
+    accessToken: 'test-token',
+    setAccessToken: mockSetAccessToken,
+    setUserName: mockSetUserName,
+    view: 'Login',
+    setView: jest.fn()
+  };
+  render(
+    <LoginContext.Provider value={mockLoginContext}>
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <TopBar />
+      </ScreenSizeContext.Provider>
+    </LoginContext.Provider>
+  );
+  fireEvent.click(screen.getByText('logout'));
+  await waitFor(() => {
+    expect(mockSetAccessToken).toHaveBeenCalledWith('');
+    expect(mockSetUserName).toHaveBeenCalledWith('');
+    expect(push).toHaveBeenCalledWith('/');
   });
 });
