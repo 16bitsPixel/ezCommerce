@@ -60,7 +60,6 @@ interface ProductProps {
 
 export function ProductView({id}: ProductProps) {
   const [product, setProduct] = React.useState<Product|undefined>(undefined);
-  const [cart, setCart] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out')
 
   React.useEffect(() => {
@@ -69,9 +68,12 @@ export function ProductView({id}: ProductProps) {
 
   const handleAddToCart = () => {
     if (product) {
+      // Get the existing cart from localStorage or initialize an empty array
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      
       // Add the product to the cart
       const updatedCart = [...cart, product];
-      setCart(updatedCart);
+  
       // Update localStorage with the updated cart
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
@@ -83,18 +85,18 @@ export function ProductView({id}: ProductProps) {
         <TopBar/>
         {product?
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              <Grid item xs={8} sm={5} md={5}>
-                <ProductImage image={product.image}/>
-              </Grid>
-              <Grid item xs={4} sm={4} md={4}>
-                <ProductInformation name={product.name} description={product.description} price={product.price} rating={product.rating}/>
-              </Grid>
-              <Grid item xs={12} sm={3} md={3}>
-                {/*TODO: STYLIZE BUTTON ADD TO CART */}
-                <Link href={`/order`}>
-                  <button onClick={handleAddToCart}>Add to Cart</button>
-                </Link>
-              </Grid>
+            <Grid item xs={8} sm={5} md={5}>
+              <ProductImage image={product.image}/>
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <ProductInformation name={product.name} description={product.description} price={product.price} rating={product.rating}/>
+            </Grid>
+            <Grid item xs={12} sm={3} md={3}>
+              {/*TODO: STYLIZE BUTTON ADD TO CART */}
+              <Link href={`/cart`}>
+                <button onClick={handleAddToCart}>Add to Cart</button>
+              </Link>
+            </Grid>
           </Grid> :
           null
         }
