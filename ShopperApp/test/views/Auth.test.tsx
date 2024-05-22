@@ -115,6 +115,12 @@ it('renders signup form', () => {
 });
 
 it('handles form submission with valid credentials', async () => {
+  // Mock fetch response
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ data: { signup: { role: 'Member', firstname: 'Test', lastname: 'User', email: 'test@book.com', password:'password' } } }),
+    })
+  ) as jest.Mock;
   window.alert = jest.fn()
   render(
     <LoginProvider>
@@ -133,11 +139,18 @@ it('handles form submission with valid credentials', async () => {
   fireEvent.change(passwd,  { target: { value: 'password123' } });
   fireEvent.click(screen.getByTestId('signup-button'));
   await waitFor(() => {
-    expect(window.alert).toHaveBeenCalled()
+    expect(window.alert).toHaveBeenCalledWith('Signup successful! You can now log in.');
   });
 });
 
 it('handles form submission with existing user', async () => {
+  // Mock fetch response
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ data: { errors: { role: 'Member', firstname: 'Test', lastname: 'User', email: 'test@book.com', password:'password' } } }),
+    })
+  ) as jest.Mock;
+  window.alert = jest.fn()
   render(
     <LoginProvider>
       <Login />
@@ -155,7 +168,54 @@ it('handles form submission with existing user', async () => {
   fireEvent.change(passwd,  { target: { value: 'password123' } });
   fireEvent.click(screen.getByTestId('signup-button'));
   await waitFor(() => {
-    expect(window.alert).toHaveBeenCalled();
+    expect(window.alert).toHaveBeenCalledWith('Signup failed. Please try again.');
+  });
+});
+
+it('handles general error', async () => {
+  window.alert = jest.fn();
+  global.fetch = jest.fn(() =>
+    Promise.reject(new Error('Network Error'))
+  ) as jest.Mock;
+  render(
+    <LoginProvider>
+       <Login />
+       <SignUp />
+    </LoginProvider>
+  );
+  fireEvent.click(screen.getByTestId('create-button'));
+  fireEvent.change(screen.getByLabelText('First Name'), { target: { value: 'Jane' } });
+  fireEvent.change(screen.getByLabelText('Last Name'), { target: { value: 'Doe' } });
+  fireEvent.change(screen.getByLabelText('Email Address'), { target: { value: 'error@user.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'password123' } });
+  fireEvent.submit(screen.getByTestId('signup-button'));
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalledWith(new Error('Network Error'));
+  });
+});
+
+it('handles specific error message from server', async () => {
+  // Mock fetch response
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ errors: [{ message: 'User already exists' }] }),
+    })
+  ) as jest.Mock;
+  window.alert = jest.fn();
+  render(
+    <LoginProvider>
+      <Login />
+      <SignUp />
+    </LoginProvider>
+  );
+  fireEvent.click(screen.getByTestId('create-button'));
+  fireEvent.change(screen.getByLabelText('First Name'), { target: { value: 'John' } });
+  fireEvent.change(screen.getByLabelText('Last Name'), { target: { value: 'Doe' } });
+  fireEvent.change(screen.getByLabelText('Email Address'), { target: { value: 'existing@user.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'password123' } });
+  fireEvent.submit(screen.getByTestId('signup-button'));
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalledWith('User already exists');
   });
 });
 
@@ -170,4 +230,3 @@ it('switches to login view when button clicked', () => {
   fireEvent.click(screen.getByTestId('signin-button'));
   expect(screen.queryByTestId('signin-button')).toBeNull();
 });
-

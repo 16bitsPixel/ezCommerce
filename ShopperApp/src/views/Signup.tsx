@@ -20,7 +20,7 @@ export function SignUp() {
 
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `mutation signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname}"email: "${user.email}" password: "${user.password}")}`}
+    const query = {query: `mutation signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname} "email: "${user.email}" password: "${user.password}")}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
