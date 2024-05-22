@@ -12,6 +12,8 @@ import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { TrendingList  } from './components/TrendingList';
 import { BottomBar } from './components/BottomBar';
 import {TopBar} from './components/TopBar'
+import { Gallery } from './components/Gallery';
+import { Box } from '@mui/material';
 
 export function App() {
   return (
@@ -20,7 +22,12 @@ export function App() {
         <TopBar/>
         <BottomBar/>
       </ScreenSizeProvider>
-      <TrendingList/>
+      <Box>
+        <Gallery/>
+        <Box mt={4}>
+          <TrendingList />
+        </Box>
+      </Box>
     </>
   )
 }

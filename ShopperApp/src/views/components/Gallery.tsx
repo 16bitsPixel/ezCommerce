@@ -94,7 +94,14 @@ export function Gallery() {
           alt= {product.name} 
           src={product.image}
           data-testid = {product.id} 
-          className={slide === idx ? 'slide' : 'slide slide-hidden'} />
+          className={slide === idx ? 'slide' : 'slide slide-hidden'}
+          style={{
+            width: '100%',
+            height: 'auto',
+            maxHeight: '300px',
+            objectFit: 'cover',
+            objectPosition: 'top'
+          }} />
       ))}
       <ArrowForwardIosIcon className='arrow arrow-right'
         onClick={nextSlide}
