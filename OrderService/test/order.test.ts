@@ -56,6 +56,10 @@ test('User Fetches an Order', async () => {
   await supertest(server)
     .get(`/api/v0/order/${order_id}`)
     .expect(200)
+    .then((res) => {
+      expect(res.body.account_id).toBe('123e4567-e89b-12d3-a456-426614174000');
+      expect(res.body.product_id).toBe('987e6543-e21b-23d4-b654-321874650000');
+    })
 });
 
 test('User Fetches All Orders', async () => {

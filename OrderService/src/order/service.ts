@@ -12,13 +12,14 @@ export class OrderService {
     if (rows.length === 0) {
       return undefined;
     }
-    return {
+    const order = {
       order_id: rows[0].id,
-      account_id: rows[0].data.account_id,
-      product_id: rows[0].data.product_id,
+      account_id: rows[0].account_id,
+      product_id: rows[0].product_id,
       date: rows[0].data.date,
       status: rows[0].data.status,
     };
+    return order;
   }
 
   public async getAll(): Promise<Order[]> {
@@ -45,8 +46,8 @@ export class OrderService {
     const insert = `
     INSERT INTO orders(account_id, product_id, data)
     VALUES ($1::uuid, $2::uuid, json_build_object(
-      'date', $3::text,
-      'status', '$4::timestamp'
+      'date', $3::timestamp,
+      'status', 'pending'
     ))
     RETURNING *;
     `;
