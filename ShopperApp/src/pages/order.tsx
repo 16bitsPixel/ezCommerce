@@ -19,14 +19,18 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Order } from '@/views/Order';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  let language = 'en'
+  if (context.locale) {
+    language = context.locale
+  }
   return {
     props: {
-      ...(await serverSideTranslations(context.locale ?? 'en', [
+      ...(await serverSideTranslations(language, [
         'common',
       ])),
     },
-  }
-}
+  };
+};
 
 export default function OrderPage() {
   return (

@@ -20,14 +20,18 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ProductView } from '@/views/Product';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  let language = 'en'
+  if (context.locale) {
+    language = context.locale
+  }
   return {
     props: {
-      ...(await serverSideTranslations(context.locale ?? 'en', [
+      ...(await serverSideTranslations(language, [
         'common',
       ])),
     },
-  }
-}
+  };
+};
 
 export default function ProductPage() {
   const router = useRouter();
