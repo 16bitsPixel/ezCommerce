@@ -64,6 +64,14 @@ export function Login() {
   };
 
   if (loginContext.accessToken.length < 1 && view === 'Login') {
+    let emailplaceholder = "Email Address"
+    let passwordplaceholder = "Password"
+    if (t('email-placeholder')) {
+      emailplaceholder = t('email-placeholder')
+    }
+    if (t('password-placeholder')) {
+      passwordplaceholder = t('password-placeholder')
+    }
     return (
       <Container maxWidth="sm" className='login-signup'>
         <Card variant="outlined" sx={{ mt: 4 }}>
@@ -79,7 +87,7 @@ export function Login() {
                 type="email"
                 name="email"
                 // aria-label="Email Address"
-                placeholder={t('email-placeholder') || 'Email Address'}
+                placeholder={emailplaceholder}
                 inputProps={{
                   "aria-label": "Email Address",
                 }}
@@ -96,7 +104,7 @@ export function Login() {
                 type="password"
                 name="password"
                 // aria-label="Password"
-                placeholder={t('password-placeholder') || 'Password'}
+                placeholder={passwordplaceholder}
                 inputProps={{
                   "aria-label": "Password",
                 }}

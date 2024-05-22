@@ -48,6 +48,22 @@ export function SignUp() {
   };
 
   if (loginContext.accessToken.length < 1 && view === 'Signup') {
+    let firstplaceholder = "First Name"
+    let lastplaceholder = "Last Name"
+    let emailplaceholder = "Email Address"
+    let passwordplaceholder = "Password"
+    if (t('first-name')) {
+      firstplaceholder = t('first-name')
+    }
+    if (t('last-name')) {
+      lastplaceholder = t('last-name')
+    }
+    if (t('email-placeholder')) {
+      emailplaceholder = t('email-placeholder')
+    }
+    if (t('password-placeholder')) {
+      passwordplaceholder = t('password-placeholder')
+    }
     return (
       <Container maxWidth="sm" className='login-signup'>
         <Card variant="outlined" sx={{ mt: 4 }}>
@@ -62,7 +78,7 @@ export function SignUp() {
               <TextField
                 type="text"
                 name="firstname"
-                placeholder={t('first-name') || 'First Name'}
+                placeholder={firstplaceholder}
                 inputProps={{
                   "aria-label": "First Name",
                 }}
@@ -78,7 +94,7 @@ export function SignUp() {
               <TextField
                 type="text"
                 name="lastname"
-                placeholder={t('last-name') || 'Last Name'}
+                placeholder={lastplaceholder}
                 inputProps={{
                   "aria-label": "Last Name",
                 }}
@@ -94,7 +110,7 @@ export function SignUp() {
               <TextField
                 type="email"
                 name="email"
-                placeholder={t('email-placeholder') || 'Email Address'}
+                placeholder={emailplaceholder}
                 inputProps={{
                   "aria-label": "Email Address",
                 }}
@@ -110,7 +126,7 @@ export function SignUp() {
               <TextField
                 type="password"
                 name="password"
-                placeholder={t('password-placeholder') || 'Password'}
+                placeholder={passwordplaceholder}
                 inputProps={{
                   "aria-label": "Password",
                 }}
