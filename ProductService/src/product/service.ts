@@ -47,4 +47,29 @@ export class ProductService {
     product.id = rows[0].id;
     return product;
   }
+
+  public async addProduct(productInfo: any): Promise<Product | any> {
+    console.log("name: ", productInfo.name)
+    console.log("desc: ", productInfo.description)
+    console.log("price: ", productInfo.price)
+    console.log("img: ", productInfo.image)
+    const insert = `INSERT INTO product(product)
+            VALUES (
+                jsonb_build_object(
+                    'name', $1::text,
+                    'description', $2::text,
+                    'price', $3::numeric,
+                    'rating', 0,
+                    'image', $4::text
+                )
+            ) RETURNING *`;
+
+    const query = {
+        text: insert,
+        values: [productInfo.name, productInfo.description, productInfo.price, productInfo.image]
+    };
+    const { rows } = await pool.query(query);
+    return rows;
+
+  }
 }

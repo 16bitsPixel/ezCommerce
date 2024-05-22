@@ -14,7 +14,9 @@ import {
   Get,
   Route,
   Response,
-  Query
+  Query,
+  Post,
+  Body
 } from 'tsoa'
 
 import { Product, UUID } from '.'
@@ -40,4 +42,12 @@ export class ProductController extends Controller {
     }
     return product;
   }
+
+  @Post('addProduct')
+  public async addProduct(
+    @Body() productInfo: any
+  ): Promise<Product> {
+    return new ProductService().addProduct(productInfo)
+  }
+
 }

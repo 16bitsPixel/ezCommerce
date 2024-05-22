@@ -5,10 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import SimpleLineChart from './SimpleLineChart';
-import SimpleTable from './SimpleTable';
 import { LoginContext } from '@/context/Login';
-import { AddProduct } from './AddProduct';
 import { VendorKeys } from './VendorKeys';
 const Dashboard = () => {
   const loginContext = React.useContext(LoginContext);
@@ -50,19 +47,6 @@ const Dashboard = () => {
 
         <main className="content">
           <div className="appBarSpacer" />
-          <Typography variant="h4" gutterBottom component="h2">
-            Order Summary
-          </Typography>
-          <Typography component="div" className="chartContainer">
-            <SimpleLineChart />
-          </Typography>
-          <Typography variant="h4" gutterBottom component="h2">
-            Individual Orders
-          </Typography>
-          <div className="tableContainer">
-            <SimpleTable />
-          </div>
-          <AddProduct />
           <Typography variant="h4" gutterBottom component="h2">
             Vendor Keys
           </Typography>
