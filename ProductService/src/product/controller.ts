@@ -19,7 +19,7 @@ import {
   Body
 } from 'tsoa'
 
-import { Product, UUID } from '.'
+import { Product, ProductAdd  } from '.'
 import { ProductService } from './service'
 
 
@@ -45,7 +45,7 @@ export class ProductController extends Controller {
 
   @Post('addProduct')
   public async addProduct(
-    @Body() productInfo: any
+    @Body() productInfo: ProductAdd
   ): Promise<Product> {
     return new ProductService().addProduct(productInfo)
   }

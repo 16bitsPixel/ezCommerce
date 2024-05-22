@@ -11,7 +11,7 @@
 */
 
 
-import { UUID, Product } from '.'
+import { UUID, Product, ProductAdd } from '.'
 import { pool } from '../db'
 
 export class ProductService {
@@ -48,11 +48,7 @@ export class ProductService {
     return product;
   }
 
-  public async addProduct(productInfo: any): Promise<Product | any> {
-    console.log("name: ", productInfo.name)
-    console.log("desc: ", productInfo.description)
-    console.log("price: ", productInfo.price)
-    console.log("img: ", productInfo.image)
+  public async addProduct(productInfo: ProductAdd): Promise<Product | Product> {
     const insert = `INSERT INTO product(product)
             VALUES (
                 jsonb_build_object(
@@ -65,11 +61,17 @@ export class ProductService {
             ) RETURNING *`;
 
     const query = {
-        text: insert,
-        values: [productInfo.name, productInfo.description, productInfo.price, productInfo.image]
+      text: insert,
+      values: [productInfo.name, productInfo.description, productInfo.price, productInfo.image]
     };
     const { rows } = await pool.query(query);
-    return rows;
+    return {id: rows[0].id,
+      name: rows[0].product.name,
+      description: rows[0].product.description,
+      price: rows[0].product.price,
+      rating: rows[0].product.rating,
+      image: rows[0].product.image,
+    };
 
   }
 }
