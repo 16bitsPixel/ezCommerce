@@ -6,11 +6,10 @@ import {
   Response,
   SuccessResponse,
   Path,
-  Request,
   Body
 } from 'tsoa'
 
-import * as express from 'express';
+// import * as express from 'express';
 
 import { Order, UUID, InputOrder } from '.'
 import { OrderService } from './service'
@@ -45,9 +44,9 @@ export class OrderController extends Controller {
   ): Promise<Order | undefined> {
     return new OrderService().create(product)
       .then((order: Order | undefined): Order|undefined => {
-        if (!order) {
-          this.setStatus(404);
-        }
+        // if (!order) {
+        //   this.setStatus(404);
+        // }
         return order;
       });
   }

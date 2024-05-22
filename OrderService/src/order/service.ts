@@ -29,13 +29,13 @@ export class OrderService {
       values: [],
     };
     const {rows} = await pool.query(query);
-    const orders = [];
-
-    for (const row of rows) {
-      const order = row.order;
-      order.id = row.id;
-      orders.push(order)
-    }
+    const orders: Order[] =  rows.map(row => ({
+      order_id: row.id,
+      account_id: row.account_id, 
+      product_id: row.product_id,
+      date: row.data.date,
+      status: row.data.status,
+    }));
     return orders;
   }
 
@@ -46,7 +46,7 @@ export class OrderService {
     INSERT INTO orders(account_id, product_id, data)
     VALUES ($1::uuid, $2::uuid, json_build_object(
       'date', $3::text,
-      'status', 'pending'
+      'status', '$4::timestamp'
     ))
     RETURNING *;
     `;
