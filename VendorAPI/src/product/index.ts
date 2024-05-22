@@ -13,3 +13,11 @@ export interface Product {
   rating: number,
   image: string
 }
+
+export interface ProductAdd {
+    name: string,
+    description: string,
+    price: number,
+    image: string
+  }
+  
