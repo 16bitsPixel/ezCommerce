@@ -20,7 +20,6 @@ interface ProductInfoProps {
 }
 
 export function ProductInformation({name, description, price/*, rating*/}: ProductInfoProps) {
-  console.log(name);
   return (
     <Box>
       <Typography variant="h5" gutterBottom>

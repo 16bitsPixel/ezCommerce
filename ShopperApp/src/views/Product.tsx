@@ -45,7 +45,6 @@ const fetchProduct = ({id, setProduct, setError }: FetchProductParams) => {
       return res.json()
     })
     .then((json) => {
-      console.log(json);
       setError('')
       setProduct(json.data.productInfo)
     })
@@ -73,7 +72,7 @@ export function ProductView({id}: ProductProps) {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       
       // Add the product to the cart
-      const updatedCart = [...cart, product];
+      const updatedCart = [...cart, product.id];
   
       // Update localStorage with the updated cart
       localStorage.setItem('cart', JSON.stringify(updatedCart));
