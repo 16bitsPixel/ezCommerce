@@ -1,5 +1,5 @@
 export interface CartItem {
-    CartId: string
+    id: string
   }
   
 export interface CartAdd {

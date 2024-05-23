@@ -17,11 +17,23 @@ import type { NextApiRequest as Request } from "next"
 
 @Resolver()
 export class CartResolver {
+  @Authorized("member")
   @Query(() => [CartItem])
-  async cart(
+  async Cart(
     @Ctx() request: Request
   ): Promise<CartItem[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
-    return new CartService().getCart()
+    console.log(request.user.accessToken);
+    return new CartService().getCart(request.user.accessToken)
+  }
+
+  @Authorized("member")
+  @Query(() => CartItem)
+  async addToCart(
+    @Ctx() request: Request,
+    @Arg("productId") productId: string
+  ): Promise<CartItem> {
+    // console.log(`User requesting books is: ${request.user.id})`)
+    return new CartService().addToCart(productId, request.user.accessToken)
   }
 }
