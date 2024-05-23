@@ -36,8 +36,12 @@ test('Error when no database', async () => {
     .send(molly)
     .expect(500);
 });
-
 test("No JWt to endpoint", async()=>{
+  await supertest(server)
+    .get(`/api/v0/Cart?accountId=hello`)
+    .expect(401);
+});
+test("Invalid jwt to endpoint", async()=>{
   await supertest(server)
     .get(`/api/v0/Cart?accountId=hello`)
     .expect(401);
