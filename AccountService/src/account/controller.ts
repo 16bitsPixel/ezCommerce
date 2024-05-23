@@ -18,9 +18,13 @@ import {
   Response,
   Route,
   SuccessResponse,
+  Security,
+  Request
 } from 'tsoa';
 
-import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
+import * as express from 'express';
+
+import { Authenticated, Credentials, SessionUser, SignupCred, CartItem, CartAdd } from '.';
 import { AccountService } from './service';
 
 @Route('authenticate')
@@ -89,3 +93,23 @@ export class VerifyController extends Controller {
   }
 }
 
+@Route('Cart')
+export class CartController extends Controller {
+  @Get()
+  @Security("jwt", ["member"])
+  @Response('401', 'Unauthorised')
+  public async GetCart(
+    @Query() accountId: string,
+    @Request() request: express.Request
+  ): Promise<CartItem[]> {
+    return new AccountService().getCart(accountId);
+  }
+
+  @Post()
+  @SuccessResponse('201', 'Added to Cart')
+  public async AddToCart(
+    @Body() productAccountInfo: CartAdd
+  ): Promise<CartItem> {
+    return new AccountService().addToCart(productAccountInfo);
+  }
+}

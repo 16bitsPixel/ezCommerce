@@ -5,6 +5,46 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { Button } from '@mui/base';
+import { LoginContext } from '../../../context/Login';
+
+// TODO: fetch account cart from endpoint
+interface FetchCartParams {
+  id: string|string[]|undefined;
+  setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const fetchCart = ({ id, setProduct, setError }: FetchProductParams) => {
+  const query = {
+    query: `query GetProduct {
+      productInfo(productId: "${id}") {
+        id, name, description, price, rating, image
+      }
+    }`
+  };
+
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.errors) {
+        setError(json.errors[0].message);
+        setProduct(undefined);
+      } else {
+        setError('');
+        setProduct(json.data.productInfo);
+      }
+    })
+    .catch((e) => {
+      setError(e.toString());
+      setProduct(undefined);
+    });
+};
 
 interface FetchProductParams {
   id: string|string[]|undefined;
@@ -52,11 +92,16 @@ export function CartList() {
   const [cart, setCart] = React.useState<any>([]);
   const [products, setProducts] = React.useState<any>([]);
   const [error, setError] = React.useState('');
+  const loginContext = React.useContext(LoginContext)
 
   React.useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
+    if (loginContext.accessToken.length < 1) {
+      const storedCart = localStorage.getItem('cart');
+      if (storedCart) {
+        setCart(JSON.parse(storedCart));
+      }
+    } else {
+      // TODO: fetch account cart from endpoint
     }
   }, []);
 
