@@ -16,7 +16,8 @@ import {
   Response,
   Query,
   Post,
-  Body
+  Body,
+  SuccessResponse
 } from 'tsoa'
 
 import { Product, ProductAdd  } from '.'
@@ -44,6 +45,7 @@ export class ProductController extends Controller {
   }
 
   @Post('addProduct')
+  @SuccessResponse('201', 'Product Created')
   public async addProduct(
     @Body() productInfo: ProductAdd
   ): Promise<Product> {

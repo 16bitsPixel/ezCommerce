@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BottomBar } from '@/views/components/BottomBar';
 import { useRouter } from 'next/router';
 import { ScreenSizeContext } from '@/context/ScreenSize';
+import { LoginContext } from '@/context/Login';
 import React from 'react';
 import '@testing-library/jest-dom'; // Importing jest-dom for custom matchers
 
@@ -136,5 +137,34 @@ describe('BottomBar Component', () => {
 
     fireEvent.click(screen.getByText('Sign In'));
     expect(push).toHaveBeenCalledWith('/login');
+  });
+});
+
+it('Test handleLogout', async () => {
+  const push = useRouter().push;
+  const isSmallScreen = true;
+  const setSmallScreen = jest.fn();
+  const mockSetAccessToken = jest.fn();
+  const mockSetUserName = jest.fn();
+  const mockLoginContext = {
+    userName: 'Test User',
+    accessToken: 'test-token',
+    setAccessToken: mockSetAccessToken,
+    setUserName: mockSetUserName,
+    view: 'Login',
+    setView: jest.fn()
+  };
+  render(
+    <LoginContext.Provider value={mockLoginContext}>
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <BottomBar />
+      </ScreenSizeContext.Provider>
+    </LoginContext.Provider>
+  );
+  fireEvent.click(screen.getByText('logout'));
+  await waitFor(() => {
+    expect(mockSetAccessToken).toHaveBeenCalledWith('');
+    expect(mockSetUserName).toHaveBeenCalledWith('');
+    expect(push).toHaveBeenCalledWith('/');
   });
 });

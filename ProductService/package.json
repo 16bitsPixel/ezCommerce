@@ -16,10 +16,13 @@
     "concurrently": "*",
     "eslint": "*",
     "eslint-config-typescript": "",
+    "jest": "^29.7.0",
     "nodemon": "*",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.3",
     "ts-node": "*",
     "ts-postgres": "*",
-    "typescript": "*"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "cors": "*",
@@ -48,6 +51,31 @@
     ],
     "ext": "ts",
     "exec": "ts-node src/server.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testTimeout": 500,
+    "collectCoverageFrom": [
+      "src/**/*.[jt]s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/server.[jt]s"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "build"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   },
   "eslintConfig": {
     "extends": [

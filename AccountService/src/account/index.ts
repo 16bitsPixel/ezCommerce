@@ -33,3 +33,12 @@ export type SessionUser = {
   id: string,
   role: string
 }
+
+export interface CartItem {
+  id: string
+}
+
+export interface CartAdd {
+  accountId: string,
+  productId: string
+}

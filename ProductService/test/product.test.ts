@@ -23,47 +23,59 @@ afterAll((done) => {
   server.close(done);
 });
 
-const product1 = {
-  name: 'Product 1',
-  description: 'Description 1',
-  price: 100,
-  image: 'https://test.com'
+// test product
+const input_product = {
+  name: 'test name',
+  description: 'test description',
+  price: 13,
+  image: 'test image'
 };
-let product1_id: string;
 
-test('User Adds a Product', async () => {
-  await supertest(server)
-    .post('/api/v0/product/addProduct')
-    .send(product1)
-    .expect(201)
-    .then((res) => {
-      product1_id = res.body.id;
-      expect(res.body.name).toBe('Product 1');
-      expect(res.body.description).toBe('Description 1');
-      expect(res.body.price).toBe(100);
-      expect(res.body.image).toBe('https://test.com');
-    })
-});
+let product_id: string;
+const dneId: string = '44e380ad-ce32-4144-959d-14da33d739c3';
 
-test('User Fetches a Product', async () => {
-  await supertest(server)
-  .get(`/api/v0/product?productId=${product1_id}`)
-    .expect(200)
-});
-
-// We're adding an extra product on top of the 
-// existing 4 products in the database
-test('User Fetches All Products', async () => {
+test('Get all products', async () => {
   await supertest(server)
     .get('/api/v0/product')
     .expect(200)
     .then((res) => {
-      expect(res.body.length).toBe(5);
+      expect(res.body.length).toBe(4);
     })
 });
 
-test('User Fetches a Non-Existent Product', async () => {
+test('Create Product', async () => {
   await supertest(server)
-    .get('/api/v0/product?productId=123e4567-e89b-12d3-a456-426655440011')
-    .expect(404)
+    .post('/api/v0/product/addProduct')
+    .send(input_product)
+    .expect(201)
+    .then((res) => {
+      product_id = res.body.id;
+      expect(res.body.name).toBe('test name');
+      expect(res.body.description).toBe('test description');
+      expect(res.body.price).toBe(13);
+      expect(res.body.image).toBe('test image');
+    });
+});
+
+test('Get a single product', async () => {
+  await supertest(server)
+    .get(`/api/v0/product/product/?productId=${product_id}`)
+    .expect(200)
+    .then((res) => {
+      expect(res.body.name).toBe('test name');
+      expect(res.body.description).toBe('test description');
+      expect(res.body.price).toBe(13);
+      expect(res.body.image).toBe('test image');
+    })
+});
+
+test('Get nonexistent product', async () => {
+  await supertest(server)
+    .get(`/api/v0/product/product/?productId=${dneId}`)
+    .expect(404);
+});
+
+test('GET API Docs', async () => {
+  await supertest(server).get('/api/v0/docs/')
+    .expect(200)
 });
