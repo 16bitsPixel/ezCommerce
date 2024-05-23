@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {List, Typography, Box} from '@mui/material';
 import { Product } from '../../../graphql/product/schema'

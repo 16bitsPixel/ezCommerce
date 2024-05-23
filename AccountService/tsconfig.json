@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2022",
     "module": "commonjs",
     "outDir": "./build",
 
@@ -19,6 +19,7 @@
 
     "baseUrl": "./",
     "resolveJsonModule": true,
-    "removeComments": true,        
+    "removeComments": true,    
+    "typeRoots": ["./src/types", "./node_modules/@types"]    
   },
 }

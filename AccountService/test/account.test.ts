@@ -49,7 +49,7 @@ test('GET API Docs', async () => {
   await supertest(server).get('/api/v0/docs/')
     .expect(200)
 });
-
+let annacred:string;
 test('Good Credentials Accepted', async () => {
   await supertest(server).post('/api/v0/authenticate')
     .send(molly)
@@ -60,9 +60,21 @@ test('Good Credentials Accepted', async () => {
       expect(res.body.name).toBeDefined()
       expect(res.body.name).toEqual('Molly Member')
       expect(res.body.accessToken).toBeDefined()
+      annacred = res.body.accessToken;
     });
 });
-
+test("corrupt JWT", async() =>{
+  await supertest(server)
+    .get('/api/v0/Cart?accountId=hello')
+    .set('Authorization', 'Bearer ' + annacred + 'garbage')
+    .expect(401);   
+});
+test("Molly gets her cart", async()=>{
+  await supertest(server)
+    .get('/api/v0/Cart')
+    .set('Authorization', 'Bearer ' + annacred)
+    .expect(200);   
+});
 test('Bad Credentials Rejected', async () => {
   await supertest(server).post('/api/v0/authenticate')
     .send(bad)

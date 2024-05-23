@@ -34,11 +34,4 @@ export type SessionUser = {
   role: string
 }
 
-export interface CartItem {
-  id: string
-}
 
-export interface CartAdd {
-  accountId: string,
-  productId: string
-}

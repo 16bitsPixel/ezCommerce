@@ -10,7 +10,7 @@
 */
 
 import * as jwt from "jsonwebtoken";
-import { Authenticated, CartAdd, CartItem, Credentials, SessionUser, SignupCred } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
 import { pool } from '../db';
 
 interface Account {
@@ -39,7 +39,7 @@ export class AccountService {
     
     if (account) {
       const accessToken = jwt.sign(
-        {id: account.id, role: account.role}, 
+        {id: account.id, role: account.role, email: credentials.email, name: account.name }, 
         `${process.env.MASTER_SECRET}`, {
           expiresIn: '30m',
           algorithm: 'HS256'
@@ -108,36 +108,5 @@ export class AccountService {
     } else {
       return undefined;
     }
-  }
-
-  public async getCart(accountId: string): Promise<CartItem[]> {
-    const query = {
-      text: `SELECT cart FROM account WHERE id = $1`,
-      values: [accountId],
-    };
-
-    const {rows} = await pool.query(query);
-    return rows[0];
-  }
-
-  public async addToCart(productAccountInfo: CartAdd): Promise<CartItem> {
-    const { accountId, productId } = productAccountInfo;
-
-    const update = `
-      UPDATE account
-      SET cart = COALESCE(cart, '[]'::jsonb) || jsonb_build_object('id', $2::text)
-      WHERE id = $1
-      RETURNING cart;
-    `;
-
-    const query = {
-      text: update,
-      values: [accountId, productId],
-    };
-
-    await pool.query(query);
-    return {
-      id: productId
-    };
   }
 }
