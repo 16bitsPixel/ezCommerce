@@ -85,3 +85,8 @@ test('User Creates Order With Invalid Order', async () => {
     .expect(400)
 });
 
+test('GET API Docs', async () => {
+  await supertest(server).get('/api/v0/docs/')
+    .expect(200)
+});
+
