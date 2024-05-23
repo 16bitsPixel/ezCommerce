@@ -56,7 +56,7 @@ export class AuthService {
                   reject(new Error("Unauthorised"))
                 }
               }
-              resolve({id: sessionUser.id});
+              resolve({id: sessionUser.id, accessToken: tokens[1]});
             })
             .catch(() => {
               reject(new Error("Unauthorised"))

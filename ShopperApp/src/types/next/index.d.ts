@@ -10,7 +10,8 @@
 */
 
 export type SessionUser = {
-  id: string
+  id: string,
+  accessToken: string
 }
 
 declare module 'next' {
