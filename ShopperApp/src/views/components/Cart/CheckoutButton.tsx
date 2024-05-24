@@ -18,28 +18,25 @@ export function CheckoutButton (){
       
       const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        try {
-          const response = await fetch('/api/checkout_sessions', {
+        const response = await fetch('/api/checkout_sessions', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(products),
-          });
-    
-          if (!response.ok) {
+        });
+
+        if (!response.ok) {
             const errorText = await response.text();
             console.error('Error response from server:', errorText);
             throw new Error('Network response was not ok');
-          }
-    
-          const data = await response.json();
-          if (data.url) {
-            window.location.href = data.url;
-          }
-        } catch (error) {
-          console.error('Fetch error:', error);
         }
+
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url;
+        }
+
       };
 
   return (
