@@ -21,6 +21,40 @@ import {ProductImage} from './components/Product/ProductImage';
 import Link from 'next/link';
 import { Typography } from '@mui/material';
 
+import { LoginContext } from '../context/Login';
+
+interface addToCartParams {
+  id: string|string[]|undefined;
+  loginContext: any;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const addToCart = ({id, loginContext, setError }: addToCartParams) => {
+  const query = {
+    query: `query addToCart {
+      addToCart(productId: "${id}") {
+        id
+      }
+    }`}
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${loginContext.accessToken}`
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((json) => {
+      setError('')
+    })
+    .catch((e) => {
+      setError(e.toString())
+    })
+};
+
 interface FetchProductParams {
   id: string|string[]|undefined;
   setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
@@ -61,6 +95,7 @@ interface ProductProps {
 export function ProductView({id}: ProductProps) {
   const [product, setProduct] = React.useState<Product|undefined>(undefined);
   const [error, setError] = React.useState('')
+  const loginContext = React.useContext(LoginContext);
 
   React.useEffect(() => {
     fetchProduct({id, setProduct, setError});
@@ -68,14 +103,18 @@ export function ProductView({id}: ProductProps) {
 
   const handleAddToCart = () => {
     if (product) {
-      // Get the existing cart from localStorage or initialize an empty array
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      
-      // Add the product to the cart
-      const updatedCart = [...cart, product.id];
-  
-      // Update localStorage with the updated cart
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      if (loginContext.accessToken.length < 1) {
+        // Get the existing cart from localStorage or initialize an empty array
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Add the product to the cart
+        const updatedCart = [...cart, product.id];
+    
+        // Update localStorage with the updated cart
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      } else {
+        addToCart({id: product.id, loginContext, setError});
+      }
     }
   };
 

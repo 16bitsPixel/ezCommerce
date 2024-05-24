@@ -2,6 +2,7 @@
 import React from 'react';
 import {List, Typography, Box} from '@mui/material';
 import { Product } from '../../../graphql/product/schema'
+import { CartItem } from '@/graphql/cart/schema';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,16 +12,16 @@ import { ProductContext } from '@/context/Product';
 
 // TODO: fetch account cart from endpoint
 interface FetchCartParams {
-  id: string|string[]|undefined;
-  setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
+  setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
+  loginContext: any;
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchCart = ({ id, setProduct, setError }: FetchProductParams) => {
+const fetchCart = ({ setCart, loginContext, setError }: FetchCartParams) => {
   const query = {
-    query: `query GetProduct {
-      productInfo(productId: "${id}") {
-        id, name, description, price, rating, image
+    query: `query GetCart {
+      Cart {
+        id
       }
     }`
   };
@@ -30,21 +31,22 @@ const fetchCart = ({ id, setProduct, setError }: FetchProductParams) => {
     body: JSON.stringify(query),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${loginContext.accessToken}`
     },
   })
     .then((res) => res.json())
     .then((json) => {
       if (json.errors) {
         setError(json.errors[0].message);
-        setProduct(undefined);
+        setCart(undefined);
       } else {
         setError('');
-        setProduct(json.data.productInfo);
+        setCart(json.data.Cart);
       }
     })
     .catch((e) => {
       setError(e.toString());
-      setProduct(undefined);
+      setCart(undefined);
     });
 };
 
@@ -103,15 +105,16 @@ export function CartList() {
       }
     } else {
       // TODO: fetch account cart from endpoint
+        fetchCart({setCart, loginContext, setError});
     }
   }, []);
 
   React.useEffect(() => {
     const loadProducts = async () => {
-      const productPromises = cart.map((productId: string) =>
+      const productPromises = cart.map((productId: CartItem) =>
         new Promise((resolve) => {
           fetchProduct({
-            id: productId,
+            id: productId.id,
             setProduct: (product) => resolve(product),
             setError: (err) => setError(err),
           });

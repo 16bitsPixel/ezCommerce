@@ -28,7 +28,7 @@ export class CartService {
     
     await pool.query(query);
     return {
-      CartId: productId
+      id: productId
     };
   }
 }
