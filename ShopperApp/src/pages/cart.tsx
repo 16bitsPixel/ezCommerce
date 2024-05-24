@@ -16,7 +16,6 @@ import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { Cart } from '@/views/Cart';
-import { CheckoutButton } from '@/views/components/Cart/CheckoutButton';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let language = 'en'
@@ -40,7 +39,6 @@ export default function CartPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Cart />
-        <CheckoutButton/>
     </Fragment>
   )
 }

@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { Button } from '@mui/base';
 import { LoginContext } from '../../../context/Login';
+import { ProductContext } from '@/context/Product';
 
 // TODO: fetch account cart from endpoint
 interface FetchCartParams {
@@ -91,7 +92,7 @@ const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
  */
 export function CartList() {
   const [cart, setCart] = React.useState<any>([]);
-  const [products, setProducts] = React.useState<any>([]);
+  const {products, setProducts} = React.useContext(ProductContext)
   const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
 

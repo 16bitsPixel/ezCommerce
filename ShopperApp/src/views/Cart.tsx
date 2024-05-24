@@ -15,6 +15,8 @@ import { Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import {CartList} from './components/Cart/CartList';
 import * as React from 'react';
+import { ProductProvider } from '@/context/Product';
+import { CheckoutButton } from './components/Cart/CheckoutButton';
 
 export function Cart() {
   const { t } = useTranslation('common');
@@ -26,7 +28,10 @@ export function Cart() {
         <Typography variant="h5" gutterBottom>
           {t('shopping-cart')}
         </Typography>
-        <CartList/>
+        <ProductProvider>
+            <CartList/>
+            <CheckoutButton/>
+        </ProductProvider>
         <BottomBar/>
       </ScreenSizeProvider>
     </>
