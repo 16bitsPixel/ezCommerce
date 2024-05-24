@@ -132,3 +132,10 @@ a {
     padding: 20px; /* Optional: adjust padding as needed */
     border-radius: 8px; /* Optional: rounded corners */
 }
+
+.success {
+    display: flex;
+    justify-content: center;
+    color: green;
+
+}
