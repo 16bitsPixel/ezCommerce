@@ -17,10 +17,10 @@ afterAll((done) => {
 });
 
 const testProduct = {
-  name: "apple watch",
+  name: "watch",
   description: "tells time",
   price: 300,
-  image: "https://m.media-amazon.com/images/G/01/apparel/rcxgs/tile._CB483369110_.gif"
+  image: "https://m.media-amazon.com/images/I/81oMxPD2JML._AC_SY535_.jpg"
 };
 
 export interface Vendor {
