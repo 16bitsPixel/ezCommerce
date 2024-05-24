@@ -108,7 +108,7 @@ export function ProductView({id}: ProductProps) {
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
         
         // Add the product to the cart
-        const updatedCart = [...cart, product.id];
+        const updatedCart = [...cart, {id: product.id}];
     
         // Update localStorage with the updated cart
         localStorage.setItem('cart', JSON.stringify(updatedCart));
