@@ -1,8 +1,10 @@
 import { ProductContext } from "@/context/Product";
 import React from "react";
+import { useTranslation } from 'next-i18next';
 
 export function CheckoutButton (){
 
+    const {t} = useTranslation('common')
     const {products, setCart, setProducts} = React.useContext(ProductContext)
 
     React.useEffect(() => {
@@ -55,7 +57,7 @@ export function CheckoutButton (){
     <form onSubmit={handleSubmit}>
     <section>
       <button type="submit" role="link">
-        Proceed to checkout
+        {t('proceed-to-checkout')}
       </button>
     </section>
     <style jsx>

@@ -91,8 +91,7 @@ const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
  * @return {JSX}
  */
 export function CartList() {
-  const [cart, setCart] = React.useState<any>([]);
-  const {products, setProducts} = React.useContext(ProductContext)
+  const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
   const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
 
