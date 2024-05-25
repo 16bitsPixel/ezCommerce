@@ -111,3 +111,19 @@ export class VerifyController extends Controller {
   }
 }
 
+@Route('Vendor')
+export class VendorController extends Controller {
+  @Get()
+  @Security("jwt", ["admin"])
+  @SuccessResponse('200', "All accepted Vendors")
+  public async AllVendors(): Promise<VerifiedVendor[]>{
+    return new AccountService().getallVendors();
+  }
+
+  @Get('Pending')
+  @Security("jwt", ["admin"])
+  @SuccessResponse('200', "All Pending Vendors")
+  public async AllPendingVendors(): Promise<VerifiedVendor[]>{
+    return new AccountService().getallpendingVendors();
+  }
+}

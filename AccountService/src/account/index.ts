@@ -34,9 +34,9 @@ export type SessionUser = {
   role: string
 }
 export type VerifiedVendor = {
+  name: string
   vendorId: string,
   accepted: string
 }
-
 
 

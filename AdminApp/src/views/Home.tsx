@@ -11,6 +11,7 @@
 import React from 'react';
 import TopBar from './Topbar';
 import { LoginContext } from '../context/Login'
+import PendingVendors from './pending';
 
 
 export function Home() {
@@ -24,7 +25,7 @@ export function Home() {
     return (
       <div>
         <TopBar/>
-        Hello Admin
+        <PendingVendors/>
       </div>
     )
   }

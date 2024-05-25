@@ -33,6 +33,16 @@ export class AccountService {
     const {rows} = await pool.query(query)
     return rows.length === 1 ? rows[0].account : undefined
   }
+  private async name(id: string): Promise<string> {
+    const select = 
+      `Select * from account where id = $1`
+    const query = {
+      text: select,
+      values: [`${id}`],
+    };
+    const {rows} = await pool.query(query)
+    return rows[0] ? rows[0].data.name : undefined;
+  }
 
   public async login(credentials: Credentials): Promise<Authenticated|undefined>  {
     const account = await this.find(credentials);
@@ -110,6 +120,10 @@ export class AccountService {
     }
   }
   public async acceptVendor(vendorId: string): Promise<VerifiedVendor| undefined>{
+    const name = await this.name(vendorId);
+    if (!name){
+      return undefined
+    }
     const select = 
       `UPDATE vendor
       SET verified = true
@@ -122,10 +136,37 @@ export class AccountService {
     };
     const {rows} = await pool.query(query);
     if (rows[0]){
-      return {vendorId: rows[0].vendor_id, accepted: rows[0].verified}
+      return {vendorId: rows[0].vendor_id, accepted: rows[0].verified, name: name}
     }
     else{
       return undefined
     }
   }
+  public async getallpendingVendors(): Promise<VerifiedVendor[]>{
+    const select = `SELECT vendor_id, verified, a.data->>'name' as name FROM vendor, account a  WHERE a.id = vendor_id and verified = false`
+    const query = {
+      text: select,
+      values: [],
+    };
+    const {rows} = await pool.query(query);
+    const ans = []
+    for (const row of rows){
+      ans.push({vendorId: row.vendor_id, accepted: row.verified, name: row.name})
+    }
+    return ans;
+  }
+  public async getallVendors(): Promise<VerifiedVendor[]>{
+    const select = `SELECT vendor_id, verified, a.data->>'name' as name FROM vendor, account a  WHERE a.id = vendor_id and verified`
+    const query = {
+      text: select,
+      values: [],
+    };
+    const {rows} = await pool.query(query);
+    const ans = []
+    for (const row of rows){
+      ans.push({vendorId: row.vendor_id, accepted: row.verified, name: row.name})
+    }
+    return ans;
+  }
+
 }
