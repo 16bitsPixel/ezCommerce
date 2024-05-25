@@ -25,18 +25,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function Success() {
-    const {t} = useTranslation('common')
+  const {t} = useTranslation('common')
 
-    return (
-        <Fragment>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <TopBar/>
-            <h1 className='success'>{t('thank-you')}</h1>
-        <BottomBar/>
+  return (
+    <Fragment>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <TopBar/>
+      <h1 className='success'>{t('thank-you')}</h1>
+      <BottomBar/>
 
-      </Fragment>
-    )
+    </Fragment>
+  )
 }

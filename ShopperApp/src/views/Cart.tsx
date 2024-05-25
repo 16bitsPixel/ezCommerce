@@ -29,8 +29,8 @@ export function Cart() {
           {t('shopping-cart')}
         </Typography>
         <ProductProvider>
-            <CartList/>
-            <CheckoutButton/>
+          <CartList/>
+          <CheckoutButton/>
         </ProductProvider>
         <BottomBar/>
       </ScreenSizeProvider>

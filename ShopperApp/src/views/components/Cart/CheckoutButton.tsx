@@ -4,64 +4,53 @@ import { useTranslation } from 'next-i18next';
 
 export function CheckoutButton (){
 
-    const {t} = useTranslation('common')
-    const {products, setCart, setProducts} = React.useContext(ProductContext)
-
-    React.useEffect(() => {
-        const query = new URLSearchParams(window.location.search);
-        if (query.get('success')) {
-          console.log('Order placed! You will receive an email confirmation.');
-        }
-    
-        if (query.get('canceled')) {
-          console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
-        }
-      }, []);
+  const {t} = useTranslation('common')
+  const {products, setCart, setProducts} = React.useContext(ProductContext)
       
-      const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        await fetch('/api/checkout_sessions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(products),
-        })
-        .then(response => {
-            if (!response.ok) {
-              return response.text().then(errorText => {
-                console.error('Error response from server:', errorText);
-                throw new Error('Network response was not ok');
-              });
-            }
-            return response.json();
-          })
-          .then(data => {
-            if (data.url) {
-              window.location.href = data.url;
-            }
-          })
-          .then(() => {
-            setCart([]);
-            setProducts([])
-            localStorage.removeItem('cart')
-          })
-          .catch(error => {
-            console.error('Fetch error:', error);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await fetch('/api/checkout_sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(products),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(errorText => {
+            console.error('Error response from server:', errorText);
+            throw new Error('Network response was not ok');
           });
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.url) {
+          window.location.href = data.url;
+        }
+      })
+      .then(() => {
+        setCart([]);
+        setProducts([])
+        localStorage.removeItem('cart')
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
           
 
-      };
+  };
 
   return (
     <form onSubmit={handleSubmit}>
-    <section>
-      <button type="submit" role="link">
-        {t('proceed-to-checkout')}
-      </button>
-    </section>
-    <style jsx>
-      {`
+      <section>
+        <button type="submit" role="link" aria-label='checkout-button'>
+          {t('proceed-to-checkout')}
+        </button>
+      </section>
+      <style jsx>
+        {`
         section {
           background: #ffffff;
           display: flex;
@@ -86,7 +75,7 @@ export function CheckoutButton (){
           opacity: 0.8;
         }
       `}
-    </style>
-  </form>
+      </style>
+    </form>
   );
-};
+}
