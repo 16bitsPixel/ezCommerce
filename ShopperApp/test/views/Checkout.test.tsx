@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { ProductContext } from '@/context/Product';
 import { CheckoutButton } from '@/views/components/Cart/CheckoutButton';
 import { setupServer } from 'msw/node';
+import Success from '@/pages/success';
 
 const server = setupServer();
 
@@ -23,6 +24,8 @@ jest.mock('react-i18next', () => ({
     },
   }),
 }));
+
+jest.mock('next-i18next/serverSideTranslations');
 
 it('Checkout Redirects', async () => {
     const setProducts = jest.fn();
@@ -77,3 +80,18 @@ it('Handles non-OK response', async () => {
       expect(console.error).toHaveBeenCalledWith('Error response from server:', 'Internal Server Error');
     });
   });
+
+it('Renders success page', async () => {
+    const mockedUseRouter = useRouter as jest.Mock;
+    mockedUseRouter.mockImplementation(() => ({
+      locale: 'en',
+      push: jest.fn(),
+      pathname: '/success',
+    }));
+
+    render(
+        <Success/>
+    )
+
+    expect(screen.getByText('thank-you')).toBeInTheDocument();
+})

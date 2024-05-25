@@ -1,42 +1,34 @@
+// pages/success.js
 import React from 'react';
-import Head from 'next/head'
-import { Fragment } from 'react'
-import type { GetServerSideProps } from 'next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { TopBar } from '@/views/components/TopBar';
 import { BottomBar } from '@/views/components/BottomBar';
 
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-
-  let language = 'en'
-  if (context.locale) {
-    language = context.locale
-  }
   return {
     props: {
-      ...(await serverSideTranslations(language, [
-        'common',
-      ])),
+      ...(await serverSideTranslations(locale, ['common'])),
     },
   };
 };
 
 export default function Success() {
-  const {t} = useTranslation('common')
+  const { t } = useTranslation('common');
 
   return (
-    <Fragment>
+    <div>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TopBar/>
+      <TopBar />
       <h1 className='success'>{t('thank-you')}</h1>
-      <BottomBar/>
-
-    </Fragment>
-  )
+      <BottomBar />
+    </div>
+  );
 }
