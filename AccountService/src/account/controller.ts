@@ -18,7 +18,6 @@ import {
   Response,
   Route,
   SuccessResponse,
-  Security,
 } from 'tsoa';
 
 import { Authenticated, Credentials, SessionUser, SignupCred, VerifiedVendor } from '.';
@@ -93,7 +92,6 @@ export class VerifyController extends Controller {
   }
 
   @Post('Vendor')
-  @Security("jwt", ["admin"])
   @Response('404', 'Unknown')
   @SuccessResponse('200', "Updated succefully")
   public async AcceptVendor(
@@ -114,14 +112,12 @@ export class VerifyController extends Controller {
 @Route('Vendor')
 export class VendorController extends Controller {
   @Get()
-  @Security("jwt", ["admin"])
   @SuccessResponse('200', "All accepted Vendors")
   public async AllVendors(): Promise<VerifiedVendor[]>{
     return new AccountService().getallVendors();
   }
 
   @Get('Pending')
-  @Security("jwt", ["admin"])
   @SuccessResponse('200', "All Pending Vendors")
   public async AllPendingVendors(): Promise<VerifiedVendor[]>{
     return new AccountService().getallpendingVendors();

@@ -13,7 +13,6 @@ import supertest from 'supertest'
 import * as http from 'http'
 import * as db from './db';
 import dotenv from 'dotenv'
-let annaToken:string;
 dotenv.config()
 
 import app from '../src/app'
@@ -171,20 +170,17 @@ test("Anna logs in", async()=>{
       expect(res.body.name).toBeDefined()
       expect(res.body.name).toEqual('Anna Admin')
       expect(res.body.accessToken).toBeDefined()
-      annaToken = res.body.accessToken
     });
 
 })
-test("Molly tries to verify a vendor (she can't she a memeber", async()=>{
+test("Molly tries to verify a vendor but bad id ", async()=>{
   await supertest(server)
     .post('/api/v0/Verify/Vendor?vendorId=92330191')
-    .set('Authorization', 'Bearer ' + mollycred)
-    .expect(401);
+    .expect(400);
 });
 test("anna tries to verify a vendor", async()=>{
   await supertest(server)
     .post('/api/v0/Verify/Vendor?vendorId=fa14fb7e-2a1d-41d5-8985-30568dc8a7a9')
-    .set('Authorization', 'Bearer ' + annaToken)
     .expect(200)
     .then((res)=>{
       expect(res.body).toBeDefined();
@@ -195,7 +191,6 @@ test("anna tries to verify a vendor", async()=>{
 test("anna tries to verify a non existent vendor", async()=>{
   await supertest(server)
     .post('/api/v0/Verify/Vendor?vendorId=f1648d8c-9e1d-421c-84e3-43f39255cf5c')
-    .set('Authorization', 'Bearer ' + annaToken)
     .expect(404);
 });
 

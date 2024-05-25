@@ -3,22 +3,21 @@ import { List, ListItem, Button, Typography, Box, Grid, Collapse, ListItemButton
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Inbox as InboxIcon } from '@mui/icons-material';
 
-const PendingVendors = () => {
+export interface vendor{
+    id: number,
+    name: string
+}
+
+const PendingVendors = (props: { initialVendors: vendor[] }) => {
+  const { initialVendors } = props;  
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
 
-  // Sample data for pending vendors
-  const [vendors, setVendors] = useState([
-    { id: 1, name: 'Vendor 1' },
-    { id: 2, name: 'Vendor 2' },
-    { id: 3, name: 'Vendor 3' },
-  ]);
-
-  const handleAccept = (vendorId) => {
-    // Handle the logic to accept the vendor
+  const [vendors, setVendors] = useState(initialVendors);
+  const handleAccept = (vendorId:number) => {
     setVendors(vendors.filter((vendor) => vendor.id !== vendorId));
     alert(`Vendor ${vendorId} accepted!`);
   };
