@@ -105,9 +105,9 @@ export function CartList() {
       }
     } else {
       // TODO: fetch account cart from endpoint
-        fetchCart({setCart, loginContext, setError});
+      fetchCart({setCart, loginContext, setError});
     }
-  }, []);
+  }, []); // eslint-disable-line
 
   React.useEffect(() => {
     const loadProducts = async () => {
@@ -126,7 +126,7 @@ export function CartList() {
     };
 
     loadProducts();
-  }, [cart]);
+  }, [cart]); // eslint-disable-line
 
   const handleDeleteItem = (index: number) => {
     // Create a copy of the cart

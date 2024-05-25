@@ -47,7 +47,7 @@ const addToCart = ({id, loginContext, setError }: addToCartParams) => {
     .then((res) => {
       return res.json()
     })
-    .then((json) => {
+    .then(() => {
       setError('')
     })
     .catch((e) => {

@@ -30,7 +30,7 @@ export default function Login() {
   };
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role id}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -48,9 +48,34 @@ export default function Login() {
           alert('Only vendors can log in')
         } 
         else {
-          loginContext.setAccessToken(json.data.login.accessToken)
-          loginContext.setUserName(json.data.login.name)
-          loginContext.setUserId(json.data.login.id)
+          const verifyQuery = {
+            query: `query isVerified {
+              isVerified(email: "${user.email}", password: "${user.password}")
+            }`
+          };
+  
+          fetch('/api/graphql', {
+            method: 'POST',
+            body: JSON.stringify(verifyQuery),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((res) => res.json())
+            .then((verifyJson) => {
+              if (verifyJson.errors) {
+                alert(`${verifyJson.errors[0].message}`);
+              } else if (!verifyJson.data.isVerified) {
+                alert('User is not verified');
+              } else {
+                loginContext.setAccessToken(json.data.login.accessToken);
+                loginContext.setUserName(json.data.login.name);
+                loginContext.setUserId(json.data.login.id);
+              }
+            })
+            .catch((e) => {
+              alert(e);
+            });
         }
       })
       .catch((e) => {
