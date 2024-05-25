@@ -50,4 +50,19 @@ export class OrderController extends Controller {
         return order;
       });
   }
+
+  // @Get('{orderId}/status')
+  // @Response('404', 'Order Not Found')
+  // public async checkOrderStatus(
+  //   @Path() orderId: UUID
+  // ): Promise<{ status: string } | undefined> {
+  //   return new OrderService().getOrderStatus(orderId)
+  //     .then((status: string | undefined): { status: string } | undefined => {
+  //       if (!status) {
+  //         this.setStatus(404);
+  //         return undefined;
+  //       }
+  //       return { status };
+  //     });
+  // }
 }
