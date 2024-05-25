@@ -5,6 +5,11 @@ import { ProductContext } from '@/context/Product';
 import { CheckoutButton } from '@/views/components/Cart/CheckoutButton';
 import { setupServer } from 'msw/node';
 import Success from '@/pages/success';
+import supertest from 'supertest';
+import stripe from 'stripe';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { createMocks } from 'node-mocks-http';
+import handler from '@/pages/api/checkout_sessions';
 
 const server = setupServer();
 
@@ -95,3 +100,85 @@ it('Renders success page', async () => {
 
     expect(screen.getByText('thank-you')).toBeInTheDocument();
 })
+
+jest.mock('stripe', () => {
+    return jest.fn().mockImplementation(() => ({
+      checkout: {
+        sessions: {
+          create: jest.fn(),
+        },
+      },
+    }));
+  });
+
+  describe('/api/checkout_sessions handler', () => {
+    let mockStripe: any;
+  
+    beforeEach(() => {
+    mockStripe = new stripe('key');
+    });
+  
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+  
+    it('returns the session URL on successful creation', async () => {
+      mockStripe.checkout.sessions.create.mockResolvedValue({
+        url: 'https://checkout.stripe.com/pay/success',
+      });
+  
+      const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
+        method: 'POST',
+        body: [
+          {
+            name: 'Test Product',
+            image: 'https://example.com/image.jpg',
+            price: 100.0,
+          },
+        ],
+        headers: {
+          origin: 'https://example.com',
+        },
+      });
+  
+      await handler(req, res);
+
+    });
+  
+    it('returns an error when Stripe session creation fails', async () => {
+      mockStripe.checkout.sessions.create.mockRejectedValue({
+        statusCode: 500,
+        message: 'Internal Server Error',
+      });
+  
+      const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
+        method: 'POST',
+        body: [
+          {
+            name: 'Test Product',
+            image: 'https://example.com/image.jpg',
+            price: 100.0,
+          },
+        ],
+        headers: {
+          origin: 'https://example.com',
+        },
+      });
+  
+      await handler(req, res);
+  
+      expect(res._getStatusCode()).toBe(500);
+    });
+  
+    it('returns 405 if method is not POST', async () => {
+      const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
+        method: 'GET',
+      });
+  
+      await handler(req, res);
+  
+      expect(res._getStatusCode()).toBe(405);
+      expect(res._getHeaders()['allow']).toBe('POST');
+      expect(res._getData()).toBe('Method Not Allowed');
+    });
+  });

@@ -19,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
     try {
-      // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items,
