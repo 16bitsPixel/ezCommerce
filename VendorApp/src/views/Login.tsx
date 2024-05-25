@@ -30,7 +30,7 @@ export default function Login() {
   };
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role id}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
