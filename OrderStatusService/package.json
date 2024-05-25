@@ -1,0 +1,94 @@
+{
+  "name": "order-microservice",
+  "version": "1.0.0",
+  "description": "CSE187 Order Micro Service",
+  "author": "",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "devDependencies": {
+    "@types/cors": "*",
+    "@types/express": "*",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "@types/pg": "*",
+    "@types/supertest": "*",
+    "@types/swagger-ui-express": "*",
+    "concurrently": "*",
+    "eslint": "*",
+    "eslint-config-typescript": "",
+    "jest": "^29.7.0",
+    "nodemon": "*",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.3",
+    "ts-node": "*",
+    "ts-postgres": "*",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "cors": "*",
+    "dotenv": "*",
+    "express": "*",
+    "joi": "^17.13.1",
+    "pg": "^8.11.5",
+    "swagger-ui-express": "*",
+    "tsoa": "*"
+  },
+  "scripts": {
+    "not-prestart": "npm run build",
+    "start": "node build/src/server.js",
+    "prebuild": "npm run swagger",
+    "build": "tsc",
+    "predev": "npm run swagger",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "swagger": "tsoa spec-and-routes",
+    "pretest": "npm run swagger",
+    "test": "jest --runInBand --coverage --verbose --no-cache --forceExit",
+    "lint": "eslint ./src/**/*.[jt]s --fix"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/server.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testTimeout": 500,
+    "collectCoverageFrom": [
+      "src/**/*.[jt]s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/server.[jt]s"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "build"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "typescript"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 14
+    },
+    "rules": {
+      "indent": [
+        "warn",
+        2
+      ]
+    }
+  }
+}
