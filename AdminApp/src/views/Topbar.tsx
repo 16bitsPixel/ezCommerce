@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { LoginContext } from '../context/Login'
 const TopBar = () => {
+  const {setUserName, setAccessToken} = useContext(LoginContext)
   const handleLogout = () => {
-    // Handle the logout logic here
+    
     console.log('Logged out');
+    setUserName('');
+    setAccessToken('');
   };
 
   return (
