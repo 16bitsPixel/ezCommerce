@@ -1,18 +1,18 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2020-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
-import React from 'react';
-
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LoginContext } from '../context/Login'
 
-export function Login() {
+// TODO remove, this demo shouldn't need to reset the theme.
+const defaultTheme = createTheme();
+
+export default function Login() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
 
@@ -26,10 +26,9 @@ export function Login() {
     }
     setUser(u);
   };
-
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -43,10 +42,13 @@ export function Login() {
       .then((json) => {
         if (json.errors) {
           alert(`${json.errors[0].message}`)
-        } else {
-          loginContext.setAccessToken(json.data.login.accessToken)
-          loginContext.setUserName(json.data.login.name)
+        } else if(json.data.login.role != "admin") {
+          alert('Only admins can log in')
         }
+        else{
+          loginContext.setAccessToken(json.data.login.accessToken);
+          loginContext.setUserName(json.data.login.name);
+        } 
       })
       .catch((e) => {
         alert(e)
@@ -55,28 +57,57 @@ export function Login() {
 
   if (loginContext.accessToken.length < 1) {
     return (
-      <form onSubmit={onSubmit}>
-        <input
-          type="email"
-          name="email"
-          aria-label="Email Address"
-          placeholder="Email Address"
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          aria-label="Password"
-          placeholder="Password"
-          onChange={handleInputChange}
-          required
-        />
-        <input type="submit" value="Login"/>
-      </form>
-    )
-  }
-  else {
-    return null
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              Admin Sign In
+            </Typography>
+            <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={handleInputChange}
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={handleInputChange}
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+    );
   }
 }

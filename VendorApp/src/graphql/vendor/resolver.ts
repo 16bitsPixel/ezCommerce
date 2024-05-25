@@ -14,7 +14,7 @@ import { Key } from "./schema"
 import { ApikeyService } from "./service"
 
 @Resolver()
-export class BookResolver {
+export class vendorResolver {
   @Authorized("vendor")
   @Query(() => [Key])
   async allkeys(

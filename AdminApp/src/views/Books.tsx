@@ -59,32 +59,7 @@ export function Books() {
   if (loginContext.accessToken.length > 0) {
     return (
       <div>
-        <button onClick={logout}>Logout</button>
-        <label>{loginContext.userName}</label>
-        <p/>
-        <table id='books'>
-          <thead>
-            <tr>
-              <th>ISBN</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Publisher</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.sort((a: Book, b: Book) => (a.title > b.title) ? 1 : -1).map((book: Book) => (
-              <tr key={book.isbn} id={'isbn'+book.isbn}>
-                <td>{book.isbn}</td>
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.publisher}</td>
-              </tr>
-            ))}
-            <tr key={'error'}>
-              <td colSpan={4}>{error}</td>
-            </tr>
-          </tbody>
-        </table>
+        Hello Admin
       </div>
     )
   }

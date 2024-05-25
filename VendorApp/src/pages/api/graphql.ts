@@ -15,9 +15,9 @@ import { buildSchemaSync } from "type-graphql"
 
 import { AuthResolver } from '../../graphql/auth/resolver'
 import { nextAuthChecker } from '../../graphql/auth/checker';
-
+import { vendorResolver } from '@/graphql/vendor/resolver';
 const schema = buildSchemaSync({
-  resolvers: [AuthResolver],
+  resolvers: [AuthResolver, vendorResolver],
   validate: true, 
   authChecker: nextAuthChecker,
 });

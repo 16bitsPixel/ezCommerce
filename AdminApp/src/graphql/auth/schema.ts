@@ -17,9 +17,11 @@ export class Authenticated {
     name!: string
   @Field()
     accessToken!: string
+  @Field()
+    role!: string
 }
 
-@ObjectType()
+@ArgsType()
 export class SignupCred {
   @Field()
     role!: string

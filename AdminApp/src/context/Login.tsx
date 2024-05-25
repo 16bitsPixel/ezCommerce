@@ -9,7 +9,6 @@
 #
 #######################################################################
 */
-
 import { PropsWithChildren, useState, createContext } from "react";
  
 export const LoginContext = createContext({
@@ -22,6 +21,8 @@ export const LoginContext = createContext({
 export const LoginProvider = ({ children }: PropsWithChildren<{}>) => {
   const [userName, setUserName] = useState('');
   const [accessToken, setAccessToken] = useState('');
+  const [view, setView] = useState('Login');
+  const [userId, setUserId] = useState('');
   return (
     <LoginContext.Provider value={{ userName, setUserName, accessToken, setAccessToken}}>
       {children}
