@@ -82,7 +82,7 @@ export class VerifyController extends Controller {
   ): Promise<boolean|undefined> {
     return new AccountService().isVerified(cred)
       .then(async (status: boolean|undefined): Promise<boolean|undefined> => {
-        if (!status) {
+        if (status == undefined) {
           this.setStatus(403)
         }
         else{

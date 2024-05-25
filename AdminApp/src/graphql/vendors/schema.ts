@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Field, ObjectType } from "type-graphql"
+import { Field, ObjectType , InputType} from "type-graphql"
 import { IsUUID } from "class-validator";
 
 @ObjectType()
@@ -21,4 +21,10 @@ export class Vendor {
     accepted!: string
   @Field()
     name!: string
+}
+@InputType()
+export class VendorId{
+  @Field()
+  @IsUUID()
+    id!: string
 }

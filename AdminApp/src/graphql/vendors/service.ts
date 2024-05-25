@@ -30,5 +30,14 @@ export class VendorService{
     });
     return res.json()
   }
+  async accept(id:string): Promise<Vendor> {
+    const res = await fetch('http://localhost:3011/api/v0/Verify/Vendor?vendorId='+id, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.json()
+  }
 }
 

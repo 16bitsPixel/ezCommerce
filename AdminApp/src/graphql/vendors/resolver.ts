@@ -9,9 +9,9 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized } from "type-graphql"
+import { Query, Resolver, Authorized, Arg, Mutation } from "type-graphql"
 
-import { Vendor } from "./schema"
+import { Vendor, VendorId } from "./schema"
 import { VendorService } from "./service"
 
 @Resolver()
@@ -27,5 +27,12 @@ export class VendorResolver {
   async getpendingVendors(
   ): Promise<Vendor[]> {
     return new VendorService().pendingall();
+  }
+  @Authorized("admin")
+  @Mutation(() => Vendor)
+  async acceptVendors(
+    @Arg("input") id: VendorId
+  ): Promise<Vendor> {
+    return new VendorService().accept(id.id);
   }
 }

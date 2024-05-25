@@ -93,10 +93,10 @@ export class AccountService {
       account = await this.find(cred);
       if (cred.role == 'vendor') {
         select = 
-        `INSERT INTO vendor(vendor_id) VALUES $1;`
+        `INSERT INTO vendor(vendor_id) VALUES ($1)`;
         query = {
           text: select,
-          values: [account!.id],
+          values: [`${account!.id}`],
         };
         await pool.query(query);
       }
@@ -108,12 +108,13 @@ export class AccountService {
     const account = await this.find(credentials);
     if (account) {
       const select = 
-      `SELECT verified FROM vendor WHERE vendor_id = $1;`
+      `SELECT verified FROM vendor WHERE vendor_id = $1`;
       const query = {
         text: select,
         values: [account.id],
       };
       const res = await pool.query(query);
+      console.log(res.rows[0]?.verified === true);
       return res.rows[0]?.verified === true;
     } else {
       return undefined;
