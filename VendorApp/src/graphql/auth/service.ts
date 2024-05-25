@@ -77,6 +77,7 @@ export class AuthService {
       })
         .then((res) => {
           if (!res.ok) {
+            console.log(signupCred)
             throw res
           }
           return res.json()

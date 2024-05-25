@@ -10,7 +10,7 @@
 */
 
 import * as jwt from "jsonwebtoken";
-import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred, VerifiedVendor } from '.';
 import { pool } from '../db';
 
 interface Account {
@@ -32,6 +32,16 @@ export class AccountService {
     };
     const {rows} = await pool.query(query)
     return rows.length === 1 ? rows[0].account : undefined
+  }
+  private async name(id: string): Promise<string> {
+    const select = 
+      `Select * from account where id = $1`
+    const query = {
+      text: select,
+      values: [`${id}`],
+    };
+    const {rows} = await pool.query(query)
+    return rows[0] ? rows[0].data.name : undefined;
   }
 
   public async login(credentials: Credentials): Promise<Authenticated|undefined>  {
@@ -83,10 +93,10 @@ export class AccountService {
       account = await this.find(cred);
       if (cred.role == 'vendor') {
         select = 
-        `INSERT INTO vendor(vendor_id) VALUES $1;`
+        `INSERT INTO vendor(vendor_id) VALUES ($1)`;
         query = {
           text: select,
-          values: [account!.id],
+          values: [`${account!.id}`],
         };
         await pool.query(query);
       }
@@ -98,15 +108,66 @@ export class AccountService {
     const account = await this.find(credentials);
     if (account) {
       const select = 
-      `SELECT verified FROM vendor WHERE vendor_id = $1;`
+      `SELECT verified FROM vendor WHERE vendor_id = $1`;
       const query = {
         text: select,
         values: [account.id],
       };
       const res = await pool.query(query);
+      console.log(res.rows[0]?.verified === true);
       return res.rows[0]?.verified === true;
     } else {
       return undefined;
     }
   }
+  public async acceptVendor(vendorId: string): Promise<VerifiedVendor| undefined>{
+    const name = await this.name(vendorId);
+    if (!name){
+      return undefined
+    }
+    const select = 
+      `UPDATE vendor
+      SET verified = true
+      WHERE vendor_id = $1
+      RETURNING *;
+      `
+    const query = {
+      text: select,
+      values: [`${vendorId}`],
+    };
+    const {rows} = await pool.query(query);
+    if (rows[0]){
+      return {vendorId: rows[0].vendor_id, accepted: rows[0].verified, name: name}
+    }
+    else{
+      return undefined
+    }
+  }
+  public async getallpendingVendors(): Promise<VerifiedVendor[]>{
+    const select = `SELECT vendor_id, verified, a.data->>'name' as name FROM vendor, account a  WHERE a.id = vendor_id and verified = false`
+    const query = {
+      text: select,
+      values: [],
+    };
+    const {rows} = await pool.query(query);
+    const ans = []
+    for (const row of rows){
+      ans.push({vendorId: row.vendor_id, accepted: row.verified, name: row.name})
+    }
+    return ans;
+  }
+  public async getallVendors(): Promise<VerifiedVendor[]>{
+    const select = `SELECT vendor_id, verified, a.data->>'name' as name FROM vendor, account a  WHERE a.id = vendor_id and verified`
+    const query = {
+      text: select,
+      values: [],
+    };
+    const {rows} = await pool.query(query);
+    const ans = []
+    for (const row of rows){
+      ans.push({vendorId: row.vendor_id, accepted: row.verified, name: row.name})
+    }
+    return ans;
+  }
+
 }

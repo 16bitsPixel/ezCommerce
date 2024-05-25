@@ -9,7 +9,7 @@ const nextConfig = {
     eslint: {
       ignoreDuringBuilds: true
     },
-    assetPrefix: '/vendor',
+    assetPrefix: '/admin',
   };
   
   module.exports = nextConfig;

@@ -9,18 +9,22 @@
 #######################################################################
 */
 
-import { Field, ObjectType } from "type-graphql"
-import { Matches } from "class-validator";
+import { Field, ObjectType , InputType} from "type-graphql"
+import { IsUUID } from "class-validator";
 
 @ObjectType()
-export class Book {
+export class Vendor {
   @Field()
-  @Matches(/^(97(8|9))?\d{9}(\d|X)$/)
-    isbn!: string 
+  @IsUUID()
+    vendorId!: string 
   @Field()
-    title!: string
+    accepted!: string
   @Field()
-    author!: string
+    name!: string
+}
+@InputType()
+export class VendorId{
   @Field()
-    publisher!: string
+  @IsUUID()
+    id!: string
 }

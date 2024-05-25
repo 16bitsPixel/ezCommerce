@@ -7,7 +7,6 @@ export class Credentials {
   @Length(4, 16)
     email!: string
   @Field()
-  @Length(8, 16)
     password!: string
 }
 

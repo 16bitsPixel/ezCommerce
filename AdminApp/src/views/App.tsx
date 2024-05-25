@@ -9,11 +9,13 @@
 #######################################################################
 */
 import { LoginProvider } from '../context/Login'
-import { Login } from './Login'
+import  Login  from './Login'
+import { Home } from './Home'
 export function App() {
   return (
     <LoginProvider>
       <Login/>
+      <Home/>
     </LoginProvider>
   )
 }

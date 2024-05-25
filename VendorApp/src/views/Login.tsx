@@ -30,7 +30,7 @@ export default function Login() {
   };
   const onSubmit = (event: any) => {
     event.preventDefault();
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role id}}`}
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -53,7 +53,7 @@ export default function Login() {
               isVerified(email: "${user.email}", password: "${user.password}")
             }`
           };
-  
+
           fetch('/api/graphql', {
             method: 'POST',
             body: JSON.stringify(verifyQuery),
@@ -64,6 +64,7 @@ export default function Login() {
             .then((res) => res.json())
             .then((verifyJson) => {
               if (verifyJson.errors) {
+                console.log('here')
                 alert(`${verifyJson.errors[0].message}`);
               } else if (!verifyJson.data.isVerified) {
                 alert('User is not verified');

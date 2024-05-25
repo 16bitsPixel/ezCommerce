@@ -20,8 +20,9 @@ import {
   SuccessResponse,
 } from 'tsoa';
 
-import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred, VerifiedVendor } from '.';
 import { AccountService } from './service';
+import { UUID } from "../types/express";
 
 @Route('authenticate')
 export class AccountController extends Controller {
@@ -81,11 +82,44 @@ export class VerifyController extends Controller {
   ): Promise<boolean|undefined> {
     return new AccountService().isVerified(cred)
       .then(async (status: boolean|undefined): Promise<boolean|undefined> => {
-        if (!status) {
+        if (status == undefined) {
           this.setStatus(403)
         }
-        return status
+        else{
+          return status
+        }
+      });
+  }
+
+  @Post('Vendor')
+  @Response('404', 'Unknown')
+  @SuccessResponse('200', "Updated succefully")
+  public async AcceptVendor(
+    @Query() vendorId: UUID,
+  ): Promise<VerifiedVendor|undefined> {
+    return new AccountService().acceptVendor(vendorId)
+      .then(async (vendor: VerifiedVendor|undefined): Promise<VerifiedVendor|undefined> => {
+        if (!vendor) {
+          this.setStatus(404);
+        }
+        else{
+          return vendor
+        }
       });
   }
 }
 
+@Route('Vendor')
+export class VendorController extends Controller {
+  @Get()
+  @SuccessResponse('200', "All accepted Vendors")
+  public async AllVendors(): Promise<VerifiedVendor[]>{
+    return new AccountService().getallVendors();
+  }
+
+  @Get('Pending')
+  @SuccessResponse('200', "All Pending Vendors")
+  public async AllPendingVendors(): Promise<VerifiedVendor[]>{
+    return new AccountService().getallpendingVendors();
+  }
+}
