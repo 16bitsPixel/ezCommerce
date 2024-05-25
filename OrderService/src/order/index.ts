@@ -8,13 +8,15 @@ export type UUID = string;
 export interface Order {
   order_id: UUID,
   account_id: UUID,
-  product_id: UUID,
+  product_id: UUID[],
   date: Date,
   status: string,
+  quantities: number[],
 }
 export interface InputOrder {
   account_id: UUID,
-  product_id: UUID,
+  product_id: UUID[],
   date: Date,
   status: string,
+  quantities: number[],
 }
