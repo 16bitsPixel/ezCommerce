@@ -16,11 +16,11 @@ import { OrderService } from './service'
 
 @Route('order')
 export class OrderController extends Controller {
-  @Get('')
-  public async getAll(
-  ): Promise<Order[]> {
-    return new OrderService().getAll()
-  }
+  // @Get('')
+  // public async getAll(
+  // ): Promise<Order[]> {
+  //   return new OrderService().getAll()
+  // }
 
   @Get('{orderId}')
   @Response('404', 'Order Not Found')

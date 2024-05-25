@@ -16,7 +16,5 @@ export interface Order {
 export interface InputOrder {
   account_id: UUID,
   product_id: UUID[],
-  date: Date,
-  status: string,
   quantities: number[],
 }

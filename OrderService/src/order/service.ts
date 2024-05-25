@@ -31,34 +31,34 @@ export class OrderService {
     return order;
   }
 
-  public async getAll(): Promise<Order[]> {
-    const select = 'SELECT * FROM orders';
-    // select += 'ORDER BY date ASC''
-    const query = {
-      text: select,
-      values: [],
-    };
-    const {rows: orderRow} = await pool.query(query);
-    for (let i = 0; i < orderRow.length; i++) {
-      const selectProducts = 'SELECT product_id, quantity FROM orderDetails WHERE order_id = $1';
-      const productsQuery = {
-        text: selectProducts,
-        values: [orderRow[i].id],
-      };
-      const {rows: productRows} = await pool.query(productsQuery);
-      const productIds = productRows.map(row => row.product_id);
-      const quantities = productRows.map(row => row.quantity);
-    }
-    const orders: Order[] =  rows.map(row => ({
-      order_id: row.id,
-      account_id: row.account_id,
-      product_id: row.product_id,
-      date: row.data.date,
-      status: row.data.status,
-      quantities: row.data.quantities,
-    }));
-    return orders;
-  }
+  // public async getAll(): Promise<Order[]> {
+  //   const select = 'SELECT * FROM orders';
+  //   // select += 'ORDER BY date ASC''
+  //   const query = {
+  //     text: select,
+  //     values: [],
+  //   };
+  //   const {rows: orderRow} = await pool.query(query);
+  //   for (let i = 0; i < orderRow.length; i++) {
+  //     const selectProducts = 'SELECT product_id, quantity FROM orderDetails WHERE order_id = $1';
+  //     const productsQuery = {
+  //       text: selectProducts,
+  //       values: [orderRow[i].id],
+  //     };
+  //     const {rows: productRows} = await pool.query(productsQuery);
+  //     const productIds = productRows.map(row => row.product_id);
+  //     const quantities = productRows.map(row => row.quantity);
+  //   }
+  //   const orders: Order[] =  rows.map(row => ({
+  //     order_id: row.id,
+  //     account_id: row.account_id,
+  //     product_id: row.product_id,
+  //     date: row.data.date,
+  //     status: row.data.status,
+  //     quantities: row.data.quantities,
+  //   }));
+  //   return orders;
+  // }
 
   // You'd need to pass an array of productId and quantities
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
