@@ -13,6 +13,7 @@ import supertest from 'supertest'
 import * as http from 'http'
 import * as db from './db';
 import dotenv from 'dotenv'
+let annaToken:string;
 dotenv.config()
 
 import app from '../src/app'
@@ -49,7 +50,7 @@ test('GET API Docs', async () => {
   await supertest(server).get('/api/v0/docs/')
     .expect(200)
 });
-let annacred:string;
+let mollycred:string;
 test('Good Credentials Accepted', async () => {
   await supertest(server).post('/api/v0/authenticate')
     .send(molly)
@@ -60,19 +61,19 @@ test('Good Credentials Accepted', async () => {
       expect(res.body.name).toBeDefined()
       expect(res.body.name).toEqual('Molly Member')
       expect(res.body.accessToken).toBeDefined()
-      annacred = res.body.accessToken;
+      mollycred = res.body.accessToken;
     });
 });
 test("corrupt JWT", async() =>{
   await supertest(server)
     .get('/api/v0/Cart?accountId=hello')
-    .set('Authorization', 'Bearer ' + annacred + 'garbage')
+    .set('Authorization', 'Bearer ' + mollycred + 'garbage')
     .expect(401);   
 });
 test("Molly gets her cart", async()=>{
   await supertest(server)
     .get('/api/v0/Cart')
-    .set('Authorization', 'Bearer ' + annacred)
+    .set('Authorization', 'Bearer ' + mollycred)
     .expect(200);   
 });
 test('Bad Credentials Rejected', async () => {
@@ -158,5 +159,43 @@ test("Check a verified vendor",async()=>{
       expect(res.body).toBeDefined()
       expect(res.body).toBeTruthy();
     });
+});
+test("Anna logs in", async()=>{
+  await supertest(server)
+    .post('/api/v0/authenticate')
+    .send({email: 'anna@books.com', password: "annaadmin"})
+    .expect(200)
+    .then((res) => {
+      expect(res).toBeDefined()
+      expect(res.body).toBeDefined()
+      expect(res.body.name).toBeDefined()
+      expect(res.body.name).toEqual('Anna Admin')
+      expect(res.body.accessToken).toBeDefined()
+      annaToken = res.body.accessToken
+    });
+
+})
+test("Molly tries to verify a vendor (she can't she a memeber", async()=>{
+  await supertest(server)
+    .post('/api/v0/Verify/Vendor?vendorId=92330191')
+    .set('Authorization', 'Bearer ' + mollycred)
+    .expect(401);
+});
+test("anna tries to verify a vendor", async()=>{
+  await supertest(server)
+    .post('/api/v0/Verify/Vendor?vendorId=fa14fb7e-2a1d-41d5-8985-30568dc8a7a9')
+    .set('Authorization', 'Bearer ' + annaToken)
+    .expect(200)
+    .then((res)=>{
+      expect(res.body).toBeDefined();
+      expect(res.body.vendorId).toBe('fa14fb7e-2a1d-41d5-8985-30568dc8a7a9')
+      expect(res.body.accepted).toBe(true);
+    })
+});
+test("anna tries to verify a non existent vendor", async()=>{
+  await supertest(server)
+    .post('/api/v0/Verify/Vendor?vendorId=f1648d8c-9e1d-421c-84e3-43f39255cf5c')
+    .set('Authorization', 'Bearer ' + annaToken)
+    .expect(404);
 });
 

@@ -22,7 +22,6 @@ export class CartController extends Controller {
   public async GetCart(
     @Request() request: express.Request
   ): Promise<CartItem[]> {
-    console.log(request.user?.id);
     return new CartService().getCart(`${request.user?.id}`);
   }
 

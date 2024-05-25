@@ -10,7 +10,7 @@
 */
 
 import * as jwt from "jsonwebtoken";
-import { Authenticated, Credentials, SessionUser, SignupCred } from '.';
+import { Authenticated, Credentials, SessionUser, SignupCred, VerifiedVendor } from '.';
 import { pool } from '../db';
 
 interface Account {
@@ -107,6 +107,25 @@ export class AccountService {
       return res.rows[0]?.verified === true;
     } else {
       return undefined;
+    }
+  }
+  public async acceptVendor(vendorId: string): Promise<VerifiedVendor| undefined>{
+    const select = 
+      `UPDATE vendor
+      SET verified = true
+      WHERE vendor_id = $1
+      RETURNING *;
+      `
+    const query = {
+      text: select,
+      values: [`${vendorId}`],
+    };
+    const {rows} = await pool.query(query);
+    if (rows[0]){
+      return {vendorId: rows[0].vendor_id, accepted: rows[0].verified}
+    }
+    else{
+      return undefined
     }
   }
 }

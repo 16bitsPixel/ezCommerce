@@ -33,5 +33,10 @@ export type SessionUser = {
   id: string,
   role: string
 }
+export type VerifiedVendor = {
+  vendorId: string,
+  accepted: string
+}
+
 
 
