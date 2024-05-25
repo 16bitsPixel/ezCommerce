@@ -9,9 +9,8 @@
 #######################################################################
 */
 import React from 'react';
-
+import TopBar from './Topbar';
 import { LoginContext } from '../context/Login'
-import { Book } from '../graphql/book/schema'
 
 const fetchBooks = (setBooks: Function, setError: Function, accessToken: string) => {
   const query = {query: `query book {book {isbn, title, author, publisher}}`}
@@ -41,7 +40,7 @@ const fetchBooks = (setBooks: Function, setError: Function, accessToken: string)
     })
 };
 
-export function Books() {
+export function Home() {
   const loginContext = React.useContext(LoginContext)
   const [books, setBooks] = React.useState([])
   const [error, setError] = React.useState('Logged Out')
@@ -59,6 +58,7 @@ export function Books() {
   if (loginContext.accessToken.length > 0) {
     return (
       <div>
+        <TopBar/>
         Hello Admin
       </div>
     )

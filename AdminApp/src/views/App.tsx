@@ -10,12 +10,12 @@
 */
 import { LoginProvider } from '../context/Login'
 import  Login  from './Login'
-import { Books } from './Books'
+import { Home } from './Home'
 export function App() {
   return (
     <LoginProvider>
       <Login/>
-      <Books/>
+      <Home/>
     </LoginProvider>
   )
 }
