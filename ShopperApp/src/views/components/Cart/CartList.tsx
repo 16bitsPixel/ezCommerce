@@ -107,7 +107,6 @@ export function CartList() {
       // TODO: fetch account cart from endpoint
       fetchCart({setCart, loginContext, setError});
     }
-    console.log(cart);
   }, []); // eslint-disable-line
 
   React.useEffect(() => {
@@ -124,7 +123,6 @@ export function CartList() {
 
       const productResults = await Promise.all(productPromises);
       setProducts(productResults.filter((product) => product !== undefined));
-      
     };
 
     loadProducts();
@@ -133,13 +131,23 @@ export function CartList() {
   }, [cart]); // eslint-disable-line
 
   const handleDeleteItem = (index: number) => {
-    // Create a copy of the cart
-    const updatedCart = [...cart];
-    // Remove the item at the specified index
-    updatedCart.splice(index, 1);
-    // Update state and localStorage
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    if (loginContext.accessToken.length < 1) {
+      // Create a copy of the cart
+      const updatedCart = [...cart];
+      // Remove the item at the specified index
+      updatedCart.splice(index, 1);
+      // Update state and localStorage
+      setCart(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    } else {
+      // TODO: delete item from cart endpoint
+    }
+  };
+
+  // TODO: Fix ts error
+  const getProductQuantity = (productId: string) => {
+    const cartItem = cart.find((item: CartItem) => item.id === productId);
+    return cartItem ? cartItem.quantity : 0;
   };
 
   // TODO: FIX IMAGE SIZING AND GRID SIZING
@@ -163,6 +171,7 @@ export function CartList() {
               <Typography>
                 {item.name}
               </Typography>
+              <Typography>Quantity: {getProductQuantity(item.id)}</Typography>
               <Button onClick={() => handleDeleteItem(index)}>
               Delete
               </Button>

@@ -96,10 +96,6 @@ export function Login() {
           if (storedCart) {
             cart = JSON.parse(storedCart);
           }
-          console.log("STORED CART");
-          console.log(cart);
-
-          console.log(loginContext);
 
           // go through cart items and call addToCart for each
           for (const item of cart) {

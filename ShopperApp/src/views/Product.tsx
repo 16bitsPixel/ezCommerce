@@ -119,8 +119,16 @@ export function ProductView({id}: ProductProps) {
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
         
         // Add the product to the cart
-        // TODO: change quantity based on if in cart already
-        const updatedCart = [...cart, {id: product.id, quantity: parseInt(quantity, 10)}];
+        let updatedCart;
+
+        // Check if the product is already in the cart
+        const existingCartItemIndex = cart.findIndex((item: any) => item.id === product.id);
+        if (existingCartItemIndex !== -1) {
+          cart[existingCartItemIndex].quantity += parseInt(quantity, 10);
+          updatedCart = cart;
+        } else {
+          updatedCart = [...cart, {id: product.id, quantity: parseInt(quantity, 10)}];
+        }
     
         // Update localStorage with the updated cart
         localStorage.setItem('cart', JSON.stringify(updatedCart));
