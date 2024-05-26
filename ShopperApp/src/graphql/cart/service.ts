@@ -37,7 +37,7 @@ export class CartService {
     });
   }
 
-  async addToCart(productId: string, accessToken: string): Promise<CartItem> {
+  async addToCart(productId: string, quantity: number, accessToken: string): Promise<CartItem> {
     return new Promise((resolve, reject) => {
       fetch('http://localhost:3011/api/v0/Cart', {
         method: 'POST',
@@ -45,7 +45,7 @@ export class CartService {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
-        body: JSON.stringify({ "productId": productId })
+        body: JSON.stringify({ "productId": productId, "quantity": quantity})
       })
         .then((res) => {
           if (!res.ok) {

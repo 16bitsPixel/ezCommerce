@@ -1,7 +1,9 @@
 export interface CartItem {
-    id: string
+    id: string,
+    quantity: number
   }
   
 export interface CartAdd {
-    productId: string
+    productId: string,
+    quantity: number
   }

@@ -31,9 +31,10 @@ export class CartResolver {
   @Query(() => CartItem)
   async addToCart(
     @Ctx() request: Request,
-    @Arg("productId") productId: string
+    @Arg("productId") productId: string,
+    @Arg("quantity") quantity: number
   ): Promise<CartItem> {
     // console.log(`User requesting books is: ${request.user.id})`)
-    return new CartService().addToCart(productId, request.user.accessToken)
+    return new CartService().addToCart(productId, quantity, request.user.accessToken)
   }
 }

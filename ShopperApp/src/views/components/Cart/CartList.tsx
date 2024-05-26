@@ -21,7 +21,7 @@ const fetchCart = ({ setCart, loginContext, setError }: FetchCartParams) => {
   const query = {
     query: `query GetCart {
       Cart {
-        id
+        id, quantity
       }
     }`
   };
@@ -107,14 +107,15 @@ export function CartList() {
       // TODO: fetch account cart from endpoint
       fetchCart({setCart, loginContext, setError});
     }
+    console.log(cart);
   }, []); // eslint-disable-line
 
   React.useEffect(() => {
     const loadProducts = async () => {
-      const productPromises = cart.map((productId: CartItem) =>
+      const productPromises = cart.map((cartItem: CartItem) =>
         new Promise((resolve) => {
           fetchProduct({
-            id: productId.id,
+            id: cartItem.id,
             setProduct: (product) => resolve(product),
             setError: (err) => setError(err),
           });

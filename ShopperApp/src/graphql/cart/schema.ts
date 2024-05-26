@@ -5,4 +5,6 @@ import { Field, ObjectType } from "type-graphql"
 export class CartItem {
   @Field()
     id!: string
+  @Field()
+    quantity!: number
 }
