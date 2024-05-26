@@ -1,0 +1,28 @@
+import { Field, ObjectType, ArgsType } from "type-graphql"
+// import { Matches } from "class-validator";
+
+@ObjectType()
+export class Order {
+  @Field()
+    orderId!: string
+  @Field()
+    accountId!: string
+  @Field(() => [String]) 
+    productId!: string[]
+  @Field(() => Date)
+    date!: Date
+  @Field()
+    status!: string
+  @Field(() => [Number])
+    quantities!: number[]
+}
+
+@ArgsType()
+export class InputOrder {
+  @Field()
+    accountId!: string
+  @Field(() => [String]) 
+    productId!: string[]
+  @Field(() => [Number])
+    quantities!: number[]
+}
