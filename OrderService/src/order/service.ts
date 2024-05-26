@@ -109,4 +109,14 @@ export class OrderService {
     }
     return statusRow[0].order_status;
   }
+
+  public async updateOrderStatus(orderId: UUID, status: string): Promise<boolean> {
+    const updateStatus = 'UPDATE orders SET order_status = $1 WHERE id = $2';
+    const updateQuery = {
+      text: updateStatus,
+      values: [status, orderId],
+    };
+    const result = await pool.query(updateQuery);
+    return result.rowCount !== null && result.rowCount > 0;
+  }
 }

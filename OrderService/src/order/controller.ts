@@ -1,8 +1,9 @@
 import {
   Controller,
   Get,
-  Route,
+  Put,
   Post,
+  Route,
   Response,
   SuccessResponse,
   Path,
@@ -64,5 +65,26 @@ export class OrderController extends Controller {
         }
         return { status };
       });
+  }
+
+  @Put('{orderId}/status')
+  @Response('400', 'Invalid Status')
+  @Response('404', 'Order Not Found')
+  @SuccessResponse('200', 'Status Updated')
+  public async updateOrderStatus(
+    @Path() orderId: UUID,
+    @Body() body: { status: string }
+  ): Promise<void> {
+    const validStatuses = ['pending', 'confirmed', 'shipped', 'delivered'];
+    if (!validStatuses.includes(body.status)) {
+      this.setStatus(400);
+      return;
+    }
+    const updated = await new OrderService().updateOrderStatus(orderId, body.status);
+    if (!updated) {
+      this.setStatus(404);
+    } else {
+      this.setStatus(200);
+    }
   }
 }
