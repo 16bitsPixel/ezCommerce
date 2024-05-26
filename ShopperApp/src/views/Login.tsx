@@ -18,7 +18,7 @@ import { LoginContext } from '../context/Login'
 export function Login() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
-  const { view, setView, id, setId } = React.useContext(LoginContext);
+  const { view, setView} = React.useContext(LoginContext);
   const { t } = useTranslation('common');
   const router = useRouter();
 
