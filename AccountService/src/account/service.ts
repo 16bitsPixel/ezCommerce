@@ -46,7 +46,6 @@ export class AccountService {
 
   public async login(credentials: Credentials): Promise<Authenticated|undefined>  {
     const account = await this.find(credentials);
-    console.log("account: ", account)
     if (account) {
       const accessToken = jwt.sign(
         {id: account.id, role: account.role, email: credentials.email, name: account.name }, 
