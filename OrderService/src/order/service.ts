@@ -97,16 +97,16 @@ export class OrderService {
     };
   }
 
-  // public async getOrderStatus(orderId: UUID): Promise<string | undefined> {
-  //   const selectStatus = 'SELECT order_status FROM orders WHERE id = $1';
-  //   const statusQuery = {
-  //     text: selectStatus,
-  //     values: [orderId],
-  //   };
-  //   const {rows: statusRow} = await pool.query(statusQuery);
-  //   if (statusRow.length === 0) {
-  //     return undefined;
-  //   }
-  //   return statusRow[0].order_status;
-  // }
+  public async getOrderStatus(orderId: UUID): Promise<string | undefined> {
+    const selectStatus = 'SELECT order_status FROM orders WHERE id = $1';
+    const statusQuery = {
+      text: selectStatus,
+      values: [orderId],
+    };
+    const {rows: statusRow} = await pool.query(statusQuery);
+    if (statusRow.length === 0) {
+      return undefined;
+    }
+    return statusRow[0].order_status;
+  }
 }
