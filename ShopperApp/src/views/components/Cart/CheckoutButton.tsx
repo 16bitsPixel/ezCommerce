@@ -7,40 +7,92 @@ export function CheckoutButton (){
   const {t} = useTranslation('common')
   const {products, setCart, setProducts} = React.useContext(ProductContext)
       
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    await fetch('/api/checkout_sessions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(products),
-    })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(errorText => {
-            console.error('Error response from server:', errorText);
-            throw new Error('Network response was not ok');
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.url) {
-          window.location.href = data.url;
-        }
-      })
-      .then(() => {
-        setCart([]);
-        setProducts([])
-        localStorage.removeItem('cart')
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-          
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     await fetch('/api/checkout_sessions', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(products),
+//     })
+//       .then(response => {
+//         if (!response.ok) {
+//           return response.text().then(errorText => {
+//             console.error('Error response from server:', errorText);
+//             throw new Error('Network response was not ok');
+//           });
+//         }
+//         return response.json();
+//       })
+//       .then(data => {
+//         if (data.url) {
+//           window.location.href = data.url;
+//         }
+//       })
+//       .then(() => {
+//         await fetch('http://localhost:3015/api/v0/order', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         })
+//       })
+//       .then(() => {
+//         setCart([]);
+//         setProducts([])
+//         localStorage.removeItem('cart')
+//       })
+//       .catch(error => {
+//         console.error('Fetch error:', error);
+//       });
+//   };
 
+const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('/api/checkout_sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(products),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response from server:', errorText);
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+  
+      if (data.url) {
+        window.location.href = data.url;
+      }
+  
+    //   const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: 
+    //   });
+  
+    //   if (!orderResponse.ok) {
+    //     const errorText = await orderResponse.text();
+    //     console.error('Error response from server:', errorText);
+    //     throw new Error('Network response was not ok');
+    //   }
+  
+      setCart([]);
+      setProducts([]);
+      localStorage.removeItem('cart');
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

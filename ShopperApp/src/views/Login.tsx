@@ -18,7 +18,7 @@ import { LoginContext } from '../context/Login'
 export function Login() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
-  const { view, setView } = React.useContext(LoginContext);
+  const { view, setView, id, setId } = React.useContext(LoginContext);
   const { t } = useTranslation('common');
   const router = useRouter();
 
@@ -38,7 +38,7 @@ export function Login() {
     // console.log("*********************");
     // console.log(user.email);
     // console.log(user.password);
-    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name, accessToken }}`}
+    const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name, accessToken, id}}`}
     fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -53,6 +53,7 @@ export function Login() {
         if (json.errors) {
           alert(`${json.errors[0].message}`)
         } else {
+          loginContext.setId(json.data.login.id)
           loginContext.setAccessToken(json.data.login.accessToken)
           loginContext.setUserName(json.data.login.name)
           router.push('/');
