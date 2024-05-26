@@ -15,6 +15,39 @@ import { useRouter } from 'next/router';
 
 import { LoginContext } from '../context/Login'
 
+interface addToCartParams {
+  id: string|string[]|undefined;
+  quantity: number;
+  accessToken: string;
+}
+
+const addToCart = ({id, quantity, accessToken }: addToCartParams) => {
+  const query = {
+    query: `query addToCart {
+      addToCart(productId: "${id}", quantity: ${quantity}) {
+        id, quantity
+      }
+    }`}
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((json) => {
+      if (json.errors)
+        alert(`${json.errors[0].message}`)
+    })
+    .catch((e) => {
+      alert(e);
+    })
+};
+
 export function Login() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({email: '', password: ''});
@@ -56,6 +89,25 @@ export function Login() {
           loginContext.setId(json.data.login.id)
           loginContext.setAccessToken(json.data.login.accessToken)
           loginContext.setUserName(json.data.login.name)
+
+          // push local storage cart to DB
+          const storedCart = localStorage.getItem('cart');
+          let cart;
+          if (storedCart) {
+            cart = JSON.parse(storedCart);
+          }
+          console.log("STORED CART");
+          console.log(cart);
+
+          console.log(loginContext);
+
+          // go through cart items and call addToCart for each
+          for (const item of cart) {
+            addToCart({id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken})
+          }
+
+          localStorage.removeItem('cart');
+
           router.push('/');
         }
       })
