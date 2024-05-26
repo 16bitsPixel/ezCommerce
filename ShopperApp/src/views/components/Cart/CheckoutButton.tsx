@@ -1,7 +1,8 @@
 import { ProductContext } from "@/context/Product";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from 'next-i18next';
-
+import { LoginContext } from "@/context/Login";
+import { Product } from "@/graphql/product/schema";
 export function CheckoutButton (){
 
   const {t} = useTranslation('common')
@@ -47,6 +48,7 @@ export function CheckoutButton (){
 //         console.error('Fetch error:', error);
 //       });
 //   };
+const { id: account_id } = useContext(LoginContext);
 
 const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -70,20 +72,42 @@ const handleSubmit = async (event: React.FormEvent) => {
       if (data.url) {
         window.location.href = data.url;
       }
+
+      
+      const productMap = new Map<string, number>();
+      for (const product of products) {
+        const productId = (product as Product).id;
+        const quantity = 1;
+        if (productMap.has(productId)) {
+          productMap.set(productId, productMap.get(productId)! + quantity);
+        } else {
+          productMap.set(productId, quantity);
+        }
+      }
   
-    //   const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: 
-    //   });
+    //   // Create InputOrder object
+      const inputOrder = {
+        account_id,
+        product_id: Array.from(productMap.keys()),
+        quantities: Array.from(productMap.values()),
+      };
+
+      console.log("input Order: ", inputOrder)
+
   
-    //   if (!orderResponse.ok) {
-    //     const errorText = await orderResponse.text();
-    //     console.error('Error response from server:', errorText);
-    //     throw new Error('Network response was not ok');
-    //   }
+      const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputOrder)
+      });
+  
+      if (!orderResponse.ok) {
+        const errorText = await orderResponse.text();
+        console.error('Error response from server:', errorText);
+        throw new Error('Network response was not ok');
+      }
   
       setCart([]);
       setProducts([]);

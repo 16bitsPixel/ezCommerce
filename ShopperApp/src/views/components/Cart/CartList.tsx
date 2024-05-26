@@ -123,9 +123,12 @@ export function CartList() {
 
       const productResults = await Promise.all(productPromises);
       setProducts(productResults.filter((product) => product !== undefined));
+      
     };
 
     loadProducts();
+    const ids = (products as Product[]).map(product => product.id);
+    console.log("IDs: ", ids);
   }, [cart]); // eslint-disable-line
 
   const handleDeleteItem = (index: number) => {
