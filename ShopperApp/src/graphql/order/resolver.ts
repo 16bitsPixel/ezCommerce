@@ -5,11 +5,11 @@ import { OrderService } from "./service"
 
 @Resolver()
 export class OrderResolver {
-  // @Query(() => [Order])
-  // async product(): Promise<Order[]> {
-  //   // console.log(`User requesting books is: ${request.user.id})`)
-  //   return new OrderService().getAll()
-  // }
+  @Query(() => [Order])
+  async product(): Promise<Order[]> {
+    // console.log(`User requesting books is: ${request.user.id})`)
+    return new OrderService().getAll()
+  }
 
   @Query(() => Order, { nullable: true })
   async productInfo(
