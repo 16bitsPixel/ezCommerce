@@ -10,6 +10,7 @@ import stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createMocks } from 'node-mocks-http';
 import handler from '@/pages/api/checkout_sessions';
+import { LoginContext } from '@/context/Login';
 
 const server = setupServer();
 
@@ -32,6 +33,8 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('next-i18next/serverSideTranslations');
 
+
+
 it('Checkout Redirects', async () => {
     const setProducts = jest.fn();
     const setCart = jest.fn();
@@ -44,9 +47,28 @@ it('Checkout Redirects', async () => {
     ) as jest.Mock;
 
     render(
-    <ProductContext.Provider value={{ products: [], setProducts, cart: [], setCart }}>
-        <CheckoutButton />
+        <LoginContext.Provider value={{
+            userName: "testUser",
+            setUserName: jest.fn(),
+            accessToken: "testToken",
+            setAccessToken: jest.fn(),
+            id: "123",
+            setId: jest.fn(),
+            view: "testView",
+            setView: jest.fn(),
+          }}>
+
+    <ProductContext.Provider value={{ 
+            products: ['123', '123'] as any, 
+            setProducts, 
+            cart: [], 
+            setCart 
+        }}>
+            <CheckoutButton />
+
         </ProductContext.Provider>
+        </LoginContext.Provider>
+
     );
 
     const button = screen.getByLabelText('checkout-button');
@@ -56,6 +78,59 @@ it('Checkout Redirects', async () => {
         expect(global.fetch).toHaveBeenCalledWith('/api/checkout_sessions', expect.any(Object));
     });
 });
+
+it('Handles order response non-OK', async () => {
+    const setProducts = jest.fn();
+    const setCart = jest.fn();
+  
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ url: 'https://stripe/checkout' }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        text: () => Promise.resolve('Order Error'),
+      });
+  
+    console.error = jest.fn();
+  
+    const mockedRouterPush = jest.fn();
+    const mockedUseRouter = useRouter as jest.Mock;
+    mockedUseRouter.mockImplementation(() => ({
+      push: mockedRouterPush,
+    }));
+  
+    render(
+      <LoginContext.Provider value={{
+        userName: "testUser",
+        setUserName: jest.fn(),
+        accessToken: "testToken",
+        setAccessToken: jest.fn(),
+        id: "123",
+        setId: jest.fn(),
+        view: "testView",
+        setView: jest.fn(),
+      }}>
+        <ProductContext.Provider value={{ 
+          products: ['123'] as any, 
+          setProducts, 
+          cart: [], 
+          setCart 
+        }}>
+          <CheckoutButton />
+        </ProductContext.Provider>
+      </LoginContext.Provider>
+    );
+  
+    const button = screen.getByLabelText('checkout-button');
+    fireEvent.click(button);
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+      expect(console.error).toHaveBeenCalledWith('Error response from server:', 'Order Error');
+    });
+  });
 
 it('Handles non-OK response', async () => {
     const setProducts = jest.fn();
@@ -72,9 +147,22 @@ it('Handles non-OK response', async () => {
     console.error = jest.fn(); 
 
     render(
+        <LoginContext.Provider value={{
+            userName: "testUser",
+            setUserName: jest.fn(),
+            accessToken: "testToken",
+            setAccessToken: jest.fn(),
+            id: "123",
+            setId: jest.fn(),
+            view: "testView",
+            setView: jest.fn(),
+          }}>
+
       <ProductContext.Provider value={{ products: [], setProducts, cart: [], setCart }}>
         <CheckoutButton />
       </ProductContext.Provider>
+      </LoginContext.Provider>
+
     );
 
     const button = screen.getByLabelText('checkout-button');
@@ -182,3 +270,49 @@ jest.mock('stripe', () => {
       expect(res._getData()).toBe('Method Not Allowed');
     });
   });
+
+  it('Redirects to login if account_id is empty', async () => {
+    const setProducts = jest.fn();
+    const setCart = jest.fn();
+  
+    const mockedRouterPush = jest.fn();
+    const mockedUseRouter = useRouter as jest.Mock;
+    mockedUseRouter.mockImplementation(() => ({
+      push: mockedRouterPush,
+    }));
+  
+    render(
+      <LoginContext.Provider value={{
+        userName: "testUser",
+        setUserName: jest.fn(),
+        accessToken: "testToken",
+        setAccessToken: jest.fn(),
+        id: "",
+        setId: jest.fn(),
+        view: "testView",
+        setView: jest.fn(),
+      }}>
+        <ProductContext.Provider value={{ products: [], setProducts, cart: [], setCart }}>
+          <CheckoutButton />
+        </ProductContext.Provider>
+      </LoginContext.Provider>
+    );
+  
+    const button = screen.getByLabelText('checkout-button');
+    fireEvent.click(button);
+  
+    await waitFor(() => {
+      expect(mockedRouterPush).toHaveBeenCalledWith('/login');
+    });
+  });
+  
+  jest.mock('stripe', () => {
+    return jest.fn().mockImplementation(() => ({
+      checkout: {
+        sessions: {
+          create: jest.fn(),
+        },
+      },
+    }));
+  });
+

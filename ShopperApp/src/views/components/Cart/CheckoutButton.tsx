@@ -35,7 +35,8 @@ export function CheckoutButton (){
         if (data.url) {
           window.location.href = data.url;
         }
-    
+        
+        console.log("products: ", products)
             
         const productMap = new Map<string, number>();
         for (const product of products) {
@@ -52,8 +53,6 @@ export function CheckoutButton (){
           product_id: Array.from(productMap.keys()),
           quantities: Array.from(productMap.values()),
         };
-    
-        console.log("input Order: ", inputOrder)
     
         
         const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
