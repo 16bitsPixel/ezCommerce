@@ -36,6 +36,8 @@ const mockLoginContext = {
   setUserName: mockSetUserName,
   view: 'Login',
   setView: jest.fn(),
+  id: '',
+  setId: jest.fn()
 };
 
 // -- Login Tests --

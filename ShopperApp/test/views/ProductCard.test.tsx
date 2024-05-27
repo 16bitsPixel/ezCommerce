@@ -24,10 +24,9 @@ const testProduct = {
 it('Renders Product Card', async () => {
   render(
     <ProductCard
-      key = {testProduct.id}
+      id = {testProduct.id}
       name={testProduct.name}
       price={testProduct.price}
-      rating={testProduct.rating}
       image={testProduct.image}
     />
   );

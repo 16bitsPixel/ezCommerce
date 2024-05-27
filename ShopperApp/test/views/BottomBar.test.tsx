@@ -152,7 +152,9 @@ it('Test handleLogout', async () => {
     setAccessToken: mockSetAccessToken,
     setUserName: mockSetUserName,
     view: 'Login',
-    setView: jest.fn()
+    setView: jest.fn(),
+    id: '123',
+    setId: jest.fn()
   };
   render(
     <LoginContext.Provider value={mockLoginContext}>
