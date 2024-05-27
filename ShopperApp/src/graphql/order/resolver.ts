@@ -6,17 +6,33 @@ import { OrderService } from "./service"
 @Resolver()
 export class OrderResolver {
   @Query(() => [Order])
-  async product(): Promise<Order[]> {
+  async order(): Promise<Order[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
     return new OrderService().getAll()
   }
 
   @Query(() => Order, { nullable: true })
-  async productInfo(
+  async orderInfo(
     @Arg("orderId") orderId: string,
     // @Ctx() request: NextApiRequest
   ): Promise<Order | undefined> {
     return new OrderService().get(orderId);
+  }
+
+  @Query(() => Order, { nullable: true })
+  async orderStatus(
+    @Arg("orderId") orderId: string,
+    // @Ctx() request: NextApiRequest
+  ): Promise<Order | undefined> {
+    return new OrderService().getStatus(orderId);
+  }
+
+  @Mutation(() => Order)
+  async updateOrderStatus(
+    @Arg("orderId") orderId: string,
+    // @Ctx() request: NextApiRequest
+  ): Promise<Order | undefined> {
+    return new OrderService().updateStatus(orderId);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
