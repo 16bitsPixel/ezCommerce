@@ -19,10 +19,4 @@ export class AuthResolver {
     return new AuthService().signup(signupCred)
   }
 
-  @Query (() => Boolean)
-  async isVerified(
-    @Args() credentials: Credentials,
-  ): Promise<boolean|undefined> {
-    return new AuthService().isVerified(credentials)
-  }
 }

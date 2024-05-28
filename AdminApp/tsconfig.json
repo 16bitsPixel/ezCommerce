@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext", "es2018", "esnext.asynciterable"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -26,3 +26,4 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/middleware.ts.junk"],
   "exclude": ["node_modules"],
 }
+

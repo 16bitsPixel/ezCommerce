@@ -20,8 +20,7 @@ export class AuthService {
         .then((authenticated) => {
           resolve(authenticated)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           reject(new Error("Unauthorised"))
         });
     });
@@ -84,37 +83,12 @@ export class AuthService {
         .then((created) => {
           resolve(created)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           reject(new Error("Not Created"))
         });
     });
   }
 
-  public async isVerified(credentials: Credentials): Promise<boolean|undefined> { 
-    return new Promise((resolve, reject) => {
-      fetch('http://localhost:3011/api/v0/Verify', {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw res
-          }
-          return res.json()
-        })
-        .then((verified) => {
-          resolve(verified)
-        })
-        .catch((err) => {
-          console.log(err)
-          reject(new Error("Not Verified"))
-        });
-    });
-  }
-
+  
 
 }

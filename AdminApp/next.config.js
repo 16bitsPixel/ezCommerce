@@ -11,5 +11,4 @@ const nextConfig = {
     },
     assetPrefix: '/admin',
   };
-  
-  module.exports = nextConfig;
+module.exports = nextConfig;

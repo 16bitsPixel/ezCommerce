@@ -22,14 +22,14 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./sql/databases.sql:/docker-entrypoint-initdb.d/1.databases.sql
-      - ./AccountService/sql/schema.sql:/docker-entrypoint-initdb.d/2.schema.sql
-      - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.data.sql
-      - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
-      - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
-      - ./APIKeyService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
-      - ./APIKeyService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
-      - ./OrderService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
-      - ./OrderService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
+      - ./AccountService/sql/schema.sql:/docker-entrypoint-initdb.d/2.account_schema.sql
+      - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.account_data.sql
+      - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.product_schema.sql
+      - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.product_data.sql
+      - ./APIKeyService/sql/schema.sql:/docker-entrypoint-initdb.d/6.apikey_schema.sql
+      - ./APIKeyService/sql/data.sql:/docker-entrypoint-initdb.d/7.apikey_data.sql
+      - ./OrderService/sql/schema.sql:/docker-entrypoint-initdb.d/8.order_schema.sql
+      - ./OrderService/sql/data.sql:/docker-entrypoint-initdb.d/9.order_data.sql
 
 ############################# DOCkerfile to create proper images for EC2 instances
 # version: "3.7"
