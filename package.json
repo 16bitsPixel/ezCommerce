@@ -71,9 +71,13 @@
     "lint-vendorapi": "cd VendorAPI && npm run lint",
     "lint-apikey": "cd APIKeyService && npm run lint",
     "lint-orders": "cd OrderService && npm run lint",
-    "tests":"npm run AccountService-test && npm run shopperapp-tests",
+    "tests":"npm run AccountService-test && npm run shopperapp-test && npm run vendorapp-test && npm run orderservice-test",
     "AccountService-test": "cd AccountService && npm run test",
-    "shopperapp-tests": "cd ShopperApp && npm run test -- --silent"
+    "shopperapp-test": "cd ShopperApp && npm run test -- --silent",
+    "vendorapp-test": "cd VendorApp && npm run test -- --silent",
+    "orderservice-test": "cd OrderService && npm run test -- --silent"
+
+
   },
   "devDependencies": {
     "concurrently": "*"
