@@ -1,5 +1,5 @@
-import { Field, ObjectType, ArgsType } from "type-graphql"
-import { Length } from "class-validator";
+import { Field, ObjectType, ArgsType, InputType } from "type-graphql"
+import { Length, IsUUID } from "class-validator";
 
 @ArgsType()
 export class Credentials {
@@ -34,3 +34,20 @@ export class SignupCred {
   @Field()
     password!: string
 }
+@ObjectType()
+export class Vendor {
+  @Field()
+  @IsUUID()
+    vendorId!: string 
+  @Field()
+    accepted!: string
+  @Field()
+    name!: string
+}
+@InputType()
+export class VendorId{
+  @Field()
+  @IsUUID()
+    id!: string
+}
+
