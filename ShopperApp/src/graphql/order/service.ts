@@ -1,8 +1,8 @@
 import type { Order, InputOrder } from './schema'
 
 export class OrderService{
-  async getAll(): Promise<Order[]> {
-    const res = await fetch('http://localhost:3015/api/v0/order/')
+  async getAll(accountId: string): Promise<Order[]> {
+    const res = await fetch(`http://localhost:3015/api/v0/order?accountId=${accountId}`)
     return res.json()
   }
 
