@@ -1,7 +1,7 @@
 import { Field, ObjectType, ArgsType } from "type-graphql"
 // import { Matches } from "class-validator";
 
-@ObjectType()
+@ObjectType('order')
 export class Order {
   @Field()
     orderId!: string

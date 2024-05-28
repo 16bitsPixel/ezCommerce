@@ -83,6 +83,7 @@ export function Login() {
         return res.json();
       })
       .then((json) => {
+        console.log("json: ", json)
         if (json.errors) {
           alert(`${json.errors[0].message}`)
         } else {
@@ -97,10 +98,20 @@ export function Login() {
             cart = JSON.parse(storedCart);
           }
 
-          // go through cart items and call addToCart for each
-          for (const item of cart) {
-            addToCart({id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken})
+
+        if (cart) {
+            // Go through cart items and call addToCart for each
+            for (const item of cart) {
+              console.log("Adding item to cart:", item);
+              addToCart({ id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken });
+            }
+          } else {
+            console.log("Cart is empty or undefined.");
           }
+          // go through cart items and call addToCart for each
+        //   for (const item of cart) {
+        //     addToCart({id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken})
+        //   }
 
           localStorage.removeItem('cart');
 

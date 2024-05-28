@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql"
 // import { Matches } from "class-validator";
 
-@ObjectType()
+@ObjectType('cartitem')
 export class CartItem {
   @Field()
     id!: string
