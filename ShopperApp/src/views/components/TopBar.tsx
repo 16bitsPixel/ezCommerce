@@ -2,8 +2,8 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-// import InputBase from '@mui/material/InputBase';
-// import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
@@ -56,7 +56,7 @@ export function TopBar() {
               </Link>
             </div>
           )}
-          {/* <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
+          <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
             <div className="searchIcon">
               <SearchIcon />
             </div>
@@ -65,7 +65,7 @@ export function TopBar() {
               placeholder={t('search-ezCommerce') || 'Search EzCommerce'}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div> */}
+          </div>
           {!isSmallScreen && (
             <div className="topbar-buttons" style={{ flexGrow: 0, marginLeft: 'auto' }}>
               {loginContext.accessToken.length < 1 ? (
