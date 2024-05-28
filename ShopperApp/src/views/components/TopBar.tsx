@@ -56,7 +56,7 @@ export function TopBar() {
               </Link>
             </div>
           )}
-          <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
+          {/* <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
             <div className="searchIcon">
               <SearchIcon />
             </div>
@@ -65,7 +65,7 @@ export function TopBar() {
               placeholder={t('search-ezCommerce') || 'Search EzCommerce'}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+          </div> */}
           {!isSmallScreen && (
             <div className="topbar-buttons" style={{ flexGrow: 0, marginLeft: 'auto' }}>
               {loginContext.accessToken.length < 1 ? (
