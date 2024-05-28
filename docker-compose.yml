@@ -1,44 +1,9 @@
-# version: "3.7"
-# services:
-#   app:
-#     container_name: app
-#     env_file: .env
-#     build: .
-#     depends_on:
-#       - postgres
-#     ports:
-#       - "3000:3000"
-#       - "3001:3001"
-#       - "3002:3002"
-#       - "3010:3010"
-
-#   postgres:
-#     container_name: database
-#     image: postgres:alpine
-#     environment:
-#       POSTGRES_PORT: ${POSTGRES_PORT}
-#       POSTGRES_DB: ${POSTGRES_DB}
-#       POSTGRES_USER: ${POSTGRES_USER}
-#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#     volumes:
-#       - ./sql/databases.sql:/docker-entrypoint-initdb.d/1.databases.sql
-#       - ./AccountService/sql/schema.sql:/docker-entrypoint-initdb.d/2.account_schema.sql
-#       - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.account_data.sql
-#       - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.product_schema.sql
-#       - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.product_data.sql
-#       - ./APIKeyService/sql/schema.sql:/docker-entrypoint-initdb.d/6.apikey_schema.sql
-#       - ./APIKeyService/sql/data.sql:/docker-entrypoint-initdb.d/7.apikey_data.sql
-#       - ./OrderService/sql/schema.sql:/docker-entrypoint-initdb.d/8.order_schema.sql
-#       - ./OrderService/sql/data.sql:/docker-entrypoint-initdb.d/9.order_data.sql
-
-############################# DOCkerfile to create proper images for EC2 instances
 version: "3.7"
 services:
   app:
     container_name: app
     env_file: .env
     build: .
-    platform: linux/amd64
     depends_on:
       - postgres
     ports:
@@ -46,17 +11,52 @@ services:
       - "3001:3001"
       - "3002:3002"
       - "3010:3010"
+
   postgres:
     container_name: database
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
-    platform: linux/amd64
+    image: postgres:alpine
     environment:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./sql/databases.sql:/docker-entrypoint-initdb.d/1.databases.sql
+      - ./AccountService/sql/schema.sql:/docker-entrypoint-initdb.d/2.account_schema.sql
+      - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.account_data.sql
+      - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.product_schema.sql
+      - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.product_data.sql
+      - ./APIKeyService/sql/schema.sql:/docker-entrypoint-initdb.d/6.apikey_schema.sql
+      - ./APIKeyService/sql/data.sql:/docker-entrypoint-initdb.d/7.apikey_data.sql
+      - ./OrderService/sql/schema.sql:/docker-entrypoint-initdb.d/8.order_schema.sql
+      - ./OrderService/sql/data.sql:/docker-entrypoint-initdb.d/9.order_data.sql
+
+############################# DOCkerfile to create proper images for EC2 instances
+# version: "3.7"
+# services:
+#   app:
+#     container_name: app
+#     env_file: .env
+#     build: .
+#     platform: linux/amd64
+#     depends_on:
+#       - postgres
+#     ports:
+#       - "3000:3000"
+#       - "3001:3001"
+#       - "3002:3002"
+#       - "3010:3010"
+#   postgres:
+#     container_name: database
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.postgres
+#     platform: linux/amd64
+#     environment:
+#       POSTGRES_PORT: ${POSTGRES_PORT}
+#       POSTGRES_DB: ${POSTGRES_DB}
+#       POSTGRES_USER: ${POSTGRES_USER}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 ################################################### This is the docker file the ec2 has to test if images work properly
 # version: "3.7"
 # services:
@@ -70,7 +70,7 @@ services:
 #       - "3000:3000"
 #       - "3001:3001"
 #       - "3002:3002"
-#       - "3003:3003"
+#       - "3010:3010"
 
 #   postgres:
 #     container_name: database
