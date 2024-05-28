@@ -7,7 +7,8 @@ import {
   Response,
   SuccessResponse,
   Path,
-  Body
+  Body,
+  Query
 } from 'tsoa'
 
 // import * as express from 'express';
@@ -18,9 +19,17 @@ import { OrderService } from './service'
 @Route('order')
 export class OrderController extends Controller {
   @Get('')
+  @Response('404', 'Order Not Found')
   public async getAll(
-  ): Promise<Order[]> {
-    return new OrderService().getAll()
+      @Query() accountId?: UUID
+  ): Promise<Order[] | undefined> {
+    return new OrderService().getAll(accountId)
+      .then((orders: Order[] | undefined) : Order[] | undefined => {
+        if (!orders) {
+          this.setStatus(404);
+        }
+        return orders;
+      })
   }
 
   @Get('{orderId}')
