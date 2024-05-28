@@ -111,10 +111,10 @@ export function CartList() {
 
   React.useEffect(() => {
     const loadProducts = async () => {
-      const productPromises = cart.map((cartItem: CartItem) =>
+      const productPromises = cart.map((productId: CartItem) =>
         new Promise((resolve) => {
           fetchProduct({
-            id: cartItem.id,
+            id: productId.id,
             setProduct: (product) => resolve(product),
             setError: (err) => setError(err),
           });
@@ -123,31 +123,20 @@ export function CartList() {
 
       const productResults = await Promise.all(productPromises);
       setProducts(productResults.filter((product) => product !== undefined));
+      
     };
 
     loadProducts();
-    const ids = (products as Product[]).map(product => product.id);
-    console.log("IDs: ", ids);
   }, [cart]); // eslint-disable-line
 
   const handleDeleteItem = (index: number) => {
-    if (loginContext.accessToken.length < 1) {
-      // Create a copy of the cart
-      const updatedCart = [...cart];
-      // Remove the item at the specified index
-      updatedCart.splice(index, 1);
-      // Update state and localStorage
-      setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-    } else {
-      // TODO: delete item from cart endpoint
-    }
-  };
-
-  // TODO: Fix ts error
-  const getProductQuantity = (productId: string) => {
-    const cartItem = cart.find((item: CartItem) => item.id === productId);
-    return cartItem ? cartItem.quantity : 0;
+    // Create a copy of the cart
+    const updatedCart = [...cart];
+    // Remove the item at the specified index
+    updatedCart.splice(index, 1);
+    // Update state and localStorage
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   // TODO: FIX IMAGE SIZING AND GRID SIZING
@@ -171,7 +160,6 @@ export function CartList() {
               <Typography>
                 {item.name}
               </Typography>
-              <Typography>Quantity: {getProductQuantity(item.id)}</Typography>
               <Button onClick={() => handleDeleteItem(index)}>
               Delete
               </Button>

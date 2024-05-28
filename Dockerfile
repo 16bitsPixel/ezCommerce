@@ -15,6 +15,18 @@ COPY ProductService/build/ /home/app/ProductService/build/
 COPY ProductService/package.json /home/app/ProductService/
 COPY ProductService/package-lock.json /home/app/ProductService/
 
+COPY OrderService/build/ /home/app/OrderService/build/
+COPY OrderService/package.json /home/app/OrderService/
+COPY OrderService/package-lock.json /home/app/OrderService/
+
+COPY APIKeyService/build/ /home/app/APIKeyService/build/
+COPY APIKeyService/package.json /home/app/APIKeyService/
+COPY APIKeyService/package-lock.json /home/app/APIKeyService/
+
+COPY VendorAPI/build/ /home/app/VendorAPI/build/
+COPY VendorAPI/package.json /home/app/VendorAPI/
+COPY VendorAPI/package-lock.json /home/app/VendorAPI/
+
 COPY ShopperApp/.next/ /home/app/ShopperApp/.next/
 COPY ShopperApp/package.json /home/app/ShopperApp/
 COPY ShopperApp/package-lock.json /home/app/ShopperApp/
@@ -34,11 +46,6 @@ COPY VendorApp/package-lock.json /home/app/VendorApp/
 COPY VendorApp/next.config.js/ /home/app/VendorApp/
 COPY VendorApp/public/ /home/app/VendorApp/public/
 
-COPY VendorAPI/.next/ /home/app/VendorAPI/.next/
-COPY VendorAPI/package.json /home/app/VendorAPI/
-COPY VendorAPI/package-lock.json /home/app/VendorAPI/
-COPY VendorAPI/next.config.js/ /home/app/VendorAPI/
-COPY VendorAPI/public/ /home/app/VendorAPI/public/
 
 RUN npm run cis
 

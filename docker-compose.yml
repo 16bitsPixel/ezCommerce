@@ -10,7 +10,7 @@ services:
       - "3000:3000"
       - "3001:3001"
       - "3002:3002"
-      - "3003:3003"
+      - "3010:3010"
 
   postgres:
     container_name: database
@@ -26,6 +26,10 @@ services:
       - ./AccountService/sql/data.sql:/docker-entrypoint-initdb.d/3.data.sql
       - ./ProductService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
       - ./ProductService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
+      - ./APIKeyService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
+      - ./APIKeyService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
+      - ./OrderService/sql/schema.sql:/docker-entrypoint-initdb.d/4.schema.sql
+      - ./OrderService/sql/data.sql:/docker-entrypoint-initdb.d/5.data.sql
 
 ############################# DOCkerfile to create proper images for EC2 instances
 # version: "3.7"
