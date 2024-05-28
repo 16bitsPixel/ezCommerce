@@ -2,41 +2,41 @@ import { Credentials, Authenticated, SignupCred } from './schema';
 import { SessionUser } from '../../types/next';
 
 export class AuthService {
-    public async login(credentials: Credentials): Promise<Authenticated> {
-        return new Promise((resolve, reject) => {
-          fetch('http://localhost:3011/api/v0/authenticate', {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((res) => {
-              console.log("Response status:", res.status);
-              console.log("Response headers:", res.headers);
+  public async login(credentials: Credentials): Promise<Authenticated> {
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:3011/api/v0/authenticate', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          console.log("Response status:", res.status);
+          console.log("Response headers:", res.headers);
               
-              if (!res.ok) {
-                console.log("Response not ok");
-                return res.json().then((error) => {
-                  console.log("Error response body:", error);
-                  throw new Error(error.message || "Unauthorised");
-                }).catch((jsonParseError) => {
-                  console.log("Error parsing JSON:", jsonParseError);
-                  throw new Error("Unauthorised");
-                });
-              }
-              return res.json();
-            })
-            .then((authenticated) => {
-              console.log("Authenticated:", authenticated);
-              resolve(authenticated);
-            })
-            .catch((err) => {
-              console.log("Login fetch error:", err);
-              reject(new Error("Unauthorised"));
+          if (!res.ok) {
+            console.log("Response not ok");
+            return res.json().then((error) => {
+              console.log("Error response body:", error);
+              throw new Error(error.message || "Unauthorised");
+            }).catch((jsonParseError) => {
+              console.log("Error parsing JSON:", jsonParseError);
+              throw new Error("Unauthorised");
             });
+          }
+          return res.json();
+        })
+        .then((authenticated) => {
+          console.log("Authenticated:", authenticated);
+          resolve(authenticated);
+        })
+        .catch((err) => {
+          console.log("Login fetch error:", err);
+          reject(new Error("Unauthorised"));
         });
-      }
+    });
+  }
 
   public async check(authHeader?: string, roles?: string[]): Promise<SessionUser> {
     return new Promise((resolve, reject) => {
