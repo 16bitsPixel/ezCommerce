@@ -1,5 +1,36 @@
 import { Credentials, Authenticated, SignupCred } from './schema';
 import { SessionUser } from '../../types/next';
+import type { Vendor } from './schema'
+
+export class VendorService{
+  async all(): Promise<Vendor[]> {
+    const res = await fetch('http://localhost:3011/api/v0/Vendor', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.json()
+  }
+  async pendingall(): Promise<Vendor[]> {
+    const res = await fetch('http://localhost:3011/api/v0/Vendor/Pending', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.json()
+  }
+  async accept(id:string): Promise<Vendor> {
+    const res = await fetch('http://localhost:3011/api/v0/Verify/Vendor?vendorId='+id, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return res.json()
+  }
+}
 
 export class AuthService {
   public async login(credentials: Credentials): Promise<Authenticated>  {
