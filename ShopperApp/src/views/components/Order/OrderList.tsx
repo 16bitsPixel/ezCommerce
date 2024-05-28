@@ -18,24 +18,27 @@ export function OrderList() {
   const {id} = React.useContext(LoginContext);
 
   React.useEffect(() => {
-    console.log("id: ", id)
-    const url = new URL('http://localhost:3015/api/v0/order/');
-    if (id) {
-      url.searchParams.append('accountId', id);
-    }
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`http://localhost:3015/api/v0/order?accountId=${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
       }
-    })
-      .then(res => res.json())
-      .then(data => {
-        setOrders(data)
-        console.log("order_id: ", orders)
-      })
-  }, []) // eslint-disable-line
+    };
 
+    fetchOrders();
+  }, [id]);
+  
   const handleCheckStatus = async (orderId: string) => {
     const response = await fetch(`http://localhost:3015/api/v0/order/${orderId}/status`, {
       method: 'GET',
