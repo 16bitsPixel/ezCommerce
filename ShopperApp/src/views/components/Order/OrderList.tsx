@@ -36,7 +36,7 @@ export function OrderList() {
   }, [])
 
   return (
-    <Box style={{display: 'flex', flexDirection: 'column' }}>
+    <Box style={{display: 'flex', flexDirection: 'column', paddingTop: '20px'}}>
       <List>
         {orders.map((item, index) => (
           <Grid container spacing={{ xs: 2, sm: 4, md: 6 }} key={index}>
