@@ -3,7 +3,6 @@ import { createYoga } from 'graphql-yoga'
 import 'reflect-metadata'; // must come before buildSchema
 import { buildSchemaSync } from "type-graphql"
 
-import { AuthResolver } from '../../graphql/auth/resolver'
 import { nextAuthChecker } from '../../graphql/auth/checker';
 import { VendorResolver } from '../../graphql/vendors/resolver';
 import { printSchema } from 'graphql';

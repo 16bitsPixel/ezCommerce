@@ -34,7 +34,7 @@ export function OrderList() {
         setOrders(data)
         console.log("order_id: ", orders)
       })
-  }, [])
+  }, []) // eslint-disable-line
 
   const handleCheckStatus = async (orderId: string) => {
     const response = await fetch(`http://localhost:3015/api/v0/order/${orderId}/status`, {
