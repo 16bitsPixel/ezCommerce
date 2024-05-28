@@ -31,14 +31,25 @@ export class OrderService {
     return order;
   }
 
-  public async getAll(): Promise<Order[]> {
-    const select = 'SELECT * FROM orders';
-    // select += 'ORDER BY date ASC''
-    const query = {
+  public async getAll(accountId: string | undefined): Promise<Order[] | undefined> {
+    let select = 'SELECT * FROM orders';
+    let query = {
       text: select,
-      values: [],
+      values: [] as string[],
     };
+    if (accountId) {
+      select += ' WHERE account_id = $1';
+      query = {
+        text: select,
+        values: [accountId],
+      };
+    }
+    // select += 'ORDER BY date ASC''
+    console.log(query);
     const {rows: orderRow} = await pool.query(query);
+    if (orderRow.length === 0) {
+      return undefined;
+    }
     const orders: Order[] = [];
     for (let i = 0; i < orderRow.length; i++) {
       const selectProducts = 'SELECT product_id, quantity FROM orderDetails WHERE order_id = $1';

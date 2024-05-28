@@ -99,7 +99,7 @@ export function Login() {
           }
 
 
-        if (cart) {
+          if (cart) {
             // Go through cart items and call addToCart for each
             for (const item of cart) {
               console.log("Adding item to cart:", item);
@@ -109,9 +109,9 @@ export function Login() {
             console.log("Cart is empty or undefined.");
           }
           // go through cart items and call addToCart for each
-        //   for (const item of cart) {
-        //     addToCart({id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken})
-        //   }
+          //   for (const item of cart) {
+          //     addToCart({id: item.id, quantity: item.quantity, accessToken: json.data.login.accessToken})
+          //   }
 
           localStorage.removeItem('cart');
 

@@ -1,14 +1,19 @@
-import { Query, Resolver, Arg, Mutation} from "type-graphql"
+import { Query, Resolver, Arg, Mutation, Authorized, Ctx} from "type-graphql"
+import type { NextApiRequest as Request } from 'next'
+
 
 import { Order, InputOrder } from "./schema"
 import { OrderService } from "./service"
 
 @Resolver()
 export class OrderResolver {
+  @Authorized("member")
   @Query(() => [Order])
-  async order(): Promise<Order[]> {
+  async order(
+    @Ctx() request: Request
+  ): Promise<Order[]> {
     // console.log(`User requesting books is: ${request.user.id})`)
-    return new OrderService().getAll()
+    return new OrderService().getAll(request.user.id);
   }
 
   @Query(() => Order, { nullable: true })
