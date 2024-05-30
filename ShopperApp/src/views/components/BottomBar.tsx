@@ -17,8 +17,8 @@ export function BottomBar() {
   const { t } = useTranslation('common');
   const router = useRouter();
   
-  const loginContext = React.useContext(LoginContext)
-  const {isSmallScreen, setSmallScreen} = React.useContext(ScreenSizeContext)
+  const loginContext = React.useContext(LoginContext);
+  const { isSmallScreen, setSmallScreen } = React.useContext(ScreenSizeContext);
   const [value, setValue] = React.useState(0);
 
   React.useEffect(() => {
@@ -30,7 +30,28 @@ export function BottomBar() {
     return () => {
       window.removeEventListener('resize', checkScreenSize);
     };
-  })
+  }, [setSmallScreen]);
+
+  React.useEffect(() => {
+    // Update the value state based on the current route
+    switch (router.pathname) {
+      case '/':
+        setValue(0);
+        break;
+      case '/order':
+        setValue(2);
+        break;
+      case '/cart':
+        setValue(3);
+        break;
+      case '/login':
+        setValue(4);
+        break;
+      default:
+        setValue(0);
+        break;
+    }
+  }, [router.pathname]);
 
   const handleChangeLocale = () => {
     const changeTo = router.locale === 'en' ? 'es' : 'en';
@@ -39,7 +60,19 @@ export function BottomBar() {
 
   const handleSignIn = () => {
     router.push('/login');
-  }
+  };
+
+  const handleOrder = () => {
+    router.push('/order');
+  };
+
+  const handleCart = () => {
+    router.push('/cart');
+  };
+
+  const handleHome = () => {
+    router.push('/');
+  };
 
   const handleLogout = () => {
     loginContext.setAccessToken('');
@@ -47,24 +80,41 @@ export function BottomBar() {
     router.push('/');
   };
 
+  const handleNavigationChange = (event:any, newValue:any) => {
+    setValue(newValue);
+    switch (newValue) {
+      case 0:
+        handleHome();
+        break;
+      case 1:
+        handleChangeLocale();
+        break;
+      case 2:
+        handleOrder();
+        break;
+      case 3:
+        handleCart();
+        break;
+      case 4:
+        loginContext.accessToken.length < 1 ? handleSignIn() : handleLogout();
+        break;
+      default:
+        break;
+    }
+  };
+
   if (!isSmallScreen) {
-    return null
+    return null;
   } else {
     return (
       <Box className='bottomBarContainer'>
         <BottomNavigation
           showLabels
           value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+          onChange={handleNavigationChange}
         >
           <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('home')} icon={<HomeIcon />} />
-          <BottomNavigationAction
-            label={t('change-locale')}
-            icon={<SettingsBackupRestoreIcon />}
-            onClick={handleChangeLocale} 
-          />    
+          <BottomNavigationAction label={t('change-locale')} icon={<SettingsBackupRestoreIcon />} />
           <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('orders')} icon={<LocalShippingIcon />} />
           <BottomNavigationAction sx={{ minWidth: "70px" }} label={t('cart')} icon={<ShoppingCartIcon />} />
           {loginContext.accessToken.length < 1 ? (
@@ -72,14 +122,12 @@ export function BottomBar() {
               sx={{ minWidth: "70px" }}
               label={t('sign-in')}
               icon={<LoginIcon />}
-              onClick={handleSignIn}
             />
           ) : (
             <BottomNavigationAction
               sx={{ minWidth: "70px" }}
               label={t('logout')}
               icon={<LogoutIcon />}
-              onClick={handleLogout}
             />
           )}
         </BottomNavigation>

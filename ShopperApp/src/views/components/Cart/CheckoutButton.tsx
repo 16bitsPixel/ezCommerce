@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { LoginContext } from "@/context/Login";
 import { Product } from "@/graphql/product/schema";
 import { useRouter } from 'next/router';
+import { Button } from "@mui/material";
 
 export function CheckoutButton (){
 
@@ -84,37 +85,10 @@ export function CheckoutButton (){
   return (
     <form onSubmit={handleSubmit}>
       <section>
-        <button type="submit" role="link" aria-label='checkout-button'>
+        <Button type="submit" role="link" aria-label='checkout-button' variant="contained">
           {t('proceed-to-checkout')}
-        </button>
+        </Button>
       </section>
-      <style jsx>
-        {`
-        section {
-          background: #ffffff;
-          display: flex;
-          flex-direction: column;
-          width: 400px;
-          height: 112px;
-          border-radius: 6px;
-          justify-content: space-between;
-        }
-        button {
-          height: 36px;
-          background: #556cd6;
-          border-radius: 4px;
-          color: white;
-          border: 0;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-        }
-        button:hover {
-          opacity: 0.8;
-        }
-      `}
-      </style>
     </form>
   );
 }
