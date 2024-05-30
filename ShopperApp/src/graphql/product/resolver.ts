@@ -29,4 +29,11 @@ export class ProductResolver {
   ): Promise<Product | undefined> {
     return new ProductService().get(productId);
   }
+
+  @Query(() => [Product])
+  async searchProducts(
+    @Arg("query") query: string
+  ): Promise<Product[]> {
+    return new ProductService().search(query);
+  }
 }

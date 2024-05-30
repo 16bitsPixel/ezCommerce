@@ -21,5 +21,10 @@ export class ProductService{
     const res = await fetch(`http://localhost:3012/api/v0/product/product/?productId=${productId}`)
     return res.json();
   }
+
+  async search(query: string): Promise<Product[]> {
+    const res = await fetch(`http://localhost:3012/api/v0/product/search?query=${query}`);
+    return res.json();
+  }
 }
 
