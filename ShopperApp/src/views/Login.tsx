@@ -23,7 +23,7 @@ interface addToCartParams {
 
 const addToCart = ({id, quantity, accessToken }: addToCartParams) => {
   const query = {
-    query: `query addToCart {
+    query: `mutation addToCart {
       addToCart(productId: "${id}", quantity: ${quantity}) {
         id, quantity
       }
