@@ -14,7 +14,7 @@ import { Box, Typography, Divider } from '@mui/material';
 
 interface ProductInfoProps {
   name: string;
-  description: string;
+  description: string[];
   price: number;
   // rating: number;
 }
@@ -29,9 +29,11 @@ export function ProductInformation({name, description, price/*, rating*/}: Produ
       <Typography variant="h4" gutterBottom>
         {price}
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        {description}
-      </Typography>
+      {description.map((desc, index) => (
+        <li key={index} style={{ fontSize: '18px', paddingBottom: '18px' }}>
+          {desc}
+        </li>
+      ))}
       <Divider/>
     </Box>
   )

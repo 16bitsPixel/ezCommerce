@@ -19,7 +19,7 @@ export type UUID = string;
 export interface Product {
   id: UUID,
   name: string,
-  description: string,
+  description: string[],
   price: number,
   rating: number,
   image: string

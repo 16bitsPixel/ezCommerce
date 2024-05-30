@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Arg, Ctx, Authorized, Mutation, Args} from "type-graphql"
+import { Query, Resolver, Arg, Ctx, Authorized, Mutation} from "type-graphql"
 
 import { CartItem } from "./schema"
 import { CartService } from "./service"

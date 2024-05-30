@@ -18,8 +18,7 @@ import Grid from '@mui/material/Grid';
 
 import { Product } from '@/graphql/product/schema';
 import {ProductImage} from './components/Product/ProductImage';
-import Link from 'next/link';
-import { Typography } from '@mui/material';
+import { Divider, Typography, Box } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -157,32 +156,35 @@ export function ProductView({id}: ProductProps) {
       <ScreenSizeProvider>
         <TopBar/>
         {product?
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            <Grid item xs={8} sm={5} md={5}>
-              <ProductImage image={product.image}/>
+          <Box sx={{margin: '5vh 20vw 0 20vw'}}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item xs={8} sm={5} md={5}>
+                <ProductImage image={product.image}/>
+              </Grid>
+              <Grid item xs={4} sm={4} md={4}>
+                <ProductInformation name={product.name} description={product.description} price={product.price} /*rating={product.rating}*//>
+              </Grid>
+              <Grid item xs={12} sm={3} md={3}>
+                {/*TODO: STYLIZE BUTTON ADD TO CART */}
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Quantity</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={quantity}
+                    label="quantity"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={1}>Quantity: 1</MenuItem>
+                    <MenuItem value={2}>Quantity: 2</MenuItem>
+                    <MenuItem value={3}>Quantity: 3</MenuItem>
+                  </Select>
+                </FormControl>
+                <button onClick={handleAddToCart}>Add to Cart</button>
+              </Grid>
             </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <ProductInformation name={product.name} description={product.description} price={product.price} /*rating={product.rating}*//>
-            </Grid>
-            <Grid item xs={12} sm={3} md={3}>
-              {/*TODO: STYLIZE BUTTON ADD TO CART */}
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Quantity</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={quantity}
-                  label="quantity"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={1}>Quantity: 1</MenuItem>
-                  <MenuItem value={2}>Quantity: 2</MenuItem>
-                  <MenuItem value={3}>Quantity: 3</MenuItem>
-                </Select>
-              </FormControl>
-              <button onClick={handleAddToCart}>Add to Cart</button>
-            </Grid>
-          </Grid> :
+            <Divider/>
+          </Box> :
           null
         }
         <BottomBar/>
