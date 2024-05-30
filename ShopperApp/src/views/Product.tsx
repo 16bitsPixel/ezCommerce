@@ -26,6 +26,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { useRouter } from 'next/router';
+
 import { LoginContext } from '../context/Login';
 
 interface addToCartParams {
@@ -33,11 +35,12 @@ interface addToCartParams {
   quantity: number;
   loginContext: any;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  router: any;
 }
 
-const addToCart = ({id, quantity, loginContext, setError }: addToCartParams) => {
+const addToCart = ({id, quantity, loginContext, setError, router }: addToCartParams) => {
   const query = {
-    query: `query addToCart {
+    query: `mutation addToCart {
       addToCart(productId: "${id}", quantity: ${quantity}) {
         id, quantity
       }
@@ -55,6 +58,7 @@ const addToCart = ({id, quantity, loginContext, setError }: addToCartParams) => 
     })
     .then(() => {
       setError('')
+      router.push('/cart');
     })
     .catch((e) => {
       setError(e.toString())
@@ -103,6 +107,7 @@ export function ProductView({id}: ProductProps) {
   const [error, setError] = React.useState('')
   const loginContext = React.useContext(LoginContext);
   const [quantity, setQuantity] = React.useState('1');
+  const router = useRouter();
 
   const handleChange = (event: SelectChangeEvent) => {
     setQuantity(event.target.value as string);
@@ -132,8 +137,9 @@ export function ProductView({id}: ProductProps) {
     
         // Update localStorage with the updated cart
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+        router.push('/cart');
       } else {
-        addToCart({id: product.id, quantity: parseInt(quantity, 10), loginContext, setError});
+        addToCart({id: product.id, quantity: parseInt(quantity, 10), loginContext, setError, router});
       }
     }
   };
@@ -174,9 +180,7 @@ export function ProductView({id}: ProductProps) {
                   <MenuItem value={3}>Quantity: 3</MenuItem>
                 </Select>
               </FormControl>
-              <Link href={`/cart`}>
-                <button onClick={handleAddToCart}>Add to Cart</button>
-              </Link>
+              <button onClick={handleAddToCart}>Add to Cart</button>
             </Grid>
           </Grid> :
           null

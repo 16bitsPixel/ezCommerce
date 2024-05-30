@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Arg, Ctx, Authorized} from "type-graphql"
+import { Query, Resolver, Arg, Ctx, Authorized, Mutation} from "type-graphql"
 
 import { CartItem } from "./schema"
 import { CartService } from "./service"
@@ -28,7 +28,7 @@ export class CartResolver {
   }
 
   @Authorized("member")
-  @Query(() => CartItem)
+  @Mutation(() => CartItem)
   async addToCart(
     @Ctx() request: Request,
     @Arg("productId") productId: string,
