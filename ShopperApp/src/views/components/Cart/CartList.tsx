@@ -10,7 +10,6 @@ import { Button } from '@mui/base';
 import { LoginContext } from '../../../context/Login';
 import { ProductContext } from '@/context/Product';
 
-// TODO: fetch account cart from endpoint
 interface FetchCartParams {
   setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
   loginContext: any;
@@ -88,6 +87,42 @@ const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
     });
 };
 
+interface DeleteCartItemParams {
+  newCart: CartItem[];
+  loginContext: any;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParams) => {
+  const query = {
+    query: `mutation DeleteCartItem {
+      setCart(newCart: ${JSON.stringify(newCart)}) {
+        id, quantity
+      }
+    }`
+  };
+
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${loginContext.accessToken}`
+    },
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.errors) {
+        setError(json.errors[0].message);
+      } else {
+        setError('');
+      }
+    })
+    .catch((e) => {
+      setError(e.toString());
+    });
+};
+
 /**
  * Workspace drawer
  * @return {JSX}
@@ -123,7 +158,6 @@ export function CartList() {
 
       const productResults = await Promise.all(productPromises);
       setProducts(productResults.filter((product) => product !== undefined));
-      
     };
 
     loadProducts();
@@ -132,11 +166,18 @@ export function CartList() {
   const handleDeleteItem = (index: number) => {
     // Create a copy of the cart
     const updatedCart = [...cart];
+
     // Remove the item at the specified index
     updatedCart.splice(index, 1);
-    // Update state and localStorage
+
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    if (loginContext.accessToken.length < 1) {
+      // if not logged in
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    } else {
+      // if logged in then set cart endpoint
+      deleteCartItem({newCart: updatedCart, loginContext, setError});
+    }
   };
 
   // TODO: FIX IMAGE SIZING AND GRID SIZING
@@ -161,7 +202,7 @@ export function CartList() {
                 {item.name}
               </Typography>
               <Button onClick={() => handleDeleteItem(index)}>
-              Delete
+                Delete
               </Button>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>

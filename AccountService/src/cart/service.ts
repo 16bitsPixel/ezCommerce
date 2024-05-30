@@ -10,6 +10,25 @@ export class CartService {
     const {rows} = await pool.query(query);
     return rows[0];
   }
+
+  public async setCart(newCart: CartItem[], accountId: string): Promise<CartItem[]> {
+    console.log('new cart: ', newCart);
+    
+    // query to set cart::jsonb to the cart variable
+    const update = `
+        UPDATE account
+        SET cart = $2::jsonb
+        WHERE id = $1
+        RETURNING cart
+      `;
+    const addToCartQuery = {
+      text: update,
+      values: [accountId, JSON.stringify(newCart)]
+    };
+
+    const result = await pool.query(addToCartQuery);
+    return result.rows[0].cart;
+  }
     
   public async addToCart(productAccountInfo: CartAdd, accountId: string): Promise<CartItem> {
     const {productId, quantity } = productAccountInfo;

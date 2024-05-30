@@ -63,4 +63,30 @@ export class CartService {
         });
     });
   }
+
+  async setCart(newCart: CartItem[], accessToken: string): Promise<CartItem[]> {
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:3011/api/v0/Cart', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(newCart)
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw res
+          }
+          return res.json()
+        })
+        .then((data) => {
+          resolve(data)
+        })
+        .catch(() => {
+          // console.log(err)
+          reject(new Error("Add Cart Error"))
+        });
+    });
+  }
 }

@@ -8,7 +8,8 @@ import {
   Request,
   Route,
   SuccessResponse,
-  Security
+  Security,
+  Put
 } from 'tsoa';
 import * as express from 'express';
 import { CartAdd, CartItem } from '.';
@@ -33,5 +34,15 @@ export class CartController extends Controller {
     @Request() request: express.Request
   ): Promise<CartItem> {
     return new CartService().addToCart(productAccountInfo,`${request.user?.id}`);
+  }
+
+  @Put()
+  @Security("jwt", ["member"])
+  @SuccessResponse('201', 'Added to Cart')
+  public async SetCart(
+    @Body() newCart: CartItem[],
+    @Request() request: express.Request
+  ): Promise<CartItem[]> {
+    return new CartService().setCart(newCart, `${request.user?.id}`);
   }
 }
