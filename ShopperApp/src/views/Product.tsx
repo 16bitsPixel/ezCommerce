@@ -156,7 +156,7 @@ export function ProductView({id}: ProductProps) {
       <ScreenSizeProvider>
         <TopBar/>
         {product?
-          <Box sx={{margin: '5vh 20vw 0 20vw'}}>
+          <Box sx={{margin: '5vh 10vw 0 10vw'}}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item xs={8} sm={5} md={5}>
                 <ProductImage image={product.image}/>

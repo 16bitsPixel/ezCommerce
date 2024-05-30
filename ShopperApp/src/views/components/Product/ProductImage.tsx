@@ -21,7 +21,7 @@ export function ProductImage({image}: ProductImageProps) {
     <Card>
       <CardMedia
         component="img"
-        height="500vw"
+        height="800vw"
         image={image}
         sx={{
           ...styles.cardMedia,

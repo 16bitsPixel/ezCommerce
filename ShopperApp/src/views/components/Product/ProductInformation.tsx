@@ -30,7 +30,7 @@ export function ProductInformation({name, description, price/*, rating*/}: Produ
         {price}
       </Typography>
       {description.map((desc, index) => (
-        <li key={index} style={{ fontSize: '18px', paddingBottom: '18px' }}>
+        <li key={index} style={{ fontSize: '1rem', paddingBottom: '18px' }}>
           {desc}
         </li>
       ))}
