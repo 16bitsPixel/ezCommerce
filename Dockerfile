@@ -33,6 +33,7 @@ COPY ShopperApp/package-lock.json /home/app/ShopperApp/
 COPY ShopperApp/next.config.js /home/app/ShopperApp/
 COPY ShopperApp/next-i18next.config.js /home/app/ShopperApp/
 COPY ShopperApp/public/ /home/app/ShopperApp/public/
+COPY ShopperApp/.env /home/app/ShopperApp/
 
 COPY AdminApp/.next/ /home/app/AdminApp/.next/
 COPY AdminApp/package.json /home/app/AdminApp/

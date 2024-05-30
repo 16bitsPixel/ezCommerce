@@ -9,7 +9,7 @@ const nextConfig = {
     eslint: {
       ignoreDuringBuilds: true
     },
-    assetPrefix: '/vendor',
+    basePath:'/vendor'
   };
   
   module.exports = nextConfig;

@@ -21,7 +21,7 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const query = {query: `mutation signup{signup(role: "vendor" firstname: "${data.get('firstName')}" lastname: "${data.get('lastName')}"email: "${data.get('email')}" password: "${data.get('password')}")}`}
-    fetch('/api/graphql', {
+    fetch('/vendor/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
       headers: {

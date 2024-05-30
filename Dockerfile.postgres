@@ -1,7 +1,7 @@
 # Start from the official Postgres image
 FROM postgres:alpine
 
-# Copy initialization scripts
+# Copy all scripts for dummy data that we want in the image
 COPY ./sql/databases.sql /docker-entrypoint-initdb.d/1.databases.sql
 COPY ./AccountService/sql/schema.sql /docker-entrypoint-initdb.d/2.schema.sql
 COPY ./AccountService/sql/data.sql /docker-entrypoint-initdb.d/3.data.sql

@@ -76,8 +76,6 @@
     "shopperapp-test": "cd ShopperApp && npm run test -- --silent",
     "vendorapp-test": "cd VendorApp && npm run test -- --silent",
     "orderservice-test": "cd OrderService && npm run test -- --silent"
-
-
   },
   "devDependencies": {
     "concurrently": "*"

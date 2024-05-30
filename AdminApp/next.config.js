@@ -9,6 +9,6 @@ const nextConfig = {
     eslint: {
       ignoreDuringBuilds: true
     },
-    assetPrefix: '/admin',
+    basePath:'/admin',
   };
 module.exports = nextConfig;

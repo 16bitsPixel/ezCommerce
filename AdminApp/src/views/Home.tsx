@@ -21,7 +21,7 @@ export interface Vendor{
 }
 const getPendingVendors = (setpendingVendors:React.Dispatch<React.SetStateAction<Vendor[]>>, accessToken:string) => {
   const query = {query: `query pendingVendors { getpendingVendors {vendorId,name}}`}
-  fetch('/api/graphql', {
+  fetch('/admin/api/graphql', {
     method: 'POST',
     body: JSON.stringify(query),
     headers: {
@@ -44,7 +44,7 @@ const getPendingVendors = (setpendingVendors:React.Dispatch<React.SetStateAction
 }
 export const getVendors = (setpendingVendors:React.Dispatch<React.SetStateAction<Vendor[]>>, accessToken:string) => {
   const query = {query: `query Vendors { getVendors {vendorId,name}}`}
-  fetch('/api/graphql', {
+  fetch('/admin/api/graphql', {
     method: 'POST',
     body: JSON.stringify(query),
     headers: {

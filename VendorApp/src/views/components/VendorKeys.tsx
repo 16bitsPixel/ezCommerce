@@ -19,7 +19,7 @@ export const VendorKeys = () => {
       variables: { vendorId: loginContext.userId },
     };
 
-    fetch('/api/graphql', {
+    fetch('/vendor/api/graphql', {
       method: 'POST',
       body: JSON.stringify(mutation),
       headers: {
@@ -52,7 +52,7 @@ export const VendorKeys = () => {
         variables: { vendorId: loginContext.userId },
       };
 
-      fetch('/api/graphql', {
+      fetch('/vendor/api/graphql', {
         method: 'POST',
         body: JSON.stringify(query),
         headers: {

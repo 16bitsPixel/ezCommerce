@@ -31,7 +31,7 @@ const PendingVendors = (props: { initialVendors: Vendor[], state: React.Dispatch
         }
       }
     };
-    fetch('/api/graphql', {
+    fetch('/admin/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
       headers: {

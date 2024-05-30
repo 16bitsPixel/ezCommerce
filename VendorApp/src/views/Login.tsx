@@ -31,7 +31,7 @@ export default function Login() {
   const onSubmit = (event: any) => {
     event.preventDefault();
     const query = {query: `query login{login(email: "${user.email}" password: "${user.password}") { name accessToken role}}`}
-    fetch('/api/graphql', {
+    fetch('/vendor/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
       headers: {
@@ -44,6 +44,7 @@ export default function Login() {
       .then((json) => {
         if (json.errors) {
           alert(`${json.errors[0].message}`)
+          
         } else if(json.data.login.role != "vendor") {
           alert('Only vendors can log in')
         } 
@@ -54,7 +55,7 @@ export default function Login() {
             }`
           };
 
-          fetch('/api/graphql', {
+          fetch('/vendor/api/graphql', {
             method: 'POST',
             body: JSON.stringify(verifyQuery),
             headers: {
