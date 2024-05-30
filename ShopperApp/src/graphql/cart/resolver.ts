@@ -9,7 +9,7 @@
 #######################################################################
 */
 
-import { Query, Resolver, Arg, Ctx, Authorized} from "type-graphql"
+import { Query, Resolver, Arg, Ctx, Authorized, Mutation} from "type-graphql"
 
 import { CartItem } from "./schema"
 import { CartService } from "./service"
@@ -28,7 +28,7 @@ export class CartResolver {
   }
 
   @Authorized("member")
-  @Query(() => CartItem)
+  @Mutation(() => CartItem)
   async addToCart(
     @Ctx() request: Request,
     @Arg("productId") productId: string,
@@ -36,5 +36,15 @@ export class CartResolver {
   ): Promise<CartItem> {
     // console.log(`User requesting books is: ${request.user.id})`)
     return new CartService().addToCart(productId, quantity, request.user.accessToken)
+  }
+
+  @Authorized("member")
+  @Mutation(() => [CartItem])
+  async setCart(
+    @Ctx() request: Request,
+    @Arg('newCart', () => [CartItem]) newCart: CartItem[],
+  ): Promise<CartItem[]> {
+    // console.log(`User requesting books is: ${request.user.id})`)
+    return new CartService().setCart(newCart, request.user.accessToken)
   }
 }

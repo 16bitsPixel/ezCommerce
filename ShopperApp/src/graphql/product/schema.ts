@@ -7,8 +7,8 @@ export class Product {
     id!: string
   @Field()
     name!: string
-  @Field() 
-    description!: string
+  @Field(() => [String]) 
+    description!: string[]
   @Field()
     price!: number
   @Field()

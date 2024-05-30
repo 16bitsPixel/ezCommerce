@@ -47,7 +47,6 @@ COPY VendorApp/package-lock.json /home/app/VendorApp/
 COPY VendorApp/next.config.js/ /home/app/VendorApp/
 COPY VendorApp/public/ /home/app/VendorApp/public/
 
-
 RUN npm run cis
 
 CMD npm run start
