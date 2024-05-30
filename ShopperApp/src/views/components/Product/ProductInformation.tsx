@@ -22,19 +22,19 @@ interface ProductInfoProps {
 export function ProductInformation({name, description, price/*, rating*/}: ProductInfoProps) {
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom style = {{fontWeight: 'bold'}}>
         {name}
       </Typography>
-      <Divider/>
+      <Divider style = {{margin: '1vh 0 1vh 0'}}/>
       <Typography variant="h4" gutterBottom>
-        {price}
+        ${price}
       </Typography>
       {description.map((desc, index) => (
-        <li key={index} style={{ fontSize: '1rem', paddingBottom: '18px' }}>
+        <li key={index} style={{ fontSize: '1.2 rem', paddingBottom: '18px' }}>
           {desc}
         </li>
       ))}
-      <Divider/>
+      <Divider style = {{margin: '1vh 0 1vh 0'}}/>
     </Box>
   )
 }
