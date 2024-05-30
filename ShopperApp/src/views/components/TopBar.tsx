@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ScreenSizeContext } from '@/context/ScreenSize';
 import { LoginContext } from '../../context/Login';
+import { SearchContext } from '@/context/SearchContext';
 
 export function TopBar() {
   const { t } = useTranslation('common');
@@ -18,6 +19,7 @@ export function TopBar() {
   const changeTo = router.locale === 'en' ? 'es' : 'en'
   const loginContext = React.useContext(LoginContext)
   const {isSmallScreen} = React.useContext(ScreenSizeContext)
+  const { setSearchTerm } = React.useContext(SearchContext);
 
   const handleSignIn = () => {
     router.push('/login');
@@ -39,6 +41,10 @@ export function TopBar() {
 
   const handleHome = () => {
     router.push('/');
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -64,6 +70,7 @@ export function TopBar() {
               className="styledInputBase"
               placeholder={t('search-ezCommerce') || 'Search EzCommerce'}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleSearchChange}
             />
           </div>
           {!isSmallScreen && (

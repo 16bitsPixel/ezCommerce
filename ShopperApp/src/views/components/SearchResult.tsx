@@ -1,31 +1,27 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2020-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
 import React from 'react';
 import { SearchContext } from '@/context/SearchContext';
 import { Product } from '../../graphql/product/schema'
 import ProductCard from './ProductCard';
 import Grid from '@mui/material/Grid';
 
-interface FetchProductsParams {
+interface FetchSearchResultsParams {
+  searchTerm: string;
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchProducts = ({ setProducts, setError }: FetchProductsParams) => {
+
+const fetchSearchResults = ({ searchTerm, setProducts, setError }: FetchSearchResultsParams) => {
   const query = {
-    query: `query product {
-      product {
+    query: `query searchProducts($searchTerm: String!) {
+      searchProducts(query: $searchTerm) {
         id, name, price, rating, image
       }
-    }`}
+    }`,
+    variables: {
+      searchTerm,
+    },
+  };
   fetch('/api/graphql', {
     method: 'POST',
     body: JSON.stringify(query),
@@ -46,18 +42,18 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams) => {
     })
 };
 
-export function TrendingList() {
-  const searchContext = React.useContext(SearchContext)
+export function SearchResult() {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out')
+  const { searchTerm } = React.useContext(SearchContext);
 
   console.log(error);
 
   React.useEffect(() => {
-    fetchProducts({setProducts, setError});
-  }, []);
+    fetchSearchResults({ searchTerm, setProducts, setError });
+  }, [searchTerm]);
 
-  if (searchContext.searchTerm.length < 1) {
+  if (searchTerm.length > 0) {
     return (
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {products.map((product: Product, index) => (
