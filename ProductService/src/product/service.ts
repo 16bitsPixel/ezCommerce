@@ -72,6 +72,25 @@ export class ProductService {
       rating: rows[0].product.rating,
       image: rows[0].product.image,
     };
+  }
 
+  public async search(query: string): Promise<Product[]> {
+    const select = `
+      SELECT * FROM product
+      WHERE product->>'name' ILIKE $1
+      OR product->>'description' ILIKE $1
+    `;
+    const queryParams = {
+      text: select,
+      values: [`%${query}%`],
+    };
+    const {rows} = await pool.query(queryParams);
+    const products = [];
+    for (const row of rows) {
+      const product = row.product;
+      product.id = row.id;
+      products.push(product)
+    }
+    return products
   }
 }

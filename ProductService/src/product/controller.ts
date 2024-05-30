@@ -52,4 +52,15 @@ export class ProductController extends Controller {
     return new ProductService().addProduct(productInfo)
   }
 
+  @Get('search')
+  @Response('404', 'No Products Found')
+  public async searchProducts(
+    @Query() query: string
+  ): Promise<Product[]> {
+    const products = await new ProductService().search(query);
+    if (!products || products.length === 0) {
+      this.setStatus(404);
+    }
+    return products;
+  }
 }
