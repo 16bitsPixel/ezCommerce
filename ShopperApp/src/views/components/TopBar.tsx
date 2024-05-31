@@ -52,9 +52,11 @@ export function TopBar() {
       <CssBaseline />
       <AppBar position="static" sx={{ bgcolor: '#131921' }}>
         <Toolbar className="topBar" style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button onClick={handleHome} style={{ color: 'white', marginRight: '8px' }}>
-            ezCommerce
-          </Button>
+          {!isSmallScreen && (
+            <Button onClick={handleHome} style={{ color: 'white', marginRight: '8px' }}>
+                ezCommerce
+            </Button>
+          )}
           {!isSmallScreen && (
             <div style={{ flexGrow: 0, marginRight: 'auto' }}>
               <Link href="/" locale={changeTo} passHref>

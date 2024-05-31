@@ -3,7 +3,15 @@ import type { Order, InputOrder } from './schema'
 export class OrderService{
   async getAll(accountId: string): Promise<Order[]> {
     const res = await fetch(`http://localhost:3015/api/v0/order?accountId=${accountId}`)
-    return res.json()
+    const orders = await res.json();
+    return orders.map((order: any) => ({
+      orderId: order.order_id,
+      accountId: order.account_id,
+      productId: order.product_id,
+      date: order.date,
+      status: order.status,
+      quantities: order.quantities,
+    }));
   }
 
   async get(orderId: string): Promise<Order> {

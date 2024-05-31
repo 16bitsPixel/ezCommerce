@@ -13,7 +13,9 @@ export class OrderResolver {
     // @Ctx() request: Request
     @Arg('accountId', () => String) accountId: string
   ): Promise<Order[]> {
-    return new OrderService().getAll(accountId);
+    console.log("here")
+    // console.log(`User requesting books is: ${request.user.id})`)
+    return new OrderService().getAll(request.user.id);
   }
 
   @Query(() => Order, { nullable: true })
