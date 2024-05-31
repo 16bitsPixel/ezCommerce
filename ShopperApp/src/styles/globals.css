@@ -90,6 +90,11 @@ body {
     border-bottom-right-radius: 5px; 
     
   }
+
+  .searchIcon:hover {
+    background-color: #FEBD69;
+    color: black;
+  }
   
   .styledInputBase {
     color: black;
