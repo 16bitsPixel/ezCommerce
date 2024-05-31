@@ -11,14 +11,14 @@
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { BottomBar } from './components/BottomBar';
 import {TopBar} from './components/TopBar'
-import { OrderList } from './components/Order/OrderList';
+import { OrderBox } from './components/Order/OrderBox';
 
 export function Order() {
   return (
     <>
       <ScreenSizeProvider>
         <TopBar/>
-        <OrderList/>
+        <OrderBox />
         <BottomBar/>
       </ScreenSizeProvider>
     </>
