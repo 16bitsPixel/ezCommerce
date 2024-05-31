@@ -72,29 +72,37 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
   }, []);
 
   return (
-    <div className="OrderDiv">
-      <Grid container justifyContent="center" spacing={2}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
+      <Grid container spacing={2} sx={{ maxWidth: 'lg', width: '100%' }}>
         {products.map((product: Product, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4}>
-            <Card>
+          <Grid item xs={12} key={index}>
+            <Card sx={{ display: 'flex', alignItems: 'center' }}>
               <CardMedia
                 component="img"
-                height="200"
+                sx={{ width: 150, height: 150, objectFit: 'cover' }}
                 image={product.image}
                 alt={product.name}
               />
-              <CardContent>
-                <Typography variant="h5" component="div">
+              <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, padding: 2 }}>
+                <Typography variant="h6" component="div">
                   {product.name}
+                </Typography>
+              </Box>
+              <Box sx={{ padding: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Quantity: {quantity[index]}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Price: ${product.price}
                 </Typography>
-              </CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Status: {status}
+                </Typography>
+              </Box>
             </Card>
           </Grid>
         ))}
       </Grid>
-    </div>
+    </Box>
   );
 }

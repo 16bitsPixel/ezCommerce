@@ -60,16 +60,14 @@ export function OrderBox() {
   }, []);
   // The id and quantity values are both arrays
   return (
-    <div className='OrderDiv'>
+    <div className='OrderDiv' >
       <Box>
         {orders.map((order: Order, index) => (
-          <Grid item xs={2} sm={2} md={2} key={index}>
-            <OrderCard key= {order.orderId}
-              ids={order.productId} 
-              date = {order.date} 
-              status = {order.status} 
-              quantity = {order.quantities}/>
-          </Grid>
+          <OrderCard key= {order.orderId}
+            ids={order.productId} 
+            date = {order.date} 
+            status = {order.status} 
+            quantity = {order.quantities}/>
         ))}
       </Box>
     </div>
