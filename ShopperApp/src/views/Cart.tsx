@@ -33,7 +33,7 @@ export function Cart() {
           <CheckoutButton/>
         </ProductProvider>
         <div className='bottomBarContainer'>
-            <BottomBar/>
+          <BottomBar/>
         </div>
       </ScreenSizeProvider>
     </>

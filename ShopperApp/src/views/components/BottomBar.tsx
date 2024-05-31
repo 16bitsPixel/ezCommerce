@@ -23,7 +23,7 @@ export function BottomBar() {
 
   React.useEffect(() => {
     const checkScreenSize = () => {
-      setSmallScreen(window.innerWidth <= 900); 
+      setSmallScreen(window.innerWidth <= 1100); 
     };
     checkScreenSize(); 
     window.addEventListener('resize', checkScreenSize);
@@ -35,21 +35,21 @@ export function BottomBar() {
   React.useEffect(() => {
     // Update the value state based on the current route
     switch (router.pathname) {
-      case '/':
-        setValue(0);
-        break;
-      case '/order':
-        setValue(2);
-        break;
-      case '/cart':
-        setValue(3);
-        break;
-      case '/login':
-        setValue(4);
-        break;
-      default:
-        setValue(0);
-        break;
+    case '/':
+      setValue(0);
+      break;
+    case '/order':
+      setValue(2);
+      break;
+    case '/cart':
+      setValue(3);
+      break;
+    case '/login':
+      setValue(4);
+      break;
+    default:
+      setValue(0);
+      break;
     }
   }, [router.pathname]);
 
@@ -83,23 +83,23 @@ export function BottomBar() {
   const handleNavigationChange = (event:any, newValue:any) => {
     setValue(newValue);
     switch (newValue) {
-      case 0:
-        handleHome();
-        break;
-      case 1:
-        handleChangeLocale();
-        break;
-      case 2:
-        handleOrder();
-        break;
-      case 3:
-        handleCart();
-        break;
-      case 4:
-        loginContext.accessToken.length < 1 ? handleSignIn() : handleLogout();
-        break;
-      default:
-        break;
+    case 0:
+      handleHome();
+      break;
+    case 1:
+      handleChangeLocale();
+      break;
+    case 2:
+      handleOrder();
+      break;
+    case 3:
+      handleCart();
+      break;
+    case 4:
+      loginContext.accessToken.length < 1 ? handleSignIn() : handleLogout();
+      break;
+    default:
+      break;
     }
   };
 

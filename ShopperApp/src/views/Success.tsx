@@ -6,17 +6,17 @@ import { ScreenSizeProvider } from "@/context/ScreenSize";
 
 export function SuccessText() {
 
-    const { t } = useTranslation('common');
+  const { t } = useTranslation('common');
 
 
-    return (
-        <div>
-            <ScreenSizeProvider>
-                <TopBar />
-                    <h1 className='success'>{t('thank-you')}</h1>
-                <BottomBar />
-            </ScreenSizeProvider>
-        </div>
+  return (
+    <div>
+      <ScreenSizeProvider>
+        <TopBar />
+        <h1 className='success'>{t('thank-you')}</h1>
+        <BottomBar />
+      </ScreenSizeProvider>
+    </div>
 
-    )
+  )
 }
