@@ -1,4 +1,4 @@
-import { Field, ObjectType, ArgsType } from "type-graphql"
+import { Field, ObjectType, InputType } from "type-graphql"
 // import { Matches } from "class-validator";
 
 @ObjectType('order')
@@ -17,7 +17,7 @@ export class Order {
     quantities!: number[]
 }
 
-@ArgsType()
+@InputType()
 export class InputOrder {
   @Field()
     accountId!: string

@@ -12,6 +12,7 @@ export class OrderResolver {
   async order(
     @Ctx() request: Request
   ): Promise<Order[]> {
+    console.log("here")
     // console.log(`User requesting books is: ${request.user.id})`)
     return new OrderService().getAll(request.user.id);
   }

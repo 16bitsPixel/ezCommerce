@@ -44,8 +44,8 @@ export class OrderService {
         values: [accountId],
       };
     }
-    // select += 'ORDER BY date ASC''
-    console.log(query);
+
+    // console.log(query);
     const {rows: orderRow} = await pool.query(query);
     if (orderRow.length === 0) {
       return undefined;
@@ -64,12 +64,13 @@ export class OrderService {
         order_id: orderRow[i].id,
         account_id: orderRow[i].account_id,
         product_id: productIds,
-        date: orderRow[i].date,
-        status: orderRow[i].status,
+        date: orderRow[i].order_date,
+        status: orderRow[i].order_status,
         quantities: quantities,
       };
       orders.push(order);
     }
+    console.log("order: ", orders)
     return orders;
   }
 
