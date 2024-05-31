@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Typography, Divider, 
-  Grid, Card, CardMedia, CardContent } from '@mui/material';
+import { Box, Typography, Grid, Card, CardMedia} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 
@@ -66,11 +65,14 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out')
+  console.log(error);
 
   React.useEffect(() => {
     fetchProducts({setProducts, setError}, ids);
-  }, []);
-
+  }, [ids]);
+  const newDate = new Date(date);
+  const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);
+  console.log(date);
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
       <Grid container spacing={2} sx={{ maxWidth: 'lg', width: '100%' }}>
@@ -87,16 +89,19 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
                 <Typography variant="h6" component="div">
                   {product.name}
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>Status:</strong> {status}
+                </Typography>
               </Box>
               <Box sx={{ padding: 2 }}>
                 <Typography variant="body2" color="text.secondary">
-                  Quantity: {quantity[index]}
+                  <strong>Quantity:</strong> {quantity[index]}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Price: ${product.price}
+                  <strong>Price:</strong> ${product.price}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Status: {status}
+                  <strong>Date:</strong> {formattedDate}
                 </Typography>
               </Box>
             </Card>
