@@ -52,6 +52,12 @@ export function TopBar() {
     setSearchTerm(inputValue);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <Box className="centerContainer">
       <CssBaseline />
@@ -75,6 +81,7 @@ export function TopBar() {
               placeholder={t('search-ezCommerce') || 'Search EzCommerce'}
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleSearchChange}
+              onKeyDown={handleKeyDown}
             />
             <Button className="searchIcon" onClick={handleSearch}>
               <SearchIcon />
