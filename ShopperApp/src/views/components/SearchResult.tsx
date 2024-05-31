@@ -33,7 +33,6 @@ const fetchSearchResults = ({ searchTerm, setProducts, setError }: FetchSearchRe
       return res.json()
     })
     .then((json) => {
-      console.log(json.data)
       setError('')
       setProducts(json.data.searchProducts)
     })
@@ -54,7 +53,7 @@ export function SearchResult() {
     fetchSearchResults({ searchTerm, setProducts, setError });
   }, [searchTerm]);
 
-  if (products) {
+  if (searchTerm.length > 0) {
     return (
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {products.map((product: Product, index) => (
