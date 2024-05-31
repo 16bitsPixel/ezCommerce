@@ -10,10 +10,10 @@ export class OrderResolver {
   @Authorized("member")
   @Query(() => [Order])
   async order(
-    @Ctx() request: Request
+    // @Ctx() request: Request
+    @Arg('accountId', () => String) accountId: string
   ): Promise<Order[]> {
-    // console.log(`User requesting books is: ${request.user.id})`)
-    return new OrderService().getAll(request.user.id);
+    return new OrderService().getAll(accountId);
   }
 
   @Query(() => Order, { nullable: true })
