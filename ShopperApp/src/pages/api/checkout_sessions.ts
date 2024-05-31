@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         currency: 'usd',
         product_data: {
           name: item.name,
-          images: [item.image],
+          images: [item.image[0]],
         },
         unit_amount: Math.round(item.price * 100),
       },

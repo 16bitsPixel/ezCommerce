@@ -22,7 +22,7 @@ export interface Product {
   description: string[],
   price: number,
   rating: number,
-  image: string
+  image: string[]
 }
 export interface ProductAdd {
   name: string,

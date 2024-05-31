@@ -87,7 +87,7 @@ export function Gallery() {
       <ArrowBackIosIcon className ='arrow arrow-left'
         aria-label='arrow-left'
         onClick={prevSlide} />
-      {products.map((product: Product, idx) => (
+      {products.map((product: any, idx) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           key = {product.id} 

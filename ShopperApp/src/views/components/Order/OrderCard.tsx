@@ -83,7 +83,7 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
                 <CardMedia
                   component="img"
                   sx={{ width: 150, height: 150, objectFit: 'contain' }}
-                  image={product.image}
+                  image={product.image[0]}
                   alt={product.name}
                 />
               </Box>

@@ -13,6 +13,6 @@ export class Product {
     price!: number
   @Field()
     rating!: number
-  @Field()
-    image!: string
+  @Field(() => [String])
+    image!: string[]
 }

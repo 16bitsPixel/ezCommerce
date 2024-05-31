@@ -184,6 +184,26 @@ export function CartList() {
     }
   };
 
+  // Function to handle quantity change
+  const handleQuantityChange = (index: number, quantity: number) => {
+    const updatedCart = [...cart];
+    updatedCart[index].quantity = quantity;
+    setCart(updatedCart);
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    for (const item of products) {
+      const cartItem = cart.find((cartItem) => cartItem.id === item.id);
+      if (cartItem) {
+        totalPrice += item.price * cartItem.quantity;
+      }
+    }
+    return totalPrice;
+  };
+
+  const totalPrice = calculateTotalPrice();
+
   // TODO: FIX IMAGE SIZING AND GRID SIZING
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', padding: '16px' }}>
@@ -195,7 +215,7 @@ export function CartList() {
                 <Link href={`/product?id=${item.id}`}>
                   <CardMedia
                     component="img"
-                    image={item.image}
+                    image={item.image[0]}
                     alt={item.name}
                     aria-label="cardImage"
                     style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain' }}
@@ -204,11 +224,9 @@ export function CartList() {
               </Grid>
               <Grid item xs={6} sm={7} md={8}>
                 <CardContent>
-                  <Link href={`/product?id=${item.id}`} style={{ textDecoration: 'none' }}>
                     <Typography variant="h6" component="a" style={{ color: 'black' }}>
                       {item.name}
                     </Typography>
-                  </Link>
 
                   {/* TODO: change based on quantity */}
                   <Typography variant="body2" color="green">In Stock</Typography>
@@ -221,11 +239,10 @@ export function CartList() {
                       <FormControl variant="outlined" margin="normal" style={{ minWidth: '80px' }}>
                         <InputLabel id="quantity-label">Qty</InputLabel>
                         <Select
-                          labelId="quantity-label"
-                          id="quantity"
-                          // TODO: quantity on page
-                          // value={item.quantity}
-                          // onChange={(event) => handleQuantityChange(index, event.target.value)}
+                          labelId={`quantity-label-${index}`}
+                          id={`quantity-${index}`}
+                          value={cart[index].quantity} // Set the value to the quantity from cart
+                          onChange={(event) => handleQuantityChange(index, event.target.value as number)}
                           label="Qty"
                           MenuProps={{
                             PaperProps: {
@@ -265,6 +282,11 @@ export function CartList() {
           </Card>
         ))}
       </List>
+      <Card>
+        <Typography variant="h5" style={{ marginTop: '16px', textAlign: 'right', paddingRight: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>
+          Total: ${totalPrice.toFixed(2)}
+        </Typography>
+      </Card>
     </Box>
   );
 }
