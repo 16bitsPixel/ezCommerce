@@ -3,6 +3,7 @@ import { SearchContext } from '@/context/SearchContext';
 import { Product } from '../../graphql/product/schema'
 import ProductCard from './ProductCard';
 import Grid from '@mui/material/Grid';
+import { Typography } from '@mui/material';
 
 interface FetchSearchResultsParams {
   searchTerm: string;
@@ -55,13 +56,28 @@ export function SearchResult() {
 
   if (searchTerm.length > 0) {
     return (
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {products.map((product: Product, index) => (
-          <Grid item xs={2} sm={2} md={2} key={index}>
-            <ProductCard key = {product.id} id={product.id} name={product.name} price={product.price} /*rating={product.rating}*/ image={product.image}/>
+      <div>
+        {products.length === 0 ? (
+          <Typography variant="h6" align="center" color="textSecondary">
+            0 results for "{searchTerm}"
+          </Typography>
+        ) : (
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            {products.map((product: Product, index) => (
+              <Grid item xs={2} sm={2} md={2} key={index}>
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  /*rating={product.rating}*/
+                  image={product.image}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        )}
+      </div>
     )
   }
   else {
