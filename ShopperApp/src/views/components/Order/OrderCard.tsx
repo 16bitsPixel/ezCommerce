@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia} from '@mui/material';
+import { Box, Typography, Grid, Card, CardMedia, Divider} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 
@@ -79,13 +79,16 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
         {products.map((product: Product, index) => (
           <Grid item xs={12} key={index}>
             <Card sx={{ display: 'flex', alignItems: 'center' }}>
-              <CardMedia
-                component="img"
-                sx={{ width: 150, height: 150, objectFit: 'contain' }}
-                image={product.image}
-                alt={product.name}
-              />
-              <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, padding: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 150, height: 150, objectFit: 'contain' }}
+                  image={product.image}
+                  alt={product.name}
+                />
+              </Box>
+              <Divider orientation="vertical" flexItem />
+              <Box sx={{ width: '75%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                 <Typography variant="h6" component="div">
                   {product.name}
                 </Typography>
@@ -93,7 +96,8 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
                   <strong>Status:</strong> {status}
                 </Typography>
               </Box>
-              <Box sx={{ padding: 2 }}>
+              <Divider orientation="vertical" flexItem />
+              <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   <strong>Quantity:</strong> {quantity[index]}
                 </Typography>
