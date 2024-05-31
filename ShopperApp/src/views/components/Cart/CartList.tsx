@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {List, Typography, Box} from '@mui/material';
+import {List, Typography, Box, CardContent, Link} from '@mui/material';
 import { Product } from '../../../graphql/product/schema'
 import { CartItem } from '@/graphql/cart/schema';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { Button } from '@mui/base';
 import { LoginContext } from '../../../context/Login';
 import { ProductContext } from '@/context/Product';
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface FetchCartParams {
   setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
@@ -182,10 +186,91 @@ export function CartList() {
 
   // TODO: FIX IMAGE SIZING AND GRID SIZING
   return (
-    <Box style={{display: 'flex', flexDirection: 'column' }}>
+    <Box style={{ display: 'flex', flexDirection: 'column', padding: '16px' }}>
       <List>
-        {products.map((item: Product, index: number) => (
-          <Grid container spacing={{ xs: 2, sm: 4, md: 6 }} key={index}>
+        {products.map((item: Product, index) => (
+          <Card key={index} style={{ display: 'flex', marginBottom: '16px', padding: '16px', alignItems: 'center', minHeight: '15vh' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={3} sm={3} md={2} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Link href={`/product?id=${item.id}`}>
+                  <CardMedia
+                    component="img"
+                    image={item.image}
+                    alt={item.name}
+                    aria-label="cardImage"
+                    style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain' }}
+                  />
+                </Link>
+              </Grid>
+              <Grid item xs={6} sm={7} md={8}>
+                <CardContent>
+                  <Link href={`/product?id=${item.id}`} style={{ textDecoration: 'none' }}>
+                    <Typography variant="h6" component="a" style={{ color: 'black' }}>
+                      {item.name}
+                    </Typography>
+                  </Link>
+
+                  {/* TODO: change based on quantity */}
+                  <Typography variant="body2" color="green">In Stock</Typography>
+
+                  {/* TODO: change to return status */}
+                  <Typography variant="body2" color="#007bff">Return</Typography>
+
+                  <Grid container alignItems="center" spacing={1}>
+                    <Grid item>
+                      <FormControl variant="outlined" margin="normal" style={{ minWidth: '80px' }}>
+                        <InputLabel id="quantity-label">Qty</InputLabel>
+                        <Select
+                          labelId="quantity-label"
+                          id="quantity"
+                          // TODO: quantity on page
+                          // value={item.quantity}
+                          // onChange={(event) => handleQuantityChange(index, event.target.value)}
+                          label="Qty"
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 200, // Adjust the maxHeight as needed
+                              },
+                            },
+                          }}
+                        >
+                          {[...Array(30).keys()].map((num) => (
+                            <MenuItem key={num + 1} value={num + 1}>
+                              {num + 1}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item>
+                      <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => handleDeleteItem(index)}
+                        style={{ marginTop: '10px', cursor: 'pointer', color: '#007bff' }}
+                        underline="none"
+                      >
+                        Delete
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Grid>
+
+              <Grid item xs={2} sm={2} md={2} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', padding: 10 }}>
+                <Typography variant="h6" style = {{fontWeight: 'bold'}}>${item.price}</Typography>
+              </Grid>
+            </Grid>
+          </Card>
+        ))}
+      </List>
+    </Box>
+  );
+}
+
+/*
+<Grid container spacing={{ xs: 2, sm: 4, md: 6 }} key={index}>
             <Grid item xs={3} sm={3} md={2}>
               <Card>
                 <CardMedia
@@ -211,8 +296,4 @@ export function CartList() {
               </Typography>
             </Grid>
           </Grid>
-        ))}
-      </List>
-    </Box>
-  );
-}
+*/

@@ -79,23 +79,25 @@ export function ProductView({id}: ProductProps) {
     <>
       <ScreenSizeProvider>
         <TopBar/>
-        {product?
-          <Box sx={{margin: '5vh 10vw 0 10vw'}}>
-            <Grid container spacing={{ xs: 2, md: 5 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              <Grid item xs={8} sm={5} md={5}>
-                <ProductImage image={product.image}/>
+        <Box style = {{backgroundColor: 'white', height: '100%', width: '100%'}}>
+          {product?
+            <Box sx={{margin: '5vh 10vw 0 10vw', backgroundColor: 'white'}}>
+              <Grid container spacing={{ xs: 2, md: 5 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item xs={8} sm={5} md={5}>
+                  <ProductImage image={product.image}/>
+                </Grid>
+                <Grid item xs={4} sm={4} md={4}>
+                  <ProductInformation name={product.name} description={product.description} price={product.price} /*rating={product.rating}*//>
+                </Grid>
+                <Grid item xs={12} sm={3} md={3}>
+                  <ProductPurchaseCard product={product} />
+                </Grid>
               </Grid>
-              <Grid item xs={4} sm={4} md={4}>
-                <ProductInformation name={product.name} description={product.description} price={product.price} /*rating={product.rating}*//>
-              </Grid>
-              <Grid item xs={12} sm={3} md={3}>
-                <ProductPurchaseCard product={product} />
-              </Grid>
-            </Grid>
-            <Divider style = {{marginTop: '5vh'}}/>
-          </Box> :
-          null
-        }
+              <Divider style = {{marginTop: '5vh'}}/>
+            </Box> :
+            null
+          }
+        </Box>
         <BottomBar/>
       </ScreenSizeProvider>
     </>
