@@ -88,7 +88,7 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
                 />
               </Box>
               <Divider orientation="vertical" flexItem />
-              <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, padding: 2 }}>
+              <Box sx={{ width: '75%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                 <Typography variant="h6" component="div">
                   {product.name}
                 </Typography>
@@ -97,7 +97,7 @@ export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
                 </Typography>
               </Box>
               <Divider orientation="vertical" flexItem />
-              <Box sx={{ padding: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   <strong>Quantity:</strong> {quantity[index]}
                 </Typography>
