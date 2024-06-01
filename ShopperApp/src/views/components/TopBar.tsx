@@ -10,10 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { ScreenSizeContext } from '@/context/ScreenSize';
 import { LoginContext } from '../../context/Login';
 import { SearchContext } from '@/context/SearchContext';
+import Image from 'next/image';
 
 export function TopBar() {
   const { t } = useTranslation('common');
@@ -78,21 +78,33 @@ export function TopBar() {
           )}
           {!isSmallScreen && (
             <Select
-            value={language}
-            onChange={handleLanguageChange}
-            displayEmpty
-            inputProps={{ 'aria-label': 'select language' }}
-            style={{ color: 'white', fontSize: '0.875rem' }}
-          >
-            <MenuItem value="en">
-              <img src="https://img.icons8.com/office/80/usa.png" alt="English" style={{ width: 13, marginRight: 8, height: 12 }} />
+              value={language}
+              onChange={handleLanguageChange}
+              displayEmpty
+              inputProps={{ 'aria-label': 'select language' }}
+              style={{ color: 'white', fontSize: '0.875rem' }}
+            >
+              <MenuItem value="en">
+                <Image 
+                  src="https://img.icons8.com/office/80/usa.png" 
+                  alt="English" 
+                  width={13}
+                  height={12}
+                  style={{ marginRight: 8 }} 
+                />
               EN
-            </MenuItem>
-            <MenuItem value="es">
-              <img src="https://img.icons8.com/office/80/spain-2.png" alt="Español" style={{ width: 13, marginRight: 8, height: 12 }} />
+              </MenuItem>
+              <MenuItem value="es">
+                <Image 
+                  src="https://img.icons8.com/office/80/spain-2.png" 
+                  alt="Español" 
+                  width={13}
+                  height={12}
+                  style={{ marginRight: 8 }} 
+                />
               ES
-            </MenuItem>
-          </Select>
+              </MenuItem>
+            </Select>
           )}
           <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
             <InputBase
