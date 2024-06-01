@@ -64,7 +64,7 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 export function OrderCard({ ids, status, quantity }: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
-  const {orderTotal, setOrderTotal} = React.useContext(OrderContext);
+  const { setOrderTotal } = React.useContext(OrderContext);
 
   console.log(error);
 
@@ -78,10 +78,6 @@ export function OrderCard({ ids, status, quantity }: OrderCardProps) {
       setOrderTotal(total);
     }
   }, [products, quantity, setOrderTotal]);
-
-  // const newDate = new Date(date);
-  // const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);
-  // console.log(date);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
@@ -112,10 +108,12 @@ export function OrderCard({ ids, status, quantity }: OrderCardProps) {
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Button className='orderButton' variant="contained">
+                <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
                   Buy it again
                 </Button>
-                <Button variant="outlined">View your item</Button>
+                <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
+                  View your item
+                </Button>
               </Box>
             </Card>
           </Grid>

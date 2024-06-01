@@ -60,7 +60,10 @@ export function OrderBox() {
   }, [accessToken, id]);
 
   return (
-    <Box className='OrderDiv' sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
+    <Box className="OrderDiv" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
+      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: 4 }}>
+        Your Orders
+      </Typography>
       <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
           <Box key={index} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
