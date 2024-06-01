@@ -187,16 +187,16 @@ export function CartList() {
   // Function to handle quantity change
   const handleQuantityChange = (index: number, quantity: number) => {
     const updatedCart = [...cart];
-    updatedCart[index].quantity = quantity;
+    (updatedCart[index] as CartItem).quantity = quantity;
     setCart(updatedCart);
   };
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     for (const item of products) {
-      const cartItem = cart.find((cartItem) => cartItem.id === item.id);
+      const cartItem = cart.find((cartItem) => (cartItem as CartItem).id === (item as Product).id);
       if (cartItem) {
-        totalPrice += item.price * cartItem.quantity;
+        totalPrice += (item as Product).price * (cartItem as CartItem).quantity;
       }
     }
     return totalPrice;
@@ -224,9 +224,9 @@ export function CartList() {
               </Grid>
               <Grid item xs={6} sm={7} md={8}>
                 <CardContent>
-                    <Typography variant="h6" component="a" style={{ color: 'black' }}>
-                      {item.name}
-                    </Typography>
+                  <Typography variant="h6" component="a" style={{ color: 'black' }}>
+                    {item.name}
+                  </Typography>
 
                   {/* TODO: change based on quantity */}
                   <Typography variant="body2" color="green">In Stock</Typography>
@@ -241,7 +241,7 @@ export function CartList() {
                         <Select
                           labelId={`quantity-label-${index}`}
                           id={`quantity-${index}`}
-                          value={cart[index].quantity} // Set the value to the quantity from cart
+                          value={(cart[index] as CartItem).quantity} // Set the value to the quantity from cart
                           onChange={(event) => handleQuantityChange(index, event.target.value as number)}
                           label="Qty"
                           MenuProps={{

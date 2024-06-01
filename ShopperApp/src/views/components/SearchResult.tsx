@@ -59,7 +59,7 @@ export function SearchResult() {
       <div>
         {products.length === 0 ? (
           <Typography variant="h6" align="center" color="textSecondary">
-            0 results for "{searchTerm}"
+            0 results for &quot;{searchTerm}&quot;
           </Typography>
         ) : (
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

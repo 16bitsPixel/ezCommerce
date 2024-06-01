@@ -1,8 +1,6 @@
 import React from 'react';
 
 //import { LoginContext } from '../../context/Login'
-import { Product } from '../../graphql/product/schema'
-
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
