@@ -86,7 +86,7 @@ export function CheckoutButton (){
 
   return (
     <form onSubmit={handleSubmit}>
-      <section>
+      <section style = {{margin: 15}}>
         <Button type="submit" role="link" aria-label='checkout-button' variant="contained">
           {t('proceed-to-checkout')}
         </Button>
