@@ -39,7 +39,6 @@ export class AccountController extends Controller {
         return account
       });
   }
-
   @Get()
   @Response('401', 'Unauthorized')
   public async check(
@@ -53,6 +52,18 @@ export class AccountController extends Controller {
         return account
       });
   }
+}
+
+@Route('restore')
+export class RestoreController extends Controller {
+    @Post()
+    @Response('401', 'Unauthorized')
+    public async restore(
+      @Query() accessToken: string,
+    ): Promise<Authenticated | undefined> {
+      return new AccountService().restoreSession(accessToken)
+    }
+    
 }
 
 @Route('Signup')
