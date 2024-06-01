@@ -36,7 +36,7 @@ export default function SignUp() {
           alert(`${json.errors[0].message}`)
         } else if (json.data.signup) {
           // Success message that prompts the user to log in
-          alert("Signup successful! You can now log in.");
+          alert("Signup successful! Please wait for an admin to accept you.");
         } else {
           // General failure message if signup wasn't successful
           alert("Signup failed. Please try again.");
