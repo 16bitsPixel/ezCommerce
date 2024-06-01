@@ -7,7 +7,7 @@ interface ProductImageProps {
   images: string[];
 }
 
-export function ProductImage({images}: ProductImageProps) {
+export function ProductImage({ images }: ProductImageProps) {
   const [currentImage, setCurrentImage] = React.useState(images[0]);
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -19,23 +19,27 @@ export function ProductImage({images}: ProductImageProps) {
     setIsHovered(false);
   };
 
-  const handleThumbnailClick = (image: string) => {
+  const handleThumbnailHover = (image: string) => {
     setCurrentImage(image);
   };
 
   return (
     <Grid container spacing={1}>
       {/* Thumbnails Grid on the Left */}
-      <Grid item xs={3}>
+      <Grid item xs={1}>
         <Grid container spacing={1} sx={{ marginTop: '10px' }}>
           {images.map((image, index) => (
             <Grid item xs={12} key={index}>
               <CardMedia
                 component="img"
-                height="60vw"
+                height="80vw"
                 image={image}
-                sx={styles.thumbnail}
-                onClick={() => handleThumbnailClick(image)}
+                sx={{
+                  ...styles.thumbnail,
+                  ...(currentImage === image && styles.selectedThumbnail),
+                }}
+                style = {{objectFit: 'contain'}}
+                onMouseEnter={() => handleThumbnailHover(image)}
                 aria-label={`thumbnail-${index}`}
               />
             </Grid>
@@ -44,11 +48,11 @@ export function ProductImage({images}: ProductImageProps) {
       </Grid>
 
       {/* Main Image Card on the Right */}
-      <Grid item xs={9}>
+      <Grid item xs={11}>
         <Card>
           <CardMedia
             component="img"
-            height="800vw"
+            height="750vw"
             image={currentImage}
             sx={{
               ...styles.cardMedia,
@@ -56,7 +60,7 @@ export function ProductImage({images}: ProductImageProps) {
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            aria-label='cardImage'
+            aria-label="cardImage"
           />
         </Card>
       </Grid>
@@ -75,5 +79,8 @@ const styles = {
   thumbnail: {
     cursor: 'pointer',
     objectFit: 'contain',
+  },
+  selectedThumbnail: {
+    border: '2px solid #007bff', // Adjust the border style as needed
   },
 };
