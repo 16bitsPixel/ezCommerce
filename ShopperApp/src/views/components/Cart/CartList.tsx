@@ -171,9 +171,10 @@ export function CartList() {
     // Create a copy of the cart
     const updatedCart = [...cart];
 
+    console.log("updated Cart: ", updatedCart)
     // Remove the item at the specified index
     updatedCart.splice(index, 1);
-
+    console.log("update after the delete: ", updatedCart)
     setCart(updatedCart);
     if (loginContext.accessToken.length < 1) {
       // if not logged in

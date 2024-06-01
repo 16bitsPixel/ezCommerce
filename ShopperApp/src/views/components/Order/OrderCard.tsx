@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, Divider, Button} from '@mui/material';
+import { Box, Typography, Grid, Card, CardMedia, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 import { OrderContext } from '@/context/Order';

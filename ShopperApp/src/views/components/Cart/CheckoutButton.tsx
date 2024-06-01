@@ -18,6 +18,36 @@ export function CheckoutButton (){
     if (account_id.length > 0) {
       try {
 
+
+        // Clear cart
+        const newCart: never[] = []
+        const query2 = {
+          query: `mutation DeleteCartItem {
+          setCart(newCart: ${JSON.stringify(newCart)}) {
+            id, quantity
+          }
+        }`
+        };
+
+        fetch('/api/graphql', {
+          method: 'POST',
+          body: JSON.stringify(query2),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            if (json.errors) {
+              console.log("Error: ", json.errors)
+            }
+          })
+          .catch((e) => {
+            console.log("Caught Error: ", e)
+          });
+
+
         const response = await fetch('/api/checkout_sessions', {
           method: 'POST',
           headers: {
