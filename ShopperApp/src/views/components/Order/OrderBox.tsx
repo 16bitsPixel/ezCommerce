@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box} from '@mui/material';
+import { Box, Typography, Grid, Divider, Button} from '@mui/material';
 
 import { LoginContext } from '@/context/Login';
 import {Order} from '../../../graphql/order/schema'
@@ -50,26 +50,45 @@ const fetchOrders = (accessToken:string, accountId: string,
 };
 
 export function OrderBox() {
-  const {id, accessToken} = React.useContext(LoginContext);
+  const { id, accessToken, userName } = React.useContext(LoginContext);
   const [orders, setOrders] = React.useState<Order[]>([]);
 
-  // Gives a list of orders that will then be displayed
-  // in a list based on the OrderCard
   React.useEffect(() => {
-    fetchOrders(accessToken, id, {setOrders});
+    fetchOrders(accessToken, id, { setOrders });
   }, [accessToken, id]);
-  // The id and quantity values are both arrays
+
   return (
-    <div className='OrderDiv' >
-      <Box>
+    <Box className='OrderDiv' sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
+      <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
-          <OrderCard key= {index}
-            ids={order.productId} 
-            date = {order.date} 
-            status = {order.status} 
-            quantity = {order.quantities}/>
+          <Box key={index} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>ORDER PLACED</strong></Typography>
+                <Typography>{new Intl.DateTimeFormat('en-US').format(new Date(order.date))}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>TOTAL</strong></Typography>
+                <Typography>$total</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>SHIP TO</strong></Typography>
+                <Typography>{userName}</Typography>
+              </Grid>
+            </Grid>
+            <Divider sx={{ margin: '16px 0' }} />
+            <OrderCard ids={order.productId} status={order.status} quantity={order.quantities} />
+            <Divider sx={{ margin: '16px 0' }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button className = 'orderButton' variant="contained" >Get product support</Button>
+              <Box>
+                <Button variant="outlined" sx={{ marginRight: 1 }}>Track package</Button>
+                <Button variant="outlined" sx={{ marginRight: 1 }}>Return or replace items</Button>
+              </Box>
+            </Box>
+          </Box>
         ))}
       </Box>
-    </div>
+    </Box>
   );
 }

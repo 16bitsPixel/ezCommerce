@@ -1,11 +1,10 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, Divider} from '@mui/material';
+import { Box, Typography, Grid, Card, CardMedia, Divider, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 
 interface OrderCardProps {
   ids: string[];
-  date: Date;
   status: string;
   quantity: number[];
 }
@@ -16,7 +15,6 @@ interface FetchProductsParams {
 }
 
 const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: string[]) => {
-  console.log('here');
   const fetchedProducts: any[] = [];
   const promises = ids.map((id) => {
     const variables = { productId: id };
@@ -62,51 +60,52 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 };
 
 // id and quantity are both arrays
-export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
+export function OrderCard({ ids, status, quantity }: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
-  const [error, setError] = React.useState('Logged Out')
+  const [error, setError] = React.useState('Logged Out');
   console.log(error);
 
   React.useEffect(() => {
-    fetchProducts({setProducts, setError}, ids);
+    fetchProducts({ setProducts, setError }, ids);
   }, [ids]);
-  const newDate = new Date(date);
-  const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);
-  console.log(date);
+
+  // const newDate = new Date(date);
+  // const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);
+  // console.log(date);
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-      <Grid container spacing={2} sx={{ maxWidth: 'lg', width: '100%' }}>
+      <Grid container spacing={2} sx={{ width: '100%' }}>
         {products.map((product: Product, index) => (
           <Grid item xs={12} key={index}>
-            <Card sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
+            <Card sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', paddingRight: 2 }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 150, height: 150, objectFit: 'contain' }}
+                  sx={{ width: 75, height: 75, objectFit: 'contain' }}
                   image={product.image[0]}
                   alt={product.name}
                 />
               </Box>
-              <Divider orientation="vertical" flexItem />
-              <Box sx={{ width: '75%', display: 'flex', flexDirection: 'column', padding: 2 }}>
-                <Typography variant="h6" component="div">
+              <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                   {product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <strong>Status:</strong> {status}
                 </Typography>
-              </Box>
-              <Divider orientation="vertical" flexItem />
-              <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   <strong>Quantity:</strong> {quantity[index]}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <strong>Price:</strong> ${product.price}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <strong>Date:</strong> {formattedDate}
-                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Button className='orderButton' variant="contained">
+                  Buy it again
+                </Button>
+                <Button variant="outlined">View your item</Button>
               </Box>
             </Card>
           </Grid>
