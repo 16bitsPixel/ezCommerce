@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Grid, Card, CardMedia, Divider, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
+import { OrderContext } from '@/context/Order';
 
 interface OrderCardProps {
   ids: string[];
@@ -63,11 +64,20 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 export function OrderCard({ ids, status, quantity }: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
+  const {orderTotal, setOrderTotal} = React.useContext(OrderContext);
+
   console.log(error);
 
   React.useEffect(() => {
     fetchProducts({ setProducts, setError }, ids);
   }, [ids]);
+
+  React.useEffect(() => {
+    if (products.length > 0) {
+      const total = products.reduce((acc, product, index) => acc + product.price * quantity[index], 0);
+      setOrderTotal(total);
+    }
+  }, [products, quantity, setOrderTotal]);
 
   // const newDate = new Date(date);
   // const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);

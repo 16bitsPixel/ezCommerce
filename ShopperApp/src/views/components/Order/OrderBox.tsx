@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Grid, Divider, Button} from '@mui/material';
 
 import { LoginContext } from '@/context/Login';
+import { OrderContext } from '@/context/Order';
 import {Order} from '../../../graphql/order/schema'
 import {OrderCard} from './OrderCard';
 
@@ -51,6 +52,7 @@ const fetchOrders = (accessToken:string, accountId: string,
 
 export function OrderBox() {
   const { id, accessToken, userName } = React.useContext(LoginContext);
+  const {orderTotal} = React.useContext(OrderContext);
   const [orders, setOrders] = React.useState<Order[]>([]);
 
   React.useEffect(() => {
@@ -69,7 +71,7 @@ export function OrderBox() {
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>TOTAL</strong></Typography>
-                <Typography>$total</Typography>
+                <Typography>${orderTotal}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>SHIP TO</strong></Typography>
