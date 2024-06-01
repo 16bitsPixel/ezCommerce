@@ -5,6 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import CssBaseline from '@mui/material/CssBaseline';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
@@ -16,7 +18,7 @@ import { SearchContext } from '@/context/SearchContext';
 export function TopBar() {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const changeTo = router.locale === 'en' ? 'es' : 'en'
+  const [language, setLanguage] = React.useState(router.locale);
   const loginContext = React.useContext(LoginContext)
   const {isSmallScreen} = React.useContext(ScreenSizeContext)
   const { setSearchTerm } = React.useContext(SearchContext);
@@ -58,6 +60,12 @@ export function TopBar() {
     }
   };
 
+  const handleLanguageChange = (event : any) => {
+    const newLang = event.target.value;
+    setLanguage(newLang);
+    router.push(router.pathname, router.asPath, { locale: newLang });
+  };
+
   return (
     <Box className="centerContainer">
       <CssBaseline />
@@ -69,11 +77,22 @@ export function TopBar() {
             </Button>
           )}
           {!isSmallScreen && (
-            <div style={{ flexGrow: 0, marginRight: 'auto' }}>
-              <Link href="/" locale={changeTo} passHref>
-                <Button variant="text">{t('change-locale')}</Button>
-              </Link>
-            </div>
+            <Select
+            value={language}
+            onChange={handleLanguageChange}
+            displayEmpty
+            inputProps={{ 'aria-label': 'select language' }}
+            style={{ color: 'white', fontSize: '0.875rem' }}
+          >
+            <MenuItem value="en">
+              <img src="https://img.icons8.com/office/80/usa.png" alt="English" style={{ width: 13, marginRight: 8, height: 12 }} />
+              EN
+            </MenuItem>
+            <MenuItem value="es">
+              <img src="https://img.icons8.com/office/80/spain-2.png" alt="Español" style={{ width: 13, marginRight: 8, height: 12 }} />
+              ES
+            </MenuItem>
+          </Select>
           )}
           <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
             <InputBase
