@@ -20,6 +20,7 @@ export function TopBar() {
   const loginContext = React.useContext(LoginContext)
   const {isSmallScreen} = React.useContext(ScreenSizeContext)
   const { setSearchTerm } = React.useContext(SearchContext);
+  const [inputValue, setInputValue] = React.useState('');
 
   const handleSignIn = () => {
     router.push('/login');
@@ -44,7 +45,17 @@ export function TopBar() {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    setInputValue(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(inputValue);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -65,15 +76,16 @@ export function TopBar() {
             </div>
           )}
           <div className="search" style={{ flexGrow: 1, justifyContent: 'center', display: 'flex', maxWidth: '700px', margin: '0 auto' }}>
-            <div className="searchIcon">
-              <SearchIcon />
-            </div>
             <InputBase
               className="styledInputBase"
               placeholder={t('search-ezCommerce') || 'Search EzCommerce'}
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleSearchChange}
+              onKeyDown={handleKeyDown}
             />
+            <Button className="searchIcon" onClick={handleSearch}>
+              <SearchIcon />
+            </Button>
           </div>
           {!isSmallScreen && (
             <div className="topbar-buttons" style={{ flexGrow: 0, marginLeft: 'auto' }}>
