@@ -11,12 +11,13 @@ export function CheckoutButton (){
   const {t} = useTranslation('common')
   const {products, setCart, setProducts} = React.useContext(ProductContext)
   const router = useRouter();
-  const { id: account_id } = useContext(LoginContext);
+  const { id: account_id, accessToken } = useContext(LoginContext);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (account_id.length > 0) {
       try {
+
         const response = await fetch('/api/checkout_sessions', {
           method: 'POST',
           headers: {
@@ -32,13 +33,12 @@ export function CheckoutButton (){
         }
         
         const data = await response.json();
-        
+
         if (data.url) {
+          localStorage.setItem('loginInfo', accessToken);
           window.location.href = data.url;
         }
-        
-        console.log("products: ", products)
-            
+                    
         const productMap = new Map<string, number>();
         for (const product of products) {
           const productId = (product as Product).id;
@@ -73,6 +73,8 @@ export function CheckoutButton (){
         setCart([]);
         setProducts([]);
         localStorage.removeItem('cart');
+    
+
       } catch (error) {
         console.error('Fetch error:', error);
       }

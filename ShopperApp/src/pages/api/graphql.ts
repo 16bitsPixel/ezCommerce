@@ -18,9 +18,10 @@ import {ProductResolver} from '../../graphql/product/resolver';
 import {CartResolver} from '../../graphql/cart/resolver';
 import { nextAuthChecker } from '../../graphql/auth/checker';
 import { OrderResolver } from '../../graphql/order/resolver'
+import { WishListResolver } from '../../graphql/wishlist/resolver';
 
 const schema = buildSchemaSync({
-  resolvers: [AuthResolver, ProductResolver, CartResolver, OrderResolver],
+  resolvers: [AuthResolver, ProductResolver, CartResolver, OrderResolver, WishListResolver],
   validate: true, 
   authChecker: nextAuthChecker,
 });
