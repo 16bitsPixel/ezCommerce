@@ -135,6 +135,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
             id="quantity"
             value={quantity}
             onChange={handleChange}
+            aria-label="quantitySelect"
             label="Quantity"
             MenuProps={{
               PaperProps: {
@@ -156,6 +157,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           variant="contained" 
           color="primary" 
           onClick={handleAddToCart} 
+          aria-label="addToCartBtn"
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#00b4d8', alignSelf: 'center' }}
         >
           Add to Cart

@@ -18,17 +18,16 @@ import Grid from '@mui/material/Grid';
 
 import { Product } from '@/graphql/product/schema';
 import {ProductImage} from './components/Product/ProductImage';
-import { Divider, Typography, Box } from '@mui/material';
+import { Divider, Box } from '@mui/material';
 
 import { ProductPurchaseCard } from './components/Product/ProductPurchaseCard';
 
 interface FetchProductParams {
   id: string|string[]|undefined;
   setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchProduct = ({id, setProduct, setError }: FetchProductParams) => {
+const fetchProduct = ({id, setProduct }: FetchProductParams) => {
   const query = {
     query: `query GetProduct {
       productInfo(productId: "${id}") {
@@ -46,11 +45,10 @@ const fetchProduct = ({id, setProduct, setError }: FetchProductParams) => {
       return res.json()
     })
     .then((json) => {
-      setError('')
       setProduct(json.data.productInfo)
     })
     .catch((e) => {
-      setError(e.toString())
+      alert(e.toString())
       setProduct(undefined)
     })
 };
@@ -61,19 +59,10 @@ interface ProductProps {
 
 export function ProductView({id}: ProductProps) {
   const [product, setProduct] = React.useState<Product|undefined>(undefined);
-  const [error, setError] = React.useState('')
 
   React.useEffect(() => {
-    fetchProduct({id, setProduct, setError});
+    fetchProduct({id, setProduct});
   }, [id]);
-
-  if (error !== '') {
-    return (
-      <Typography>
-        {error}
-      </Typography>
-    )
-  }
 
   return (
     <>
