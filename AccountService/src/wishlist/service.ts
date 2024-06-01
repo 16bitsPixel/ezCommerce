@@ -29,4 +29,18 @@ export class wishListService{
       images: rows[0].info.images
     };
   }
+
+  public async getWishList(user:string): Promise <Wishlist[]>{
+    const select = 'SELECT * from wishlist where account_id = $1'
+    const query = {
+      text: select,
+      values: [`${user}`]
+    };
+    const {rows} = await pool.query(query);
+    const result = []
+    for (const row of rows){
+      result.push(row)
+    }
+    return result
+  }
 }
