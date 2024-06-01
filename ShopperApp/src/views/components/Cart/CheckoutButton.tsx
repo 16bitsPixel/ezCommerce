@@ -35,8 +35,8 @@ export function CheckoutButton (){
         const data = await response.json();
 
         if (data.url) {
-            localStorage.setItem('loginInfo', accessToken);
-            window.location.href = data.url;
+          localStorage.setItem('loginInfo', accessToken);
+          window.location.href = data.url;
         }
                     
         const productMap = new Map<string, number>();

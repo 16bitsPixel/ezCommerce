@@ -58,11 +58,11 @@ export class AccountController extends Controller {
 export class RestoreController extends Controller {
     @Post()
     @Response('401', 'Unauthorized')
-    public async restore(
+  public async restore(
       @Query() accessToken: string,
-    ): Promise<Authenticated | undefined> {
-      return new AccountService().restoreSession(accessToken)
-    }
+  ): Promise<Authenticated | undefined> {
+    return new AccountService().restoreSession(accessToken)
+  }
     
 }
 

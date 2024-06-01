@@ -3,7 +3,6 @@ import { BottomBar } from "./components/BottomBar"
 import { useTranslation } from 'next-i18next';
 import { ScreenSizeProvider } from "@/context/ScreenSize";
 import React from "react";
-import { useRouter } from "next/router";
 import { LoginContext } from "@/context/Login";
 import { ProductContext } from "@/context/Product";
 
@@ -57,7 +56,7 @@ export function SuccessText() {
 
 
 
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div>

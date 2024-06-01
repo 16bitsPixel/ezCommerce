@@ -1,6 +1,6 @@
 import { Query, Resolver, Ctx, Authorized} from "type-graphql"
 
-import { WishList, WishListInput } from "./schema"
+import { WishList } from "./schema"
 import { WishListService } from "./service"
 import type { NextApiRequest as Request } from "next"
 @Resolver()

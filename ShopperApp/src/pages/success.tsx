@@ -1,8 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SuccessText } from '@/views/Success';
-import { useRouter } from 'next/router';
 
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;

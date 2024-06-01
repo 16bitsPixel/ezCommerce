@@ -33,33 +33,33 @@ export class AuthService {
     });
   }
 
-    public async restore(accessToken: AccessToken): Promise<Authenticated> {
-        return new Promise((resolve, reject) => {
-            fetch(`http://localhost:3011/api/v0/restore?accessToken=${accessToken.accessToken}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then((res) => {                    
-                if (!res.ok) {
-                  return res.json().then((error) => {
-                    throw new Error(error.message || "Unauthorised");
-                  }).catch((jsonParseError) => {
-                    console.log("Error parsing JSON:", jsonParseError);
-                    throw new Error("Unauthorised");
-                  });
-                }
-                return res.json();
-              })
-              .then((authenticated) => {
-                resolve(authenticated);
-              })
-              .catch((err) => {
-                console.log("Login fetch error:", err);
-                reject(new Error("Unauthorised"));
-              });
+  public async restore(accessToken: AccessToken): Promise<Authenticated> {
+    return new Promise((resolve, reject) => {
+      fetch(`http://localhost:3011/api/v0/restore?accessToken=${accessToken.accessToken}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+        .then((res) => {                    
+          if (!res.ok) {
+            return res.json().then((error) => {
+              throw new Error(error.message || "Unauthorised");
+            }).catch((jsonParseError) => {
+              console.log("Error parsing JSON:", jsonParseError);
+              throw new Error("Unauthorised");
+            });
+          }
+          return res.json();
         })
+        .then((authenticated) => {
+          resolve(authenticated);
+        })
+        .catch((err) => {
+          console.log("Login fetch error:", err);
+          reject(new Error("Unauthorised"));
+        });
+    })
   }
 
   public async check(authHeader?: string, roles?: string[]): Promise<SessionUser> {

@@ -2,7 +2,6 @@ import { Query, Resolver, Args, Mutation } from "type-graphql"
 
 import { Credentials, Authenticated, SignupCred, AccessToken } from "./schema"
 import { AuthService } from "./service"
-import { SessionUser } from "@/types/next"
 
 @Resolver()
 export class AuthResolver {
