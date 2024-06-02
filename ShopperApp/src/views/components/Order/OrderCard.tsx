@@ -2,12 +2,12 @@ import React from 'react';
 import { Box, Typography, Grid, Card, CardMedia, Divider, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
-import { OrderContext } from '@/context/Order';
 
 interface OrderCardProps {
   ids: string[];
   status: string;
   quantity: number[];
+  onTotalChange: (total: number) => void;
 }
 
 interface FetchProductsParams {
@@ -61,10 +61,9 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 };
 
 // id and quantity are both arrays
-export function OrderCard({ ids, status, quantity }: OrderCardProps) {
+export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
-  const { setOrderTotal } = React.useContext(OrderContext);
 
   console.log(error);
 
@@ -75,9 +74,9 @@ export function OrderCard({ ids, status, quantity }: OrderCardProps) {
   React.useEffect(() => {
     if (products.length > 0) {
       const total = products.reduce((acc, product, index) => acc + product.price * quantity[index], 0);
-      setOrderTotal(total);
+      onTotalChange(total);
     }
-  }, [products, quantity, setOrderTotal]);
+  }, [products, quantity, onTotalChange]);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>

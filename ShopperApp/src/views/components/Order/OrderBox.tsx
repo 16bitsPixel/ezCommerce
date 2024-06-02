@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, Grid, Divider, Button} from '@mui/material';
 
 import { LoginContext } from '@/context/Login';
-import { OrderContext } from '@/context/Order';
 import {Order} from '../../../graphql/order/schema'
 import {OrderCard} from './OrderCard';
 
@@ -52,12 +51,20 @@ const fetchOrders = (accessToken:string, accountId: string,
 
 export function OrderBox() {
   const { id, accessToken, userName } = React.useContext(LoginContext);
-  const {orderTotal} = React.useContext(OrderContext);
+  const [orderTotals, setOrderTotals] = React.useState<number[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
 
   React.useEffect(() => {
     fetchOrders(accessToken, id, { setOrders });
   }, [accessToken, id]);
+
+  const handleTotalChange = (index: number, total: number) => {
+    setOrderTotals(prevTotals => {
+      const newTotals = [...prevTotals];
+      newTotals[index] = total;
+      return newTotals;
+    });
+  };
 
   return (
     <Box className="OrderDiv" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
@@ -74,7 +81,7 @@ export function OrderBox() {
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>TOTAL</strong></Typography>
-                <Typography>${orderTotal}</Typography>
+                <Typography>${orderTotals[index]?.toFixed(2)}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>SHIP TO</strong></Typography>
@@ -82,7 +89,12 @@ export function OrderBox() {
               </Grid>
             </Grid>
             <Divider sx={{ margin: '16px 0' }} />
-            <OrderCard ids={order.productId} status={order.status} quantity={order.quantities} />
+            <OrderCard
+              ids={order.productId}
+              status={order.status}
+              quantity={order.quantities}
+              onTotalChange={(total: number) => handleTotalChange(index, total)}
+            />
             <Divider sx={{ margin: '16px 0' }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button className = 'orderButton' variant="contained" >Get product support</Button>
