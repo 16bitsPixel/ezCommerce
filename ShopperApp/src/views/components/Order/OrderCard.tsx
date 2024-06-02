@@ -78,7 +78,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
       onTotalChange(total);
     }
 
-  }, []);
+  }, [products]);
 
   const handleViewItemClick = (id:string) => {
     router.push(`/product?id=${id}`);
