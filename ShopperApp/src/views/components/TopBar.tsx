@@ -43,7 +43,6 @@ export function TopBar() {
   };
 
   const handleHome = () => {
-    console.log("Home")
     router.push('/');
   };
 
