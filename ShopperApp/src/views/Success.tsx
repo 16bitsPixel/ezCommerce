@@ -55,7 +55,6 @@ export function SuccessText() {
       });
 
 
-
   }, []); // eslint-disable-line
 
   return (

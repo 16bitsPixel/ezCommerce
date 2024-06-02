@@ -171,9 +171,10 @@ export function CartList() {
     // Create a copy of the cart
     const updatedCart = [...cart];
 
+    console.log("updated Cart: ", updatedCart)
     // Remove the item at the specified index
     updatedCart.splice(index, 1);
-
+    console.log("update after the delete: ", updatedCart)
     setCart(updatedCart);
     if (loginContext.accessToken.length < 1) {
       // if not logged in
@@ -241,7 +242,7 @@ export function CartList() {
                         <Select
                           labelId={`quantity-label-${index}`}
                           id={`quantity-${index}`}
-                          value={(cart[index] as CartItem).quantity} // Set the value to the quantity from cart
+                          value={cart[index] ? (cart[index] as CartItem).quantity : 1} // Set the value to the quantity from cart
                           onChange={(event) => handleQuantityChange(index, event.target.value as number)}
                           label="Qty"
                           MenuProps={{
@@ -282,11 +283,9 @@ export function CartList() {
           </Card>
         ))}
       </List>
-      <Card>
-        <Typography variant="h5" style={{ marginTop: '16px', textAlign: 'right', paddingRight: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>
-          Total: ${totalPrice.toFixed(2)}
-        </Typography>
-      </Card>
+      <Typography variant="h5" style={{ marginTop: '16px', textAlign: 'right', paddingRight: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>
+        Total: ${totalPrice.toFixed(2)}
+      </Typography>
     </Box>
   );
 }
