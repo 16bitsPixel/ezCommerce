@@ -1,6 +1,6 @@
-import { Query, Resolver, Ctx, Authorized, Arg} from "type-graphql"
+import { Query, Resolver, Ctx, Authorized, Arg, Mutation} from "type-graphql"
 
-import { WishList } from "./schema"
+import { WishList, WishListInput } from "./schema"
 import { WishListService } from "./service"
 import type { NextApiRequest as Request } from "next"
 @Resolver()
@@ -13,11 +13,11 @@ export class WishListResolver {
     return new WishListService().getallWishList(request.user.accessToken)
   }
   @Authorized("member")
-  @Query(() => WishList)
+  @Mutation(() => WishList)
   async addWishList(
     @Ctx() request: Request,
     @Arg('input') newItem : WishListInput
   ): Promise<WishList> {
-    return new WishListService().getallWishList(request.user.accessToken)
+    return new WishListService().addto(newItem, request.user.accessToken)
   }
 }
