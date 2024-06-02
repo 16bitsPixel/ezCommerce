@@ -35,7 +35,11 @@ export function TopBar() {
   };
 
   const handleOrder = () => {
-    router.push('/order');
+    if (loginContext.accessToken.length < 1) {
+      router.push('/login');
+    } else {
+      router.push('/order');
+    }
   };
 
   const handleCart = () => {

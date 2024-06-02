@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, Grid, Divider} from '@mui/material';
 import { useTranslation } from 'next-i18next';
 
-
 import { LoginContext } from '@/context/Login';
 import {Order} from '../../../graphql/order/schema'
 import {OrderCard} from './OrderCard';
@@ -56,6 +55,7 @@ export function OrderBox() {
   const [orderTotals, setOrderTotals] = React.useState<number[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
   const { t } = useTranslation('common');
+
 
 
   React.useEffect(() => {

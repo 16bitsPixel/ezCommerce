@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid, Card,
-  CardMedia, Button, Link} from '@mui/material';
+  CardMedia, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 import { LoginContext } from '@/context/Login';
