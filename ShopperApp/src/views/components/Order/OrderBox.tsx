@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid, Divider} from '@mui/material';
-// import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 
 
 import { LoginContext } from '@/context/Login';
@@ -55,7 +55,7 @@ export function OrderBox() {
   const { id, accessToken, userName } = React.useContext(LoginContext);
   const [orderTotals, setOrderTotals] = React.useState<number[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
-  // const { t } = useTranslation('common');
+  const { t } = useTranslation('common');
 
 
   React.useEffect(() => {
@@ -73,22 +73,22 @@ export function OrderBox() {
   return (
     <Box className="OrderDiv" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: 4 }}>
-        Your Orders
+      {t('your-orders')}
       </Typography>
       <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
           <Box key={index} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={4}>
-                <Typography variant="subtitle1"><strong>ORDER PLACED</strong></Typography>
+                <Typography variant="subtitle1"><strong>{t('order-placed')}</strong></Typography>
                 <Typography>{new Intl.DateTimeFormat('en-US').format(new Date(order.date))}</Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant="subtitle1"><strong>TOTAL</strong></Typography>
+                <Typography variant="subtitle1"><strong>{t('total')}</strong></Typography>
                 <Typography>${orderTotals[index]?.toFixed(2)}</Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography variant="subtitle1"><strong>SHIP TO</strong></Typography>
+                <Typography variant="subtitle1"><strong>{t('ship-to')}</strong></Typography>
                 <Typography>{userName}</Typography>
               </Grid>
             </Grid>

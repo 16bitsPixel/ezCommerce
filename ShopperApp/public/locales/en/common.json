@@ -19,6 +19,15 @@
   "home": "Home",
   "shopping-cart": "Shopping Cart",
   "proceed-to-checkout": "Proceed to checkout",
-  "thank-you": "Thank you, your order has been placed."
+  "thank-you": "Thank you, your order has been placed.",
+  "buy-it-again": "Buy it again", 
+  "view-your-item": "View your item",
+  "your-orders": "Your Orders",
+  "total": "TOTAL",
+  "order-placed": "ORDER PLACED",
+  "ship-to": "SHIP TO",
+  "quantity": "Quantity",
+  "price": "Price",
+  "status": "Status"  
 }
 

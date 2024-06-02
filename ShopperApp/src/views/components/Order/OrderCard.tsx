@@ -3,6 +3,8 @@ import { Box, Typography, Grid, Card,
    CardMedia, Button, Link} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
+import { useTranslation } from 'next-i18next';
+
 
 interface OrderCardProps {
   ids: string[];
@@ -65,6 +67,8 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
 export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
+  const { t } = useTranslation('common');
+
 
   console.log(error);
 
@@ -98,22 +102,22 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                   {product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Status:</strong> {status}
+                  <strong>{t('status')}:</strong> {status}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Quantity:</strong> {quantity[index]}
+                  <strong>{t('quantity')}:</strong> {quantity[index]}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Price:</strong> ${product.price}
+                  <strong>{t('price')}:</strong> ${product.price}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
-                  Buy it again
+                {t('buy-it-again')}
                 </Button>
                 <Link href={`/product?id=${product.id}`} >
                   <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
-                    View your item
+                  {t('view-your-item')}
                   </Button>
                 </Link>
               </Box>
