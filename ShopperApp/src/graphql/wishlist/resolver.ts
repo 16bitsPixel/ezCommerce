@@ -1,4 +1,4 @@
-import { Query, Resolver, Ctx, Authorized} from "type-graphql"
+import { Query, Resolver, Ctx, Authorized, Arg} from "type-graphql"
 
 import { WishList, WishListInput } from "./schema"
 import { WishListService } from "./service"
@@ -10,6 +10,14 @@ export class WishListResolver {
   async getWishList(
     @Ctx() request: Request,
   ): Promise<WishList[]> {
+    return new WishListService().getallWishList(request.user.accessToken)
+  }
+  @Authorized("member")
+  @Query(() => WishList)
+  async addWishList(
+    @Ctx() request: Request,
+    @Arg('input') newItem : WishListInput
+  ): Promise<WishList> {
     return new WishListService().getallWishList(request.user.accessToken)
   }
 }

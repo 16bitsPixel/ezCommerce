@@ -1,4 +1,4 @@
-import { WishList } from "./schema"
+import { WishList, WishListInput } from "./schema"
 
 
 export class WishListService {
@@ -26,5 +26,8 @@ export class WishListService {
           reject(new Error("Get Wishlist Error"))
         });
     });
+  }
+  async addto(newItem: WishListInput): Promise<WishList>{
+    
   }
 }
