@@ -8,7 +8,6 @@
 #
 #######################################################################
 */
-import { OrderProvider } from '@/context/Order';
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { BottomBar } from './components/BottomBar';
 import {TopBar} from './components/TopBar'
@@ -19,9 +18,7 @@ export function Order() {
     <>
       <ScreenSizeProvider>
         <TopBar/>
-        <OrderProvider>
-          <OrderBox />
-        </OrderProvider>
+        <OrderBox />
         <BottomBar/>
       </ScreenSizeProvider>
     </>
