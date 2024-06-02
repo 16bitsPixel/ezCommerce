@@ -148,6 +148,80 @@ describe('TopBar Component', () => {
   });
 });
 
+it('Test locale change button to es and back to en', async () => {
+  (useRouter as jest.Mock).mockReturnValue({
+    locale: 'en',
+    push: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+    },
+    route: '/',
+    pathname: '/',
+    query: {},
+    asPath: '/',
+  });
+
+  const isSmallScreen = false;
+  const setSmallScreen = jest.fn();
+
+  render(
+    <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+      <TopBar />
+    </ScreenSizeContext.Provider>
+  );
+
+  let selecterb = await screen.findByText('EN');
+  fireEvent.mouseDown(selecterb);
+  let wkspc = await screen.getByText('ES');
+  fireEvent.click(wkspc);
+  await waitFor(() => screen.findByText('ES'));
+  expect(useRouter().push).toHaveBeenCalled();
+  selecterb = await screen.findByText('ES');
+  fireEvent.mouseDown(selecterb);
+  wkspc = await screen.getByText('EN');
+  fireEvent.click(wkspc);
+  await waitFor(() => screen.findByText('EN'));
+  expect(useRouter().push).toHaveBeenCalled();
+});
+
+it('Test locale change button to en and back to es', async () => {
+  (useRouter as jest.Mock).mockReturnValue({
+    locale: 'es',
+    push: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+    },
+    route: '/',
+    pathname: '/',
+    query: {},
+    asPath: '/',
+  });
+
+  const isSmallScreen = false;
+  const setSmallScreen = jest.fn();
+
+  render(
+    <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+      <TopBar />
+    </ScreenSizeContext.Provider>
+  );
+
+  let selecterb = await screen.findByText('ES');
+  fireEvent.mouseDown(selecterb);
+  let wkspc = await screen.getByText('EN');
+  fireEvent.click(wkspc);
+  await waitFor(() => screen.findByText('EN'));
+  expect(useRouter().push).toHaveBeenCalled();
+  selecterb = await screen.findByText('EN');
+  fireEvent.mouseDown(selecterb);
+  wkspc = await screen.getByText('ES');
+  fireEvent.click(wkspc);
+  await waitFor(() => screen.findByText('ES'));
+  expect(useRouter().push).toHaveBeenCalled();
+});
+
 it('Test handleLogout', async () => {
   const push = useRouter().push;
   const isSmallScreen = false;
