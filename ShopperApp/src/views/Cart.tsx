@@ -11,7 +11,7 @@
 import { ScreenSizeProvider } from '@/context/ScreenSize'
 import { BottomBar } from './components/BottomBar';
 import {TopBar} from './components/TopBar'
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Card, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import {CartList} from './components/Cart/CartList';
 import * as React from 'react';
@@ -27,11 +27,15 @@ export function Cart() {
         <TopBar/>
         <ProductProvider>
           <Box style = {{margin: '5vh 20vw 0 20vw', backgroundColor: 'white', padding: '20px'}}>
-            <Typography variant="h4" gutterBottom>
-              {t('shopping-cart')}
-            </Typography>
-            <CartList/>
-            <CheckoutButton/>
+            <Card style = {{padding: 20}}>
+              <Typography variant="h4" gutterBottom>
+                {t('shopping-cart')}
+              </Typography>
+              <Divider/>
+              <CartList/>
+              <Divider/>
+              <CheckoutButton/>
+            </Card>
           </Box>
         </ProductProvider>
         <div className='bottomBarContainer'>

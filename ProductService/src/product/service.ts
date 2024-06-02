@@ -48,21 +48,22 @@ export class ProductService {
     return product;
   }
 
-  public async addProduct(productInfo: ProductAdd): Promise<Product | Product> {
+  public async addProduct(productInfo: ProductAdd): Promise<Product> {
+    console.log("ProductInfo: ", productInfo.description)
     const insert = `INSERT INTO product(product)
             VALUES (
                 jsonb_build_object(
                     'name', $1::text,
-                    'description', $2::text,
+                    'description', $2::jsonb,
                     'price', $3::numeric,
                     'rating', 0,
-                    'image', $4::text
+                    'image', $4::jsonb
                 )
             ) RETURNING *`;
 
     const query = {
       text: insert,
-      values: [productInfo.name, productInfo.description, productInfo.price, productInfo.image]
+      values: [productInfo.name, JSON.stringify(productInfo.description), productInfo.price, JSON.stringify(productInfo.image)]
     };
     const { rows } = await pool.query(query);
     return {id: rows[0].id,

@@ -35,7 +35,11 @@ export function TopBar() {
   };
 
   const handleOrder = () => {
-    router.push('/order');
+    if (loginContext.accessToken.length < 1) {
+      router.push('/login');
+    } else {
+      router.push('/order');
+    }
   };
 
   const handleCart = () => {
@@ -43,6 +47,8 @@ export function TopBar() {
   };
 
   const handleHome = () => {
+    setSearchTerm('');
+    setInputValue('');
     router.push('/');
   };
 
@@ -52,6 +58,7 @@ export function TopBar() {
 
   const handleSearch = () => {
     setSearchTerm(inputValue);
+    router.push('/');
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

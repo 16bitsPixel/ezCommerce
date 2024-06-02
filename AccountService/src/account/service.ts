@@ -48,17 +48,39 @@ export class AccountService {
     const account = await this.find(credentials);
     if (account) {
       const accessToken = jwt.sign(
-        {id: account.id, role: account.role, email: credentials.email, name: account.name }, 
+        {id: account.id, role: account.role, email: credentials.email, name: account.name, password: credentials.password}, 
         `${process.env.MASTER_SECRET}`, {
           expiresIn: '30m',
           algorithm: 'HS256'
         });
+
       return {id: account.id, name: account.name, accessToken: accessToken, role: account.role};
     } else {
       return undefined;
     }
   }
 
+  public async restoreSession(accessToken: string): Promise<Authenticated | undefined> {
+    return new Promise((resolve) => {
+      try {
+        jwt.verify(accessToken,
+          `${process.env.MASTER_SECRET}`,
+          async (err: jwt.VerifyErrors | null, decoded?: object | string) => {
+            if (err) {
+              console.log("error verifying: ", err)
+              return resolve(undefined);
+            }
+            const account = decoded as Credentials;
+            const credentials = { email: account.email, password: account.password };
+            const result = await this.login(credentials);
+            resolve(result);
+          });
+      } catch (e) {
+        console.log("caugh error:", e)
+        resolve(undefined);
+      }
+    });
+  }
   public async check(accessToken: string): Promise<SessionUser | undefined>  {
     return new Promise((resolve) => {
       try {

@@ -145,3 +145,13 @@ a {
     color: green;
 
 }
+
+.orderButton {
+  background-color: #FEBD69;
+  color: #000; /* Assuming you want the text to be black */
+  margin-bottom: 8px; /* 1 unit in MUI is typically 8px */
+}
+
+.orderButton:hover {
+  background-color: #fdb241; /* Slightly darker shade for hover effect */
+}

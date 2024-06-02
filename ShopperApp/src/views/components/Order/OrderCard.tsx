@@ -1,13 +1,17 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, Divider} from '@mui/material';
+import { Box, Typography, Grid, Card,
+  CardMedia, Button} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
+import { LoginContext } from '@/context/Login';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 interface OrderCardProps {
   ids: string[];
-  date: Date;
   status: string;
   quantity: number[];
+  onTotalChange: (total: number) => void;
 }
 
 interface FetchProductsParams {
@@ -15,8 +19,15 @@ interface FetchProductsParams {
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
+interface addToCartParams {
+  id: string|string[]|undefined;
+  quantity: number;
+  loginContext: any;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  router: any;
+}
+
 const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: string[]) => {
-  console.log('here');
   const fetchedProducts: any[] = [];
   const promises = ids.map((id) => {
     const variables = { productId: id };
@@ -31,7 +42,6 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
       }`,
       variables, // Include variables in the query object
     };
-
     return fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -61,52 +71,126 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
     });
 };
 
+const addToCart = ({id, quantity, loginContext, setError, router }: addToCartParams) => {
+  const query = {
+    query: `mutation addToCart {
+      addToCart(productId: "${id}", quantity: ${quantity}) {
+        id, quantity
+      }
+    }`}
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${loginContext.accessToken}`
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then(() => {
+      setError('')
+      router.push('/cart');
+    })
+    .catch((e) => {
+      setError(e.toString())
+    })
+};
+
 // id and quantity are both arrays
-export function OrderCard({ids, date, status, quantity}: OrderCardProps) {
+export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardProps) {
+  const loginContext = React.useContext(LoginContext);
   const [products, setProducts] = React.useState<Product[]>([]);
-  const [error, setError] = React.useState('Logged Out')
-  console.log(error);
+  const [error, setError] = React.useState('Logged Out');
+  const { t } = useTranslation('common');
+  const router = useRouter();
+
+  const handleAddToCart = (product: string, quant: any) => {
+    if (product) {
+      if (loginContext.accessToken.length < 1) {
+        // Get the existing cart from localStorage or initialize an empty array
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Add the product to the cart
+        let updatedCart;
+
+        // Check if the product is already in the cart
+        const existingCartItemIndex = cart.findIndex((item: any) => item.id === product);
+        if (existingCartItemIndex !== -1) {
+          cart[existingCartItemIndex].quantity += parseInt(quant, 10);
+          updatedCart = cart;
+        } else {
+          updatedCart = [...cart, {id: product, quantity: parseInt(quant, 10)}];
+        }
+    
+        // Update localStorage with the updated cart
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        router.push('/cart');
+      } else {
+        addToCart({id: product, quantity: parseInt(quant, 10), loginContext, setError, router});
+      }
+    }
+  };
 
   React.useEffect(() => {
-    fetchProducts({setProducts, setError}, ids);
+    fetchProducts({ setProducts, setError }, ids);
   }, [ids]);
-  const newDate = new Date(date);
-  const formattedDate = new Intl.DateTimeFormat('en-US').format(newDate);
-  console.log(date);
+
+  React.useEffect(() => {
+    if (products.length > 0) {
+      const total = products.reduce((acc, product, index) => acc + product.price * quantity[index], 0);
+      onTotalChange(total);
+    }
+
+  }, [products]);
+
+  const handleViewItemClick = (id:string) => {
+    router.push(`/product?id=${id}`);
+  };
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-      <Grid container spacing={2} sx={{ maxWidth: 'lg', width: '100%' }}>
+      <Grid container spacing={2} sx={{ width: '100%' }}>
         {products.map((product: Product, index) => (
           <Grid item xs={12} key={index}>
-            <Card sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
+            <Card sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', paddingRight: 2 }}>
                 <CardMedia
                   component="img"
-                  sx={{ width: 150, height: 150, objectFit: 'contain' }}
+                  sx={{ width: 75, height: 75, objectFit: 'contain' }}
                   image={product.image[0]}
                   alt={product.name}
                 />
               </Box>
-              <Divider orientation="vertical" flexItem />
-              <Box sx={{ width: '75%', display: 'flex', flexDirection: 'column', padding: 2 }}>
-                <Typography variant="h6" component="div">
+              <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                   {product.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Status:</strong> {status}
+                  <strong>{t('status')}:</strong> {status}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>{t('quantity')}:</strong> {quantity[index]}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <strong>{t('price')}:</strong> ${product.price}
                 </Typography>
               </Box>
-              <Divider orientation="vertical" flexItem />
-              <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  <strong>Quantity:</strong> {quantity[index]}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <strong>Price:</strong> ${product.price}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <strong>Date:</strong> {formattedDate}
-                </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Button 
+                  className='orderButton' 
+                  variant="contained" 
+                  sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}
+                  onClick= {()=>handleAddToCart(ids[index], quantity[index])}>
+                  {t('buy-it-again')}
+                </Button>
+                <Button 
+                  variant="outlined" 
+                  sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} 
+                  onClick={() => handleViewItemClick(product.id)}>
+                  {t('view-your-item')}
+                </Button>
               </Box>
             </Card>
           </Grid>

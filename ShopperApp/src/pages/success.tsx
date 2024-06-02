@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SuccessText } from '@/views/Success';
+
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
 
@@ -21,8 +22,7 @@ export default function Success() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
       </Fragment>
-      <SuccessText/>
-
+      <SuccessText />
     </div>
   );
 }

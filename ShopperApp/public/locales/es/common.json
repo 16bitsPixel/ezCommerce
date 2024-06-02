@@ -19,5 +19,14 @@
   "home": "Hogar",
   "shopping-cart": "Carro De La Compra",
   "proceed-to-checkout": "Pasar por la caja",
-  "thank-you": "Gracias! Su pedido ha sido realizado."
+  "thank-you": "Gracias! Su pedido ha sido realizado.",
+  "buy-it-again": "Comprar de nuevo",
+  "view-your-item": "Ver tu artículo",
+  "your-orders": "Tus Pedidos",
+  "total": "TOTAL",
+  "order-placed": "PEDIDO REALIZADO",
+  "ship-to": "ENVIA A",
+  "quantity": "Cantidad",
+  "price": "Precio",
+  "status": "Estado"
 }

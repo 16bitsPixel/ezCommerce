@@ -34,3 +34,9 @@ export class SignupCred {
   @Field()
     password!: string
 }
+
+@ArgsType()
+export class AccessToken {
+  @Field()
+    accessToken!: string;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box} from '@mui/material';
+import { Box, Typography, Grid, Divider} from '@mui/material';
+import { useTranslation } from 'next-i18next';
 
 import { LoginContext } from '@/context/Login';
 import {Order} from '../../../graphql/order/schema'
@@ -50,26 +51,65 @@ const fetchOrders = (accessToken:string, accountId: string,
 };
 
 export function OrderBox() {
-  const {id, accessToken} = React.useContext(LoginContext);
+  const { id, accessToken, userName } = React.useContext(LoginContext);
+  const [orderTotals, setOrderTotals] = React.useState<number[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
+  const { t } = useTranslation('common');
 
-  // Gives a list of orders that will then be displayed
-  // in a list based on the OrderCard
+
+
   React.useEffect(() => {
-    fetchOrders(accessToken, id, {setOrders});
+    fetchOrders(accessToken, id, { setOrders });
   }, [accessToken, id]);
-  // The id and quantity values are both arrays
+
+  const handleTotalChange = (index: number, total: number) => {
+    setOrderTotals(prevTotals => {
+      const newTotals = [...prevTotals];
+      newTotals[index] = total;
+      return newTotals;
+    });
+  };
+
   return (
-    <div className='OrderDiv' >
-      <Box>
+    <Box className="OrderDiv" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
+      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: 4 }}>
+        {t('your-orders')}
+      </Typography>
+      <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
-          <OrderCard key= {index}
-            ids={order.productId} 
-            date = {order.date} 
-            status = {order.status} 
-            quantity = {order.quantities}/>
+          <Box key={index} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>{t('order-placed')}</strong></Typography>
+                <Typography>{new Intl.DateTimeFormat('en-US').format(new Date(order.date))}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>{t('total')}</strong></Typography>
+                <Typography>${orderTotals[index]?.toFixed(2)}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="subtitle1"><strong>{t('ship-to')}</strong></Typography>
+                <Typography>{userName}</Typography>
+              </Grid>
+            </Grid>
+            <Divider sx={{ margin: '16px 0' }} />
+            <OrderCard
+              ids={order.productId}
+              status={order.status}
+              quantity={order.quantities}
+              onTotalChange={(total: number) => handleTotalChange(index, total)}
+            />
+            {/* <Divider sx={{ margin: '16px 0' }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button className = 'orderButton' variant="contained" >Get product support</Button>
+              <Box>
+                <Button variant="outlined" sx={{ marginRight: 1 }}>Track package</Button>
+                <Button variant="outlined" sx={{ marginRight: 1 }}>Return or replace items</Button>
+              </Box>
+            </Box> */}
+          </Box>
         ))}
       </Box>
-    </div>
+    </Box>
   );
 }

@@ -13,8 +13,12 @@ export interface Order {
   status: string,
   quantities: number[],
 }
+
+export interface OrderItem {
+    account_id: UUID;
+    product_id: UUID;
+    quantities: number;
+  }
 export interface InputOrder {
-  account_id: UUID,
-  product_id: UUID[],
-  quantities: number[],
+    items: OrderItem[]
 }

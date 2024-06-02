@@ -9,11 +9,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         currency: 'usd',
         product_data: {
           name: item.name,
-          images: [item.image[0]],
+          images: [item.image],
         },
         unit_amount: Math.round(item.price * 100),
       },
-      quantity: 1,
+      quantity: item.quantity,
     }));
 
 
