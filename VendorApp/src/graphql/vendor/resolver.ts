@@ -9,16 +9,17 @@
 #######################################################################
 */
 
-import { Query, Resolver, Authorized, Mutation, Arg } from "type-graphql"
+import { Query, Resolver, Authorized, Mutation , Ctx} from "type-graphql"
 import { Key } from "./schema"
 import { ApikeyService } from "./service"
+import type { NextApiRequest as Request } from "next"
 
 @Resolver()
 export class vendorResolver {
   @Authorized("vendor")
   @Query(() => [Key])
   async allkeys(
-  // @Ctx() request: NextApiRequest
+  //@Ctx() request: Request,
   ): Promise<Key[]> {
     return new ApikeyService().all()
   }
@@ -26,19 +27,17 @@ export class vendorResolver {
   @Authorized("vendor")
   @Query(() => [Key], { nullable: true })
   async vendorkeys(
-    @Arg("vendorId") vendorId: string,
-    // @Ctx() request: NextApiRequest
+    @Ctx() request: Request, 
   ): Promise<Key[] | null> {
-    return new ApikeyService().one(vendorId);
+    return new ApikeyService().one(request.user.id);
   }
 
   @Authorized("vendor")
   @Mutation(() => String)
   async createKey(
-    @Arg("vendorId") vendorId: string,
-    // @Ctx() request: NextApiRequest
+    @Ctx() request: Request,
   ): Promise<string> {
-    const key = await new ApikeyService().create(vendorId);
+    const key = await new ApikeyService().create(request.user.id);
     if (!key) {
       throw new Error("Key creation failed");
     }
