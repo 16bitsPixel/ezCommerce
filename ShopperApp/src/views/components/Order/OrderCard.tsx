@@ -113,7 +113,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
+                <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }} onClick={() => handleViewItemClick(product.id)}>
                   {t('buy-it-again')}
                 </Button>
                   <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} onClick={() => handleViewItemClick(product.id)}>
