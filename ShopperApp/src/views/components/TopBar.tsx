@@ -52,6 +52,7 @@ export function TopBar() {
 
   const handleSearch = () => {
     setSearchTerm(inputValue);
+    router.push('/');
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
