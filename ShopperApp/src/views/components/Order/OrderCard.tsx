@@ -4,7 +4,7 @@ import { Box, Typography, Grid, Card,
 
 import {Product} from '../../../graphql/product/schema'
 import { useTranslation } from 'next-i18next';
-
+import { useRouter } from 'next/router';
 
 interface OrderCardProps {
   ids: string[];
@@ -33,7 +33,6 @@ const fetchProducts = ({ setProducts, setError }: FetchProductsParams, ids: stri
       }`,
       variables, // Include variables in the query object
     };
-
     return fetch('/api/graphql', {
       method: 'POST',
       body: JSON.stringify(query),
@@ -68,7 +67,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
   const { t } = useTranslation('common');
-
+    const router = useRouter()
   React.useEffect(() => {
     fetchProducts({ setProducts, setError }, ids);
   }, [ids]);
@@ -78,7 +77,12 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
       const total = products.reduce((acc, product, index) => acc + product.price * quantity[index], 0);
       onTotalChange(total);
     }
-  }, [products, quantity, onTotalChange]);
+
+  }, []);
+
+  const handleViewItemClick = (id:string) => {
+    router.push(`/product?id=${id}`);
+  };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
@@ -112,11 +116,9 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                 <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
                   {t('buy-it-again')}
                 </Button>
-                <Link href={`/product?id=${product.id}`} >
-                  <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
+                  <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} onClick={() => handleViewItemClick(product.id)}>
                     {t('view-your-item')}
                   </Button>
-                </Link>
               </Box>
             </Card>
           </Grid>
