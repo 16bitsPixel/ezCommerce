@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid, Card,
-   CardMedia, Button, Link} from '@mui/material';
+  CardMedia, Button, Link} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 import { useTranslation } from 'next-i18next';
@@ -110,11 +110,11 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
-                {t('buy-it-again')}
+                  {t('buy-it-again')}
                 </Button>
                 <Link href={`/product?id=${product.id}`} >
                   <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
-                  {t('view-your-item')}
+                    {t('view-your-item')}
                   </Button>
                 </Link>
               </Box>

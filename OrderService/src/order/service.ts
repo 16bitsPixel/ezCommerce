@@ -45,7 +45,6 @@ export class OrderService {
       };
     }
 
-    // console.log(query);
     const {rows: orderRow} = await pool.query(query);
     if (orderRow.length === 0) {
       return undefined;
@@ -70,16 +69,13 @@ export class OrderService {
       };
       orders.push(order);
     }
-    console.log("order: ", orders)
     return orders;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create(neworder: InputOrder): Promise<Order | any> {
-    console.log("new order: ", neworder);
     const current = new Date();
   
-    // Assume all items have the same account_id
     const account_id = neworder.items[0].account_id;
   
     const insert = `

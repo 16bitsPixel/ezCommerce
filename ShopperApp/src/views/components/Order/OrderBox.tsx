@@ -73,7 +73,7 @@ export function OrderBox() {
   return (
     <Box className="OrderDiv" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: 4 }}>
-      {t('your-orders')}
+        {t('your-orders')}
       </Typography>
       <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
