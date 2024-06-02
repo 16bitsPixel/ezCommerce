@@ -14,8 +14,8 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react'
 import { graphql, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node';
-
 import { TrendingList } from '@/views/components/TrendingList';
+import { SearchContext } from '@/context/SearchContext';
 
 let returnError = false;
 
@@ -61,7 +61,6 @@ it('Renders', async () => {
   render(
     <TrendingList />
   );
-
   await waitFor(() => {
     expect(screen.queryAllByText('test1').length).toBe(1);
   });
@@ -69,10 +68,19 @@ it('Renders', async () => {
 
 it('Errors When No Server', async () => {
   server.close()
-
   render(
     <TrendingList />
   );
-
   expect(screen.queryAllByText('test1').length).toBe(0);
+});
+
+it('Returns null when search term is present', () => {
+  const mockSearchTerm = 'some search term';
+  render(
+    <SearchContext.Provider value={{ searchTerm: mockSearchTerm, setSearchTerm: jest.fn() }}>
+      <TrendingList />
+    </SearchContext.Provider>
+  );
+  expect(screen.queryAllByText('test1').length).toBe(0);
+  expect(screen.queryAllByText('test2').length).toBe(0);
 });
