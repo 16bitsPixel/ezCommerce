@@ -19,6 +19,23 @@ export interface OrderItem {
 export interface InputOrder {
     items: OrderItem[];
   }
+  interface Product {
+    id: string;
+    name: string;
+    description: string[];
+    price: number;
+    rating: number;
+    image: string[];
+  }
+
+export interface StripeInput {
+    product_id: string;
+    name: string;
+    image: string;
+    quantity: number;
+    price: number;
+  }
+  
 
 export function CheckoutButton (){
 
@@ -62,13 +79,26 @@ export function CheckoutButton (){
             console.log("Caught Error: ", e)
           });
 
-
+        const stripeItems: StripeInput[] = cart.map((cartItem: CartItem) => {
+          const product = products.find((p: Product) => p.id === cartItem.id);
+          if (!product) {
+            throw new Error(`Product with ID ${cartItem.id} not found`);
+          }
+          return {
+            product_id: cartItem.id,
+            name: (product as Product).name,
+            image: (product as Product).image[0], 
+            quantity: cartItem.quantity,
+            price: (product as Product).price
+          };
+        });
+        console.log("stripe items: ", JSON.stringify(stripeItems))
         const response = await fetch('/api/checkout_sessions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(products),
+          body: JSON.stringify(stripeItems),
         });
         
         if (!response.ok) {
