@@ -28,6 +28,13 @@
   "ship-to": "SHIP TO",
   "quantity": "Quantity",
   "price": "Price",
-  "status": "Status"  
+  "status": "Status",
+  "addCart": "Add to Cart",
+  "inStock": "In Stock",
+  "buyNow": "Buy Now",
+  "soldBy": "Sold By ezCommerce",
+  "addList": "Add to List",
+  "delete": "Delete",
+  "qty": "Qty"
 }
 

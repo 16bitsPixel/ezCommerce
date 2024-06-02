@@ -22,6 +22,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useTranslation } from 'next-i18next';
 
 import { useRouter } from 'next/router';
 
@@ -71,6 +72,8 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
   const loginContext = React.useContext(LoginContext);
   const [quantity, setQuantity] = React.useState('1');
   const router = useRouter();
+  const { t } = useTranslation('common');
+  
 
   const handleChange = (event: SelectChangeEvent) => {
     setQuantity(event.target.value as string);
@@ -118,18 +121,13 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           ${product.price}
         </Typography>
 
-        <Typography gutterBottom style = {{color: '#03045e'}}>
-          {/*TODO: implement user location */}
-          Deliver to User Location
-        </Typography>
-
         <Typography variant="h5" gutterBottom style = {{color: 'green'}}>
           {/* TODO: implement quantity */}
-          In Stock
+          {t("inStock")}
         </Typography>
 
         <FormControl fullWidth variant="outlined" margin="normal">
-          <InputLabel id="quantity-label">Quantity</InputLabel>
+          <InputLabel id="quantity-label">{t("quantity")}</InputLabel>
           <Select
             labelId="quantity-label"
             id="quantity"
@@ -160,7 +158,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           aria-label="addToCartBtn"
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#00b4d8', alignSelf: 'center' }}
         >
-          Add to Cart
+          {t("addCart")}
         </Button>
 
         <Button 
@@ -170,11 +168,11 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#0077b6', alignSelf: 'center' }}
         >
           {/*TODO: buy now */}
-          Buy Now
+          {t("buyNow")}
         </Button>
 
         <Typography gutterBottom style = {{color: '#03045e', marginTop: '2vh'}}>
-          Sold By VendorID
+          {t("soldBy")}
         </Typography>
 
         <Button 
@@ -184,7 +182,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#caf0f8', alignSelf: 'center', color: 'black' }}
         >
           {/*TODO: buy now */}
-          Add to List
+          {t("addList")}
         </Button>
       </Card>
     </div>

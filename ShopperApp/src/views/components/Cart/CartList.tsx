@@ -13,6 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useTranslation } from 'next-i18next';
 
 interface FetchCartParams {
   setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
@@ -135,6 +136,7 @@ export function CartList() {
   const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
   const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
+  const { t } = useTranslation('common');
 
   React.useEffect(() => {
     if (loginContext.accessToken.length < 1) {
@@ -230,15 +232,12 @@ export function CartList() {
                   </Typography>
 
                   {/* TODO: change based on quantity */}
-                  <Typography variant="body2" color="green">In Stock</Typography>
-
-                  {/* TODO: change to return status */}
-                  <Typography variant="body2" color="#007bff">Return</Typography>
+                  <Typography variant="body2" color="green">{t("inStock")}</Typography>
 
                   <Grid container alignItems="center" spacing={1}>
                     <Grid item>
                       <FormControl variant="outlined" margin="normal" style={{ minWidth: '80px' }}>
-                        <InputLabel id="quantity-label">Qty</InputLabel>
+                        <InputLabel id="quantity-label">{t("qty")}</InputLabel>
                         <Select
                           labelId={`quantity-label-${index}`}
                           id={`quantity-${index}`}
@@ -269,7 +268,7 @@ export function CartList() {
                         style={{ marginTop: '10px', cursor: 'pointer', color: '#007bff' }}
                         underline="none"
                       >
-                        Delete
+                        {t("delete")}
                       </Link>
                     </Grid>
                   </Grid>

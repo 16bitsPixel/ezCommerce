@@ -28,5 +28,12 @@
   "ship-to": "ENVIA A",
   "quantity": "Cantidad",
   "price": "Precio",
-  "status": "Estado"
+  "status": "Estado",
+  "addCart": "Aggregar al Carrito",
+  "inStock": "Disponible",
+  "buyNow": "Comprar Ahora",
+  "soldBy": "Enviado por ezCommerce",
+  "addList": "Agregar a la Lista",
+  "delete": "Eliminar",
+  "qty": "Cant"
 }
