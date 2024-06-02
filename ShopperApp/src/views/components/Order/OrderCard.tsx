@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, Button} from '@mui/material';
+import { Box, Typography, Grid, Card,
+   CardMedia, Button, Link} from '@mui/material';
 
 import {Product} from '../../../graphql/product/schema'
 
@@ -110,9 +111,11 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                 <Button className='orderButton' variant="contained" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}>
                   Buy it again
                 </Button>
-                <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
-                  View your item
-                </Button>
+                <Link href={`/product?id=${product.id}`} >
+                  <Button variant="outlined" sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }}>
+                    View your item
+                  </Button>
+                </Link>
               </Box>
             </Card>
           </Grid>

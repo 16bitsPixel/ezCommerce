@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Typography, Grid, Divider, Button} from '@mui/material';
+import { Box, Typography, Grid, Divider} from '@mui/material';
+// import { useTranslation } from 'next-i18next';
+
 
 import { LoginContext } from '@/context/Login';
 import {Order} from '../../../graphql/order/schema'
@@ -53,6 +55,8 @@ export function OrderBox() {
   const { id, accessToken, userName } = React.useContext(LoginContext);
   const [orderTotals, setOrderTotals] = React.useState<number[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
+  // const { t } = useTranslation('common');
+
 
   React.useEffect(() => {
     fetchOrders(accessToken, id, { setOrders });
@@ -95,14 +99,14 @@ export function OrderBox() {
               quantity={order.quantities}
               onTotalChange={(total: number) => handleTotalChange(index, total)}
             />
-            <Divider sx={{ margin: '16px 0' }} />
+            {/* <Divider sx={{ margin: '16px 0' }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button className = 'orderButton' variant="contained" >Get product support</Button>
               <Box>
                 <Button variant="outlined" sx={{ marginRight: 1 }}>Track package</Button>
                 <Button variant="outlined" sx={{ marginRight: 1 }}>Return or replace items</Button>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         ))}
       </Box>
