@@ -185,12 +185,12 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                   onClick= {()=>handleAddToCart(ids[index], quantity[index])}>
                   {t('buy-it-again')}
                 </Button>
-                  <Button 
-                    variant="outlined" 
-                    sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} 
-                    onClick={() => handleViewItemClick(product.id)}>
-                    {t('view-your-item')}
-                  </Button>
+                <Button 
+                  variant="outlined" 
+                  sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} 
+                  onClick={() => handleViewItemClick(product.id)}>
+                  {t('view-your-item')}
+                </Button>
               </Box>
             </Card>
           </Grid>

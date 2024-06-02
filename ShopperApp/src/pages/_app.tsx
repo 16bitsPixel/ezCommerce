@@ -13,11 +13,14 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { appWithTranslation } from 'next-i18next'
 import { LoginProvider } from '../context/Login';
+import { SearchProvider } from '@/context/SearchContext';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <LoginProvider>
-      <Component {...pageProps} />
+      <SearchProvider>
+        <Component {...pageProps} />
+      </SearchProvider>
     </LoginProvider>
   );
 }

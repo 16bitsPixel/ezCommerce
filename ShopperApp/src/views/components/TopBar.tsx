@@ -47,6 +47,8 @@ export function TopBar() {
   };
 
   const handleHome = () => {
+    setSearchTerm('');
+    setInputValue('');
     router.push('/');
   };
 
@@ -56,6 +58,7 @@ export function TopBar() {
 
   const handleSearch = () => {
     setSearchTerm(inputValue);
+    router.push('/');
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

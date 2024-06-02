@@ -9,7 +9,6 @@
 #######################################################################
 */
 import { ScreenSizeProvider } from '@/context/ScreenSize'
-import { SearchProvider } from '@/context/SearchContext';
 import { TrendingList  } from './components/TrendingList';
 import { SearchResult } from './components/SearchResult'
 import { BottomBar } from './components/BottomBar';
@@ -19,7 +18,7 @@ import { Box } from '@mui/material';
 
 export function App() {
   return (
-    <SearchProvider>
+    <>
       <ScreenSizeProvider>
         <TopBar/>
         <BottomBar/>
@@ -31,6 +30,6 @@ export function App() {
           <SearchResult />
         </Box>
       </Box>
-    </SearchProvider>
+    </>
   )
 }
