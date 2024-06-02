@@ -52,6 +52,7 @@ export class OrderController extends Controller {
     @Body() product: InputOrder,
     // @Request() request: express.Request
   ): Promise<Order | undefined> {
+    console.log("got here")
     return new OrderService().create(product)
       .then((order: Order | undefined): Order|undefined => {
         // if (!order) {

@@ -69,9 +69,6 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
   const [error, setError] = React.useState('Logged Out');
   const { t } = useTranslation('common');
 
-
-  console.log(error);
-
   React.useEffect(() => {
     fetchProducts({ setProducts, setError }, ids);
   }, [ids]);

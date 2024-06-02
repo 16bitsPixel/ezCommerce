@@ -75,38 +75,47 @@ export class OrderService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async create(neworder: InputOrder): Promise<Order | undefined> {
+  public async create(neworder: InputOrder): Promise<Order | any> {
+    console.log("new order: ", neworder);
     const current = new Date();
+  
+    // Assume all items have the same account_id
+    const account_id = neworder.items[0].account_id;
+  
     const insert = `
-    INSERT INTO orders(account_id, order_date, order_status)
-    VALUES ($1::uuid, $2::timestamp, 'pending')
-    RETURNING *
+      INSERT INTO orders(account_id, order_date, order_status)
+      VALUES ($1::uuid, $2::timestamp, 'pending')
+      RETURNING *
     `;
+  
     const query = {
       text: insert,
-      values: [`${neworder.account_id}`,
-        current.toISOString()],
+      values: [account_id, current.toISOString()],
     };
-    const {rows: orderRows} = await pool.query(query);
+    
+    const { rows: orderRows } = await pool.query(query);
+    const orderId = orderRows[0].id;
+  
     const insertDetails = `
-    INSERT INTO orderDetails(order_id, product_id, quantity)
-    VALUES ($1::uuid, $2::uuid, $3::integer)
+      INSERT INTO orderDetails(order_id, product_id, quantity)
+      VALUES ($1::uuid, $2::uuid, $3::integer)
     `;
-    for (let i = 0; i < neworder.product_id.length; i++) {
+  
+    for (const item of neworder.items) {
       const queryDetails = {
         text: insertDetails,
-        values: [`${orderRows[0].id}`,
-          `${neworder.product_id[i]}`,
-          `${neworder.quantities[i]}`],
+        values: [orderId, item.product_id, item.quantities],
       };
       await pool.query(queryDetails);
     }
-    return {order_id: orderRows[0].id,
-      account_id: orderRows[0].account_id,
-      product_id: neworder.product_id,
+  
+    return {
+      order_id: orderId,
+      account_id: account_id,
+      product_id: neworder.items.map(item => item.product_id),
       date: orderRows[0].date,
       status: orderRows[0].status,
-      quantities: neworder.quantities,
+      quantities: neworder.items.map(item => item.quantities),
     };
   }
 
