@@ -49,7 +49,13 @@ export class ProductController extends Controller {
   public async addProduct(
     @Body() productInfo: ProductAdd
   ): Promise<Product> {
-    return new ProductService().addProduct(productInfo)
+    try {
+        console.log("about to try")
+        return await new ProductService().addProduct(productInfo);
+      } catch (error) {
+        console.error('Error in addProduct controller', error);
+        throw new Error('Failed to create product');
+      }
   }
 
   @Get('search')
