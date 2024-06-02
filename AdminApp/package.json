@@ -36,6 +36,7 @@
     "@testing-library/react": "^15.0.7",
     "class-validator": "*",
     "classnames": "^2.5.1",
+    "cross-fetch": "^4.0.0",
     "graphql": "*",
     "graphql-request": "*",
     "graphql-yoga": "*",
