@@ -32,7 +32,7 @@ export class AuthService {
               reject(err);
             } else if (scopes){
               for (const scope of scopes) {
-                if (!user.roles || !user.roles.includes(scope)) {
+                if (!user.role || !user.role.includes(scope)) {
                   reject(new Error("Unauthorised"));
                 }
               }
