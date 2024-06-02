@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { TopBar } from '@/views/components/TopBar';
 import { useRouter } from 'next/router';
 import { ScreenSizeContext } from '@/context/ScreenSize';
@@ -85,7 +85,7 @@ describe('TopBar Component', () => {
     expect(push).toHaveBeenCalledWith('/login');
   });
 
-  it('Test locale change button to es', () => {
+  it('Test locale change button to es', async () => {
     (useRouter as jest.Mock).mockReturnValue({
       locale: 'en',
       push: jest.fn(),
@@ -108,12 +108,15 @@ describe('TopBar Component', () => {
       </ScreenSizeContext.Provider>
     );
 
-    expect(screen.getByText('change-locale')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('change-locale'));
-    expect(useRouter().push).not.toHaveBeenCalled();
+    const selecterb = await screen.findByText('EN');
+    fireEvent.mouseDown(selecterb);
+    const wkspc = await screen.getByText('ES');
+    fireEvent.click(wkspc);
+    await waitFor(() => screen.findByText('ES'));
+    expect(useRouter().push).toHaveBeenCalled();
   });
 
-  it('Test locale change button to en', () => {
+  it('Test locale change button to en', async () => {
     (useRouter as jest.Mock).mockReturnValue({
       locale: 'es',
       push: jest.fn(),
@@ -136,9 +139,12 @@ describe('TopBar Component', () => {
       </ScreenSizeContext.Provider>
     );
 
-    expect(screen.getByText('change-locale')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('change-locale'));
-    expect(useRouter().push).not.toHaveBeenCalled();
+    const selecterb = await screen.findByText('ES');
+    fireEvent.mouseDown(selecterb);
+    const wkspc = await screen.getByText('EN');
+    fireEvent.click(wkspc);
+    await waitFor(() => screen.findByText('EN'));
+    expect(useRouter().push).toHaveBeenCalled();
   });
 });
 
