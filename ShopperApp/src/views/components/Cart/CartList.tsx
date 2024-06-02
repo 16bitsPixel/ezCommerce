@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 interface FetchCartParams {
   setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
@@ -136,6 +137,7 @@ export function CartList() {
   const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
   const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
+  const router = useRouter();
   const { t } = useTranslation('common');
 
   React.useEffect(() => {
@@ -194,6 +196,10 @@ export function CartList() {
     setCart(updatedCart);
   };
 
+  const handleClick = (id: string) => {
+    router.push(`/product?id=${id}`);
+  }
+
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     for (const item of products) {
@@ -215,15 +221,14 @@ export function CartList() {
           <Card key={index} style={{ display: 'flex', marginBottom: '16px', padding: '16px', alignItems: 'center', minHeight: '15vh' }}>
             <Grid container spacing={2}>
               <Grid item xs={3} sm={3} md={2} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Link href={`/product?id=${item.id}`}>
-                  <CardMedia
-                    component="img"
-                    image={item.image[0]}
-                    alt={item.name}
-                    aria-label="cardImage"
-                    style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain' }}
-                  />
-                </Link>
+                <CardMedia
+                  component="img"
+                  image={item.image[0]}
+                  alt={item.name}
+                  aria-label="cardImage"
+                  style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', cursor: 'pointer' }}
+                  onClick={() => handleClick(item.id)}
+                />
               </Grid>
               <Grid item xs={6} sm={7} md={8}>
                 <CardContent>
