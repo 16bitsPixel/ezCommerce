@@ -43,6 +43,8 @@ export function TopBar() {
   };
 
   const handleHome = () => {
+    setSearchTerm('');
+    setInputValue('');
     router.push('/');
   };
 
