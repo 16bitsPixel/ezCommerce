@@ -23,7 +23,7 @@ export class APIKEYController extends Controller {
   }
 
 
-  @Security("jwt", ["member"])
+  @Security("jwt", ["vendor"])
   @Post('genrate-key')
   @SuccessResponse('201',"Vendor API Key Created")
   public async createapikey(

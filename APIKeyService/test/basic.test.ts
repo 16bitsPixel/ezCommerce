@@ -42,4 +42,27 @@ test("Get all api keys for a vendor", async()=>{
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(200);
 })
+let apikey:string
+test("Post a new api key", async()=>{
+  await supertest(server)
+    .post('/api/v0/vendor/api/genrate-key')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(201)
+    .then((res)=>{
+      expect(res.body).toBeDefined();
+      expect(res.body.id).toBeDefined();
+      expect(res.body.key).toBeDefined();
+      apikey = res.body
+    })
+})
+test("Now check that new api keys is available for vendor", async()=>{
+  await supertest(server)
+    .get('/api/v0/vendor/api/all-keys')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(200)
+    .then((res)=>{
+      expect(res.body).toBeDefined();
+      expect(res.body).toContainEqual(apikey);
+    })
+})
 
