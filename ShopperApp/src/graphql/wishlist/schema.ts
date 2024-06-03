@@ -5,6 +5,8 @@ export class WishList {
     id!: string
   @Field()
     Productname!: string
+  @Field()
+    Productid!: string
   @Field(() => [String]) 
     description!: string[]
   @Field()
@@ -18,6 +20,8 @@ export class WishList {
 export class WishListInput{
   @Field()
     Productname!: string
+  @Field()
+    Productid!: string
   @Field(() => [String]) 
     description!: string[]
   @Field()

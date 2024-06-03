@@ -7,6 +7,7 @@ export class wishListService{
             $1, 
             jsonb_build_object(
                 'Productname', $2::text,
+                'Productid', $2::text,
                 'description', $3::jsonb,
                 'price', $4::numeric,
                 'rating', $5::numeric,
@@ -17,12 +18,13 @@ export class wishListService{
         `
     const query = {
       text: select,
-      values: [account_id, wishlist.Productname, JSON.stringify(wishlist.description), wishlist.price, wishlist.rating, JSON.stringify(wishlist.images)]
+      values: [account_id, wishlist.Productname,wishlist.Productid, JSON.stringify(wishlist.description), wishlist.price, wishlist.rating, JSON.stringify(wishlist.images)]
     };
           
     const {rows} = await pool.query(query);
     return {id: rows[0].id, 
       Productname: rows[0].info.Productname,
+      Productid: rows[0].infor.Productid,
       description: rows[0].info.description,
       price: rows[0].info.price,
       rating: rows[0].info.rating,
