@@ -34,14 +34,6 @@ export function TopBar() {
     router.push('/');
   };
 
-  const handleAccount = () => {
-    if (loginContext.accessToken.length < 1) {
-      router.push('/login');
-    } else {
-      router.push('/account');
-    }
-  };
-
   const handleOrder = () => {
     if (loginContext.accessToken.length < 1) {
       router.push('/login');
@@ -144,9 +136,6 @@ export function TopBar() {
                   {t('logout')}
                 </Button>
               )}
-              <Button variant="outlined" onClick={handleAccount} style={{ color: 'white', marginRight: '8px' }}>
-                Account
-              </Button>
               <Button variant="outlined" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>
