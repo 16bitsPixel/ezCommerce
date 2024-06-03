@@ -62,7 +62,7 @@ export function ProductView({id}: ProductProps) {
 
   React.useEffect(() => {
     fetchProduct({id, setProduct});
-  }, []);
+  }, [id]);
 
   return (
     <>

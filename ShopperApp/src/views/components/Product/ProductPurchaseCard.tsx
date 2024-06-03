@@ -27,7 +27,6 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 import { LoginContext } from '../../../context/Login';
-import { WishListInput } from '@/graphql/wishlist/schema';
 
 interface addToCartParams {
   id: string|string[]|undefined;
@@ -80,6 +79,8 @@ const addToWishlist = ({product, loginContext, setError, router }: addToWishlist
     rating: product.rating,
     image: JSON.stringify(product.image)
   };
+
+  console.log(productInput);
 
   const query = {
     query: `
