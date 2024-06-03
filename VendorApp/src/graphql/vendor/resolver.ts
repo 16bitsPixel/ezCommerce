@@ -19,25 +19,17 @@ export class vendorResolver {
   @Authorized("vendor")
   @Query(() => [Key])
   async allkeys(
-  //@Ctx() request: Request,
+  @Ctx() request: Request,
   ): Promise<Key[]> {
-    return new ApikeyService().all()
-  }
-  
-  @Authorized("vendor")
-  @Query(() => [Key], { nullable: true })
-  async vendorkeys(
-    @Ctx() request: Request, 
-  ): Promise<Key[] | null> {
-    return new ApikeyService().one(request.user.id);
+    return new ApikeyService().all(request.user.accessToken)
   }
 
   @Authorized("vendor")
-  @Mutation(() => String)
+  @Mutation(() => Key)
   async createKey(
     @Ctx() request: Request,
-  ): Promise<string> {
-    const key = await new ApikeyService().create(request.user.id);
+  ): Promise<Key> {
+    const key = await new ApikeyService().create(request.user.accessToken);
     if (!key) {
       throw new Error("Key creation failed");
     }

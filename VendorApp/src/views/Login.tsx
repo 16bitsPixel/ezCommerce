@@ -72,7 +72,7 @@ export default function Login() {
               } else {
                 loginContext.setAccessToken(json.data.login.accessToken);
                 loginContext.setUserName(json.data.login.name);
-                loginContext.setUserId(json.data.login.id);
+                
               }
             })
             .catch((e) => {

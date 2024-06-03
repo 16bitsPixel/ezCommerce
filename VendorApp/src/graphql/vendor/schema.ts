@@ -11,7 +11,7 @@
 
 import { Field, ObjectType } from "type-graphql"
 
-@ObjectType()
+@ObjectType("Key")
 export class Key {
   @Field()
     id!: string 
