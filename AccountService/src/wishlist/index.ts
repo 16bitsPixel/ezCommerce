@@ -1,5 +1,6 @@
 export interface inputWishlist{
     Productname: string,
+    Productid: string,
     description: string[],
     price: number,
     rating: number, 
@@ -8,6 +9,7 @@ export interface inputWishlist{
 export interface Wishlist{
     id: string,
     Productname: string,
+    Productid: string,
     description: string[],
     price: number,
     rating: number, 

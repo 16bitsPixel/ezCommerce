@@ -3,37 +3,33 @@ import {
   Get,
   Route,
   SuccessResponse,
-  Query,
   Post,
-  Body,
+  Security,
+  Request
 } from 'tsoa';
-  
-import { APIKey, Vendor } from '.';
+import { APIKey } from '.';
 import { ApiService } from './service';
+import * as express from 'express';
 
 @Route('vendor/api')
 export class APIKEYController extends Controller {
-    @Get('all-keys')
-    @SuccessResponse('200',"All API Keys")
+  @Security("jwt", ["vendor"])
+  @Get('all-keys')
+  @SuccessResponse('200',"All API Keys")
   public async getkeys(
+    @Request() request: express.Request
   ): Promise<APIKey []>{
-    return new ApiService().getkeys();
+    return new ApiService().getvendorkey(`${request.user?.id}`);
   }
 
-  @Get('vendor-keys')
-  @SuccessResponse('200',"Vendor API Keys")
-    public async getkey(
-    @Query() vendorid: string,
-    ): Promise<APIKey []> {
-      return new ApiService().getvendorkey(vendorid);
-    }
 
+  @Security("jwt", ["vendor"])
   @Post('genrate-key')
   @SuccessResponse('201',"Vendor API Key Created")
   public async createapikey(
-    @Body() vendorid: Vendor,
-  ): Promise<string|undefined> {
-    return new ApiService().createkey(vendorid);
+    @Request() request: express.Request,
+  ): Promise<APIKey|undefined> {
+    return new ApiService().createkey(`${request.user?.email}`, `${request.user?.name}`, `${request.user?.id}`);
   }
 }
   

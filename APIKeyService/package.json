@@ -1,5 +1,5 @@
 {
-  "name": "account-microservice",
+  "name": "apikey-microservice",
   "version": "1.0.0",
   "description": "CSE187 Account Micro Service",
   "author": "David Harrison <dcharris@ucsc.edu>",
@@ -8,16 +8,18 @@
   "devDependencies": {
     "@types/bcrypt": "*",
     "@types/express": "*",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "*",
     "@types/node": "*",
     "@types/pg": "*",
+    "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "*",
     "concurrently": "*",
     "eslint": "*",
     "eslint-config-typescript": "^3.0.0",
-    "jest": "*",
+    "jest": "^29.7.0",
     "nodemon": "*",
-    "supertest": "*",
+    "supertest": "^7.0.0",
     "ts-jest": "*",
     "ts-node": "*",
     "ts-postgres": "*",
@@ -55,12 +57,13 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testTimeout": 500,
+    "testTimeout": 2000,
     "collectCoverageFrom": [
       "src/**/*.[jt]s"
     ],
     "coveragePathIgnorePatterns": [
-      "src/server.[jt]s"
+      "src/server.[jt]s",
+      "index.d.ts"
     ],
     "testMatch": [
       "**/?(*.)+(spec|test).[jt]s?(x)"

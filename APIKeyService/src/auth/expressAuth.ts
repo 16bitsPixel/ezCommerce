@@ -9,12 +9,14 @@
 #######################################################################
 */
 
-import { Field, ObjectType } from "type-graphql"
+import {Request} from "express";
+import {AuthService} from './authService';
+import {SessionUser} from '../types/express';
 
-@ObjectType("Key")
-export class Key {
-  @Field()
-    id!: string 
-  @Field()
-    key!: string
+export function expressAuthentication(
+  request: Request,
+  securityName: string,
+  scopes?: string[]
+): Promise<SessionUser> {
+  return new AuthService().check(request.headers.authorization, scopes);
 }

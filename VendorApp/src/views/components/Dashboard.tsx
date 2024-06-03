@@ -13,7 +13,6 @@ const Dashboard = () => {
   const handleLogout = () => {
     loginContext.setAccessToken('')
     loginContext.setUserName('')
-    loginContext.setUserId('')
     loginContext.setView('Login')
   };
 

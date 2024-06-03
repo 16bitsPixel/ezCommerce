@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '@/context/Login';
-import { Button, List, ListItem, ListItemText } from '@mui/material';
-
+import { Button, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 interface Key {
     id: string;
     key: string;
@@ -10,15 +11,16 @@ interface Key {
 export const VendorKeys = () => {
   const [keys, setKeys] = useState<Key[]>([]);
   const loginContext = useContext(LoginContext);
+  const copyToClipboard = (key: string) => {
+    navigator.clipboard.writeText(key).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  };
 
   const createKey = () => {
     const mutation = {
-      query: `mutation createKey($vendorId: String!) {
-        createKey(vendorId: $vendorId)
-      }`,
-      variables: { vendorId: loginContext.userId },
+      query: `mutation newkey{createKey{id,key}}`,
     };
-
     fetch('/vendor/api/graphql', {
       method: 'POST',
       body: JSON.stringify(mutation),
@@ -43,15 +45,10 @@ export const VendorKeys = () => {
   useEffect(() => {
     const fetchKeys = () => {
       const query = {
-        query: `query vendorkeys($vendorId: String!) {
-        vendorkeys(vendorId: $vendorId) {
-          id
-          key
-        }
-      }`,
-        variables: { vendorId: loginContext.userId },
+        query: `query keys {
+          allkeys { id, key }
+        }`,
       };
-
       fetch('/vendor/api/graphql', {
         method: 'POST',
         body: JSON.stringify(query),
@@ -65,7 +62,7 @@ export const VendorKeys = () => {
           if (json.errors) {
             alert(json.errors[0].message);
           } else {
-            setKeys(json.data.vendorkeys);
+            setKeys(json.data.allkeys);
           }
         })
         .catch((e) => {
@@ -73,23 +70,44 @@ export const VendorKeys = () => {
         });
     };
 
-    if (loginContext.userId) {
+    if (loginContext.accessToken) {
       fetchKeys();
     }
-  }, [loginContext.userId, loginContext.accessToken]);
+  }, [loginContext.accessToken]);
 
   return (
     <div>
-      <List>
-        {keys.map((key, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={key.key} secondary={`ID: ${key.id}`} />
-          </ListItem>
-        ))}
-      </List>
-      <Button variant="contained" color="primary" onClick={createKey}>
-        Generate New Key
-      </Button>
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <TableContainer component={Paper}>
+            <Table stickyHeader aria-label="api keys table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>API Key</TableCell>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {keys.map((key, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{key.key.length > 10 ? `${key.key.substring(0, 40)}...` : key.key}</TableCell>
+                    <TableCell>{key.id}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => copyToClipboard(key.key)} aria-label="copy">
+                        <ContentCopyIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Button variant="contained" color="primary" onClick={createKey}>
+             Generate New Key
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };
