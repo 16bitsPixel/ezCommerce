@@ -41,7 +41,16 @@ export class wishListService{
     const {rows} = await pool.query(query);
     const result = []
     for (const row of rows){
-      result.push(row)
+      const wishlist = {
+        id: row.id,
+        Productname: row.info.Productname,
+        Productid: row.info.Productid,
+        description: row.info.description,
+        price: row.info.price,
+        rating: row.info.rating,
+        images: row.info.images
+      }
+      result.push(wishlist)
     }
     return result
   }
