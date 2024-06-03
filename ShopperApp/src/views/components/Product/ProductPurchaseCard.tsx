@@ -27,6 +27,7 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 import { LoginContext } from '../../../context/Login';
+import { WishListInput } from '@/graphql/wishlist/schema';
 
 interface addToCartParams {
   id: string|string[]|undefined;
@@ -43,6 +44,59 @@ const addToCart = ({id, quantity, loginContext, setError, router }: addToCartPar
         id, quantity
       }
     }`}
+  fetch('/api/graphql', {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${loginContext.accessToken}`
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then(() => {
+      setError('')
+      router.push('/cart');
+    })
+    .catch((e) => {
+      setError(e.toString())
+    })
+};
+
+interface addToWishlistParams {
+  product: any;
+  loginContext: any;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  router: any;
+}
+
+const addToWishlist = ({product, loginContext, setError, router }: addToWishlistParams) => {
+  const productInput = {
+    Productname: product.name,
+    Productid: product.id,
+    description: JSON.stringify(product.description),
+    price: product.price,
+    rating: product.rating,
+    image: JSON.stringify(product.image)
+  };
+
+  const query = {
+    query: `
+      mutation addWishList {
+        addWishList(input: {
+          Productname: "${productInput.Productname}",
+          Productid: "${productInput.Productid}",
+          description: ${productInput.description},
+          price: ${productInput.price},
+          rating: ${productInput.rating},
+          image: ${productInput.image}
+        }) {
+          id
+        }
+      }
+    `
+  };
   fetch('/api/graphql', {
     method: 'POST',
     body: JSON.stringify(query),
@@ -106,6 +160,19 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
     }
   };
 
+  const handleAddWishlist = () => {
+    if (product) {
+      if (loginContext.accessToken.length < 1) {
+        // route to login page
+        router.push('/login');
+
+        // after user success login, redirect back to this product page
+      } else {
+        addToWishlist({product, loginContext, setError, router});
+      }
+    }
+  };
+
   if (error !== '') {
     return (
       <Typography>
@@ -164,7 +231,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
         <Button 
           variant="contained" 
           color="primary" 
-          // onClick={} 
+          onClick={handleAddWishlist} 
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#ff9900', alignSelf: 'center', color: 'black' }}
         >
           {/*TODO: buy now */}
