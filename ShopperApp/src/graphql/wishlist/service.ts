@@ -30,12 +30,12 @@ export class WishListService {
   async addto(newItem: WishListInput, accessToken: string): Promise<WishList>{
     return new Promise((resolve, reject) => {
       fetch('http://localhost:3011/api/v0/Wishlist', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
-        body: JSON.stringify(newItem)
+        body: JSON.stringify({"Productname": newItem.Productname, "Productid": newItem.Productid, "description": newItem.description, "price": newItem.price, "rating": newItem.rating, "images": newItem.image})
       })
         .then((res) => {
           if (!res.ok) {
@@ -48,7 +48,7 @@ export class WishListService {
           resolve(data)
         })
         .catch(() => {
-          // console.log(err)
+          // console.log(err);
           reject(new Error("addint to Wishlist Error"))
         });
     });
