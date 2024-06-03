@@ -14,6 +14,7 @@ import {TopBar} from './components/TopBar'
 import { Typography, Box, Card, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import {CartList} from './components/Cart/CartList';
+import { WishList } from './components/Cart/WishList'
 import * as React from 'react';
 import { ProductProvider } from '@/context/Product';
 import { CheckoutButton } from './components/Cart/CheckoutButton';
@@ -35,6 +36,15 @@ export function Cart() {
               <CartList/>
               <Divider/>
               <CheckoutButton/>
+            </Card>
+
+            <Card style = {{marginTop: '5vh', padding: 20}}>
+              <Typography variant="h4" gutterBottom>
+                {t('wishlist')}
+              </Typography>
+              <Divider/>
+              <WishList/>
+              <Divider/>
             </Card>
           </Box>
         </ProductProvider>
