@@ -7,11 +7,11 @@ export class wishListService{
             $1, 
             jsonb_build_object(
                 'Productname', $2::text,
-                'Productid', $2::text,
-                'description', $3::jsonb,
-                'price', $4::numeric,
-                'rating', $5::numeric,
-                'images', $6::jsonb
+                'Productid', $3::text,
+                'description', $4::jsonb,
+                'price', $5::numeric,
+                'rating', $6::numeric,
+                'images', $7::jsonb
             )
         )
         RETURNING *
@@ -20,11 +20,11 @@ export class wishListService{
       text: select,
       values: [account_id, wishlist.Productname,wishlist.Productid, JSON.stringify(wishlist.description), wishlist.price, wishlist.rating, JSON.stringify(wishlist.images)]
     };
-          
     const {rows} = await pool.query(query);
+
     return {id: rows[0].id, 
       Productname: rows[0].info.Productname,
-      Productid: rows[0].infor.Productid,
+      Productid: rows[0].info.Productid,
       description: rows[0].info.description,
       price: rows[0].info.price,
       rating: rows[0].info.rating,
@@ -41,7 +41,16 @@ export class wishListService{
     const {rows} = await pool.query(query);
     const result = []
     for (const row of rows){
-      result.push(row)
+      const wishlist = {
+        id: row.id,
+        Productname: row.info.Productname,
+        Productid: row.info.Productid,
+        description: row.info.description,
+        price: row.info.price,
+        rating: row.info.rating,
+        images: row.info.images
+      }
+      result.push(wishlist)
     }
     return result
   }

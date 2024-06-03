@@ -8,6 +8,7 @@ export function SignUp() {
   const loginContext = React.useContext(LoginContext)
   const [user, setUser] = React.useState({firstname: '', lastname: '', email: '', password: ''});
   const { view, setView } = React.useContext(LoginContext);
+  const [passwordError, setPasswordError] = React.useState('');
   const { t } = useTranslation('common');
 
   const handleInputChange = (event: any) => {
@@ -16,10 +17,21 @@ export function SignUp() {
       ...prevState,
       [name]: value
     }));
+    if (name === 'password') {
+      if (value.length < 8 || value.length > 16) {
+        setPasswordError('Password must be between 8 and 16 characters.');
+      } else {
+        setPasswordError('');
+      }
+    }
   };
 
   const onSubmit = (event: any) => {
     event.preventDefault();
+    if (passwordError) {
+      alert(passwordError);
+      return;
+    }
     const query = {query: `mutation signup{signup(role: "member" firstname: "${user.firstname}" lastname: "${user.lastname} "email: "${user.email}" password: "${user.password}")}`}
     fetch('/api/graphql', {
       method: 'POST',
@@ -37,6 +49,7 @@ export function SignUp() {
         } else if (json.data.signup) {
           // Success message that prompts the user to log in
           alert("Signup successful! You can now log in.");
+          setView('Login')
         } else {
           // General failure message if signup wasn't successful
           alert("Signup failed. Please try again.");
