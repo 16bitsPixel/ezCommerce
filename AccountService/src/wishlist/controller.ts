@@ -24,7 +24,7 @@ export class WishListController extends Controller {
     @Body() wishlist: inputWishlist,
     @Request() request: express.Request
   ): Promise<Wishlist> {
-    return await new wishListService().addWishlist(`${request.user?.id}`,wishlist);
+    return new wishListService().addWishlist(`${request.user?.id}`,wishlist);
   }
   @Get()
   @Security("jwt", ["member"])
