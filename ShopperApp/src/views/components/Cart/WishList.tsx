@@ -135,8 +135,8 @@ const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParam
  */
 export function WishList() {
   const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
-  const [wishlist, setWishlist] = React.useState([]);
-  const [wishlistProducts, setWishlistProducts] = React.useState([]);
+  const [wishlist, setWishlist] = React.useState<any[]>([]);
+  const [wishlistProducts, setWishlistProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
   const router = useRouter();
@@ -161,7 +161,7 @@ export function WishList() {
       );
 
       const productResults = await Promise.all(productPromises);
-      setWishlistProducts(productResults.filter((product) => product !== undefined));
+      setWishlistProducts(productResults.filter((product): product is Product => product !== undefined));
     };
 
     loadProducts();
