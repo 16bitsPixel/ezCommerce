@@ -84,15 +84,13 @@ export const VendorKeys = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>API Key</TableCell>
-                  <TableCell>ID</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {keys.map((key, index) => (
                   <TableRow key={index}>
-                    <TableCell>{key.key.length > 10 ? `${key.key.substring(0, 40)}...` : key.key}</TableCell>
-                    <TableCell>{key.id}</TableCell>
+                    <TableCell>{key.key.length > 10 ? `${key.key.substring(0, 50)}...` : key.key}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => copyToClipboard(key.key)} aria-label="copy">
                         <ContentCopyIcon />

@@ -17,12 +17,21 @@ export class Order {
     quantities!: number[]
 }
 
-@InputType()
+@InputType('InputOrder')
 export class InputOrder {
   @Field()
-    accountId!: string
+    account_id!: string
   @Field(() => [String]) 
-    productId!: string[]
+    product_id!: string[]
+  @Field(() => [Number])
+    quantities!: number[]
+}
+@ObjectType('orderOutput')
+export class output{
+  @Field()
+    account_id!: string
+  @Field(() => [String]) 
+    product_id!: string[]
   @Field(() => [Number])
     quantities!: number[]
 }

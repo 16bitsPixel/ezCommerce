@@ -110,6 +110,7 @@ export class VerifyController extends Controller {
   ): Promise<VerifiedVendor|undefined> {
     return new AccountService().acceptVendor(vendorId)
       .then(async (vendor: VerifiedVendor|undefined): Promise<VerifiedVendor|undefined> => {
+        console.log(`This is vendor:microservice: ${vendor}`);
         if (!vendor) {
           this.setStatus(404);
         }

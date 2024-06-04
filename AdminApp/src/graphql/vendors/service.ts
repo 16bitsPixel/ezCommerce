@@ -37,6 +37,7 @@ export class VendorService{
         'Content-Type': 'application/json',
       }
     });
+    console.log("Accepet vendor with id", id);
     return res.json()
   }
 }

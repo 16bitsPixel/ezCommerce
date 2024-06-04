@@ -1,4 +1,4 @@
-import type { Order, InputOrder } from './schema'
+import type { Order, InputOrder , output} from './schema'
 
 export class OrderService{
   async getAll(accountId: string): Promise<Order[]> {
@@ -19,16 +19,31 @@ export class OrderService{
     return res.json();
   }
 
-  async create(order: InputOrder): Promise<Order> {
-    const res = await fetch('http://localhost:3015/api/v0/order/', {
+  async create(order: InputOrder): Promise<output> {
+    // Transform the InputOrder into the expected format for the API
+    const transformedOrder = {
+      items: order.product_id.map((productId, index) => ({
+        account_id: order.account_id,
+        product_id: productId,
+        quantities: order.quantities[index]
+      }))
+    };
+
+    const res = await fetch('http://localhost:3015/api/v0/order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'accept': 'application/json' 
       },
-      body: JSON.stringify(order),
+      body: JSON.stringify(transformedOrder),
     });
-    return res.json();
+
+    const jsonResponse = await res.json();
+    console.log(transformedOrder);
+    console.log(`This is the dattttttttttt ${JSON.stringify(jsonResponse)}`);
+    return jsonResponse;
   }
+
 
   async getStatus(orderId: string): Promise<Order> {
     const res = await fetch(`http://localhost:3015/api/v0/order/${orderId}/status`)

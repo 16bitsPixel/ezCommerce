@@ -9,6 +9,7 @@ export class OrderService {
       },
     })
     const data = await res.json();
+    //console.log("This is the dattttttttttt",data);
     return data;
   }
 

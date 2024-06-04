@@ -46,6 +46,7 @@ export function CheckoutButton (){
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(`Form submitted and acount id is ${account_id.length}`);
 
     if (account_id.length > 0) {
       try {
@@ -61,7 +62,7 @@ export function CheckoutButton (){
         }`
         };
 
-        fetch('/api/graphql', {
+        await fetch('/api/graphql', {
           method: 'POST',
           body: JSON.stringify(query2),
           headers: {
@@ -77,6 +78,45 @@ export function CheckoutButton (){
           })
           .catch((e) => {
             console.log("Caught Error: ", e)
+          });
+        console.log("About to call add to order")
+        const query3 = {
+          query: `
+              mutation CreateOrder($input: InputOrder!) {
+                createOrder(input: $input) {
+                  account_id
+                  product_id
+                  quantities
+                }
+              }
+            `,
+          variables: {
+            input: {
+              account_id: account_id,
+              product_id: cart.map((item:CartItem) => item.id),
+              quantities: cart.map((item:CartItem)=> item.quantity)
+            }
+          }
+        };
+          
+        console.log(query3);
+          
+        await fetch('/api/graphql', {
+          method: 'POST',
+          body: JSON.stringify(query3),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            if (json.errors) {
+              console.log("Error: ", json.errors);
+            }
+          })
+          .catch((e) => {
+            console.log("Caught Error: ", e);
           });
 
         const stripeItems: StripeInput[] = cart.map((cartItem: CartItem) => {
@@ -114,29 +154,30 @@ export function CheckoutButton (){
           window.location.href = data.url;
         }
 
-        const inputOrder = cart.map((item:CartItem) => ({
-          account_id: account_id,
-          product_id: item.id,
-          quantities: item.quantity
-        }));
+
+
+        ////////////////////////////////////////////////////////////////////////
+
+        // const inputOrder = cart.map((item:CartItem) => ({
+        //   account_id: account_id,
+        //   product_id: item.id,
+        //   quantities: item.quantity
+        // }));
   
-        const orderInput: InputOrder = {
-          items: inputOrder,
-        };
         
-        const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderInput)
-        });
+        // const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(orderInput)
+        // });
         
-        if (!orderResponse.ok) {
-          const errorText = await orderResponse.text();
-          console.error('Error response from server:', errorText);
-          throw new Error('Network response was not ok');
-        }
+        // if (!orderResponse.ok) {
+        //   const errorText = await orderResponse.text();
+        //   console.error('Error response from server:', errorText);
+        //   throw new Error('Network response was not ok');
+        // }
         
         setCart([]);
         setProducts([]);

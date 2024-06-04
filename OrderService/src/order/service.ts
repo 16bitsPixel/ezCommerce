@@ -104,13 +104,13 @@ export class OrderService {
       };
       await pool.query(queryDetails);
     }
-  
+    console.log(orderRows)
     return {
       order_id: orderId,
       account_id: account_id,
       product_id: neworder.items.map(item => item.product_id),
-      date: orderRows[0].date,
-      status: orderRows[0].status,
+      date: orderRows[0].order_date,
+      status: orderRows[0].order_status,
       quantities: neworder.items.map(item => item.quantities),
     };
   }

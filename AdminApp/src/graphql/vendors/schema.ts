@@ -12,7 +12,7 @@
 import { Field, ObjectType , InputType} from "type-graphql"
 import { IsUUID } from "class-validator";
 
-@ObjectType()
+@ObjectType('Vendor')
 export class Vendor {
   @Field()
   @IsUUID()
@@ -22,7 +22,7 @@ export class Vendor {
   @Field()
     name!: string
 }
-@InputType()
+@InputType('VendorId')
 export class VendorId{
   @Field()
   @IsUUID()

@@ -58,6 +58,7 @@ export class OrderController extends Controller {
         // if (!order) {
         //   this.setStatus(404);
         // }
+        console.log(order)
         return order;
       });
   }

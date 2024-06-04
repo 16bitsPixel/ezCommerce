@@ -2,7 +2,7 @@ import { Query, Resolver, Arg, Mutation, Authorized} from "type-graphql"
 // import type { NextApiRequest as Request } from 'next'
 
 
-import { Order, InputOrder } from "./schema"
+import { Order, InputOrder, output } from "./schema"
 import { OrderService } from "./service"
 
 @Resolver()
@@ -43,10 +43,10 @@ export class OrderResolver {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @Mutation(returns => Order)
+  @Mutation(returns => output)
   async createOrder(
     @Arg("input") input: InputOrder,
-  ): Promise<Order> {
+  ): Promise<output> {
     // console.log(`User creating the post is: ${request.user?.name}`);
     return new OrderService().create(input);
   }
