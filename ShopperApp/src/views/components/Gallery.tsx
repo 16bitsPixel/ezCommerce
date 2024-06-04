@@ -51,24 +51,32 @@ export function Gallery() {
       name: 'test',
       price: 10,
       rating: 5,
-      image: 'https://m.media-amazon.com/images/I/713cCZD1LVL._SX3000_.jpg',
-      keyword: 'plush'
+      image: 'https://i.imgur.com/bJfWk7N.png',
+      keyword: 'dinnerware'
     },
     {
       id: '2',
       name: 'test2',
       price: 20,
       rating: 4,
-      image: 'https://m.media-amazon.com/images/I/71pWRle5T-L._SX3000_.jpg',
-      keyword: 'dinnerware'
+      image: 'https://i.imgur.com/JQSm0SU.png',
+      keyword: 'plush'
     },
     {
       id: '3',
       name: 'test3',
       price: 30,
       rating: 3,
-      image: 'https://m.media-amazon.com/images/I/71hVxSEbQjL._SX3000_.jpg',
+      image: 'https://i.imgur.com/xS31ASr.png',
       keyword: 'laptop'
+    }, 
+    {
+      id: '4',
+      name: 'test4',
+      price: 40,
+      rating: 2,
+      image: 'https://i.imgur.com/hzvxmho.png',
+      keyword: 'chair'
     }
   ];
 
