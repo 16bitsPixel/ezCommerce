@@ -12,6 +12,10 @@ export const molly = {
   email: 'molly@books.com',
   password: 'mollymember',
 };
+export const vin = {
+  email: 'vin@vendor.com',
+  password: 'vinvendor',
+}
 
 beforeAll(async () => {
   server = http.createServer(app);
@@ -23,6 +27,22 @@ afterAll((done) => {
   db.shutdown();
   server.close(done);
 });
+export interface Member {
+  email: string;
+  password: string;
+}
+
+async function loginAs(member: Member): Promise<string | undefined> {
+  let accessToken;
+  await supertest(server)
+    .post('/api/v0/authenticate')
+    .send({ email: member.email, password: member.password })
+    .expect(200)
+    .then((res) => {
+      accessToken = res.body.accessToken;
+    });
+  return accessToken;
+}
 let mollycred:string;
 test('Good Credentials Accepted', async () => {
   await supertest(server).post('/api/v0/authenticate')
@@ -47,6 +67,17 @@ test('Post to cart',async()=>{
     })
     .expect(201)
     .then((res)=>{
-      console.log(res);
+      expect(res.body).toBeDefined();
     });
 });
+test("Post to cart but not a member", async()=>{
+  const accessToken = await loginAs(vin)
+  await supertest(server)
+    .post('/api/v0/Cart')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send({
+      "productId": "string",
+      "quantity": 0
+    })
+    .expect(401);
+})
