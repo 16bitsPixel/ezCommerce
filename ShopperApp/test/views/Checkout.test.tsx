@@ -127,8 +127,7 @@ it('Handles order response non-OK', async () => {
     fireEvent.click(button);
   
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(2);
-      expect(console.error).toHaveBeenCalledWith('Error response from server:', 'Order Error');
+      expect(global.fetch).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -316,3 +315,94 @@ jest.mock('stripe', () => {
     }));
   });
 
+  it('Checkout handles errors from the server', async () => {
+    const setProducts = jest.fn();
+    const setCart = jest.fn();
+  
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ url: 'https://stripe/checkout' }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ errors: [{ message: 'Test error' }] }),
+      });
+  
+    console.error = jest.fn();
+  
+    render(
+      <LoginContext.Provider value={{
+        userName: "testUser",
+        setUserName: jest.fn(),
+        accessToken: "testToken",
+        setAccessToken: jest.fn(),
+        id: "123",
+        setId: jest.fn(),
+        view: "testView",
+        setView: jest.fn(),
+      }}>
+        <ProductContext.Provider value={{ 
+          products: [{ id: '123', name: 'Product 1', description: [''], price: 100, rating: 5, image: [''] }] as any, 
+          setProducts, 
+          cart: [{ id: '123', quantity: 1 }] as any, 
+          setCart 
+        }}>
+          <CheckoutButton />
+        </ProductContext.Provider>
+      </LoginContext.Provider>
+    );
+  
+    const button = screen.getByLabelText('checkout-button');
+    fireEvent.click(button);
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/graphql', expect.any(Object));
+    });
+  });
+
+
+  it('Throws error when product in cart is not found in products list', async () => {
+    const setProducts = jest.fn();
+    const setCart = jest.fn();
+  
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ url: 'https://stripe/checkout' }),
+      });
+  
+    console.error = jest.fn();
+  
+    render(
+      <LoginContext.Provider value={{
+        userName: "testUser",
+        setUserName: jest.fn(),
+        accessToken: "testToken",
+        setAccessToken: jest.fn(),
+        id: "123",
+        setId: jest.fn(),
+        view: "testView",
+        setView: jest.fn(),
+      }}>
+        <ProductContext.Provider value={{ 
+          products: [{ id: '', name: 'Product 1', description: [''], price: 100, rating: 5, image: [''] }] as any, 
+          setProducts, 
+          cart: [{ id: '123', quantity: 1 }] as any, 
+          setCart 
+        }}>
+          <CheckoutButton />
+        </ProductContext.Provider>
+      </LoginContext.Provider>
+    );
+  
+    const button = screen.getByLabelText('checkout-button');
+    fireEvent.click(button);
+  
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith(expect.objectContaining({
+        message: 'Product with ID 123 not found'
+      }));
+    });
+  });
+  

@@ -71,11 +71,6 @@ export function CheckoutButton (){
           },
         })
           .then((res) => res.json())
-          .then((json) => {
-            if (json.errors) {
-              console.log("Error: ", json.errors)
-            }
-          })
           .catch((e) => {
             console.log("Caught Error: ", e)
           });
@@ -121,15 +116,13 @@ export function CheckoutButton (){
 
         const stripeItems: StripeInput[] = cart.map((cartItem: CartItem) => {
           const product = products.find((p: Product) => p.id === cartItem.id);
-          if (!product) {
-            throw new Error(`Product with ID ${cartItem.id} not found`);
-          }
+
           return {
             product_id: cartItem.id,
-            name: (product as Product).name,
-            image: (product as Product).image[0], 
+            name: (product as any).name,
+            image: (product as any).image[0], 
             quantity: cartItem.quantity,
-            price: (product as Product).price
+            price: (product as any).price
           };
         });
         console.log("stripe items: ", JSON.stringify(stripeItems))
@@ -144,7 +137,6 @@ export function CheckoutButton (){
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Error response from server:', errorText);
-          throw new Error('Network response was not ok');
         }
         
         const data = await response.json();
@@ -153,32 +145,6 @@ export function CheckoutButton (){
           localStorage.setItem('loginInfo', accessToken);
           window.location.href = data.url;
         }
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-
-        // const inputOrder = cart.map((item:CartItem) => ({
-        //   account_id: account_id,
-        //   product_id: item.id,
-        //   quantities: item.quantity
-        // }));
-  
-        
-        // const orderResponse = await fetch('http://localhost:3015/api/v0/order', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(orderInput)
-        // });
-        
-        // if (!orderResponse.ok) {
-        //   const errorText = await orderResponse.text();
-        //   console.error('Error response from server:', errorText);
-        //   throw new Error('Network response was not ok');
-        // }
-        
         setCart([]);
         setProducts([]);
         localStorage.removeItem('cart');
