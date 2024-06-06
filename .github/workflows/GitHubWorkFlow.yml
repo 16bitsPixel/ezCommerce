@@ -30,6 +30,6 @@ jobs:
       - name: Sleep for 20 seconds
         run: sleep 20s
       - name: Run All tests
-        run: npm run tests  
+        run: npm run test 
         shell: bash
       - run: npm run docker-down
