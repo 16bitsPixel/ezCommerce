@@ -39,9 +39,7 @@ export class AuthService {
         })
         .then(() => {
           jwt.verify(token, `${process.env.MASTER_SECRET}`, (err: jwt.VerifyErrors | null, decoded?: object | string) => {
-            if (err) {
-              return reject(err);
-            }
+
   
             const user = decoded as User;
             resolve({ email: user.email, name: user.name, id: user.id });
