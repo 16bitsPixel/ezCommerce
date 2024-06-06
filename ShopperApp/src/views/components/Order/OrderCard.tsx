@@ -103,6 +103,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
   const loginContext = React.useContext(LoginContext);
   const [products, setProducts] = React.useState<Product[]>([]);
   const [error, setError] = React.useState('Logged Out');
+  console.log(error);
   const { t } = useTranslation('common');
   const router = useRouter();
 
@@ -143,6 +144,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
       onTotalChange(total);
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
   const handleViewItemClick = (id:string) => {

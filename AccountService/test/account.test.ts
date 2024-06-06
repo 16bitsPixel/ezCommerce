@@ -159,6 +159,27 @@ test("Check a verified vendor",async()=>{
       expect(res.body).toBeTruthy();
     });
 });
+test("Create a vendor", async()=>{
+  await supertest(server)
+    .post('/api/v0/Signup')
+    .send({"role": "vendor",
+      "firstname": "Test",
+      "lastname": "Deer",
+      "email": "testing@gmail.com",
+      "password": "test"})
+    .expect(201);
+
+})
+test("No account for -Verify", async()=>{
+  await supertest(server)
+    .post('/api/v0/Verify')
+    .send({
+      email: 'wrong@gmail.com',
+      password: 'wrong',
+    })
+    .expect(403)
+})
+
 test("Anna logs in", async()=>{
   await supertest(server)
     .post('/api/v0/authenticate')
@@ -178,6 +199,7 @@ test("Molly tries to verify a vendor but bad id ", async()=>{
     .post('/api/v0/Verify/Vendor?vendorId=92330191')
     .expect(400);
 });
+
 test("anna tries to verify a vendor", async()=>{
   await supertest(server)
     .post('/api/v0/Verify/Vendor?vendorId=fa14fb7e-2a1d-41d5-8985-30568dc8a7a9')

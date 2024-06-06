@@ -62,7 +62,8 @@
       "src/**/*.[jt]s"
     ],
     "coveragePathIgnorePatterns": [
-      "src/server.[jt]s"
+      "src/server.[jt]s",
+      "index.d.ts"
     ],
     "testMatch": [
       "**/?(*.)+(spec|test).[jt]s?(x)"
