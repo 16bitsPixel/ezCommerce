@@ -52,6 +52,17 @@ test("Get all vendors", async()=>{
       expect(res.body).toContainEqual({name: 'Vin Vendor', vendorId: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9', accepted: true});
     })
 })
+test("Create a vendor", async()=>{
+  await supertest(server)
+    .post('/api/v0/Signup')
+    .send({"role": "vendor",
+      "firstname": "Test",
+      "lastname": "Deer",
+      "email": "testing@gmail.com",
+      "password": "test"})
+    .expect(201);
+
+})
 test("Get all pending vednos", async()=>{
   await supertest(server)
     .get('/api/v0/Vendor/Pending')

@@ -62,23 +62,20 @@ export class AccountService {
 
   public async restoreSession(accessToken: string): Promise<Authenticated | undefined> {
     return new Promise((resolve) => {
-      try {
-        jwt.verify(accessToken,
-          `${process.env.MASTER_SECRET}`,
-          async (err: jwt.VerifyErrors | null, decoded?: object | string) => {
-            if (err) {
-              console.log("error verifying: ", err)
-              return resolve(undefined);
-            }
-            const account = decoded as Credentials;
-            const credentials = { email: account.email, password: account.password };
-            const result = await this.login(credentials);
-            resolve(result);
-          });
-      } catch (e) {
-        console.log("caugh error:", e)
-        resolve(undefined);
-      }
+      
+      jwt.verify(accessToken,
+        `${process.env.MASTER_SECRET}`,
+        async (err: jwt.VerifyErrors | null, decoded?: object | string) => {
+          if (err) {
+            console.log("error verifying: ", err)
+            return resolve(undefined);
+          }
+          const account = decoded as Credentials;
+          const credentials = { email: account.email, password: account.password };
+          const result = await this.login(credentials);
+          resolve(result);
+        });
+      
     });
   }
   public async check(accessToken: string): Promise<SessionUser | undefined>  {
@@ -159,9 +156,6 @@ export class AccountService {
     const {rows} = await pool.query(query);
     if (rows[0]){
       return {vendorId: rows[0].vendor_id, accepted: rows[0].verified, name: name}
-    }
-    else{
-      return undefined
     }
   }
   public async getallpendingVendors(): Promise<VerifiedVendor[]>{

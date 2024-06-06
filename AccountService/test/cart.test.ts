@@ -81,3 +81,34 @@ test("Post to cart but not a member", async()=>{
     })
     .expect(401);
 })
+test("Put to a cart, which is adding an item", async()=>{
+  const accessToken = await loginAs(molly)
+  await supertest(server)
+    .put('/api/v0/Cart')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send([{
+      id: "123456",
+      quantity: 1
+    }])
+    .expect(201)
+    .then((res)=>{
+      expect(res.body).toBeDefined()
+      expect(res.body).toContainEqual({id: "123456",quantity: 1})
+    })
+})
+test("Put the same item in  cart, quanity should be 2", async()=>{
+  const accessToken = await loginAs(molly)
+  await supertest(server)
+    .post('/api/v0/Cart')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send({
+      productId: "123456",
+      quantity: 1
+    })
+    .expect(201)
+    .then((res)=>{
+      expect(res.body).toBeDefined()
+      expect(res.body).toEqual({id: "123456",quantity: 2})
+    })
+})
+
