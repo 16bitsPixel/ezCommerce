@@ -32,11 +32,10 @@ interface addToCartParams {
   id: string|string[]|undefined;
   quantity: number;
   loginContext: any;
-  setError: React.Dispatch<React.SetStateAction<string>>;
   router: any;
 }
 
-const addToCart = ({id, quantity, loginContext, setError, router }: addToCartParams) => {
+const addToCart = ({id, quantity, loginContext, router }: addToCartParams) => {
   const query = {
     query: `mutation addToCart {
       addToCart(productId: "${id}", quantity: ${quantity}) {
@@ -55,22 +54,20 @@ const addToCart = ({id, quantity, loginContext, setError, router }: addToCartPar
       return res.json()
     })
     .then(() => {
-      setError('')
       router.push('/cart');
     })
     .catch((e) => {
-      setError(e.toString())
+      alert(e.toString())
     })
 };
 
 interface addToWishlistParams {
   product: any;
   loginContext: any;
-  setError: React.Dispatch<React.SetStateAction<string>>;
   router: any;
 }
 
-const addToWishlist = ({product, loginContext, setError, router }: addToWishlistParams) => {
+const addToWishlist = ({product, loginContext, router }: addToWishlistParams) => {
   const productInput = {
     Productname: product.name,
     Productid: product.id,
@@ -110,11 +107,10 @@ const addToWishlist = ({product, loginContext, setError, router }: addToWishlist
       return res.json()
     })
     .then(() => {
-      setError('')
       router.push('/cart');
     })
     .catch((e) => {
-      setError(e.toString())
+      alert(e.toString())
     })
 };
 
@@ -123,7 +119,6 @@ interface ProductPurchaseCardProps {
 }
 
 export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
-  const [error, setError] = React.useState('')
   const loginContext = React.useContext(LoginContext);
   const [quantity, setQuantity] = React.useState('1');
   const router = useRouter();
@@ -156,7 +151,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         router.push('/cart');
       } else {
-        addToCart({id: product.id, quantity: parseInt(quantity, 10), loginContext, setError, router});
+        addToCart({id: product.id, quantity: parseInt(quantity, 10), loginContext, router});
       }
     }
   };
@@ -169,18 +164,10 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
 
         // after user success login, redirect back to this product page
       } else {
-        addToWishlist({product, loginContext, setError, router});
+        addToWishlist({product, loginContext, router});
       }
     }
   };
-
-  if (error !== '') {
-    return (
-      <Typography>
-        {error}
-      </Typography>
-    )
-  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -233,6 +220,7 @@ export function ProductPurchaseCard({product}: ProductPurchaseCardProps) {
           variant="contained" 
           color="primary" 
           onClick={handleAddWishlist} 
+          aria-label="addToWishlistBtn"
           style={{ marginTop: '20px', width: '90%', height: '3.5vh', borderRadius: '25px', backgroundColor: '#ff9900', alignSelf: 'center', color: 'black' }}
         >
           {/*TODO: buy now */}

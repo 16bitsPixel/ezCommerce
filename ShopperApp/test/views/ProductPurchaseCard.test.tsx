@@ -38,6 +38,21 @@ const handlers = [
       },
     })
   }),
+  graphql.mutation('addWishList', ({ query }) => {
+    console.log(query);
+    if (returnError) {
+      return HttpResponse.json({
+        errors: [{ message: 'Some Error' }],
+      })
+    }
+    return HttpResponse.json({
+      data: {
+        addWishList: {
+          id: '1'
+        }
+      },
+    })
+  }),
 ];
 
 const server = setupServer(...handlers)
@@ -151,7 +166,66 @@ it('Add to Cart Logged In', async () => {
   });
 });
 
-it('Errors When No Server', async () => {
+it('Add to Wishlist Not Logged In', async () => {
+  const push = useRouter().push;
+  render(
+    <ProductPurchaseCard product = {testProduct} />
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByLabelText('addToWishlistBtn')).toBeInTheDocument();
+  });
+
+  fireEvent.click(screen.getByLabelText('addToWishlistBtn'));
+  expect(push).toHaveBeenCalledWith('/login');
+});
+
+it('Add to Cart Logged In', async () => {
+  const push = useRouter().push;
+  render(
+    <LoginContext.Provider value={{ userName: 'test', setUserName: () => {}, accessToken: 'token', setAccessToken: () => {}, view: 'view', setView: () => {}, id: '1', setId: () => {}}}>
+      <ProductPurchaseCard product = {testProduct} />
+    </LoginContext.Provider>
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByLabelText('addToWishlistBtn')).toBeInTheDocument();
+  });
+
+  fireEvent.click(screen.getByLabelText('addToWishlistBtn'));
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith('/cart');
+  });
+});
+
+it('Change quantity', async () => {
+  render(
+    <ProductPurchaseCard product = {testProduct} />
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByLabelText('quantitySelect')).toBeInTheDocument();
+  });
+
+  // Get the select element and open the dropdown
+  const selectElement = screen.getByLabelText('quantitySelect');
+  fireEvent.mouseDown(selectElement);
+
+  // Wait for the dropdown menu to be in the document
+  const listbox = await screen.findByRole('combobox');
+
+  fireEvent.mouseDown(listbox);
+
+  // Click on the desired MenuItem
+  const option = screen.getByText('5');
+  fireEvent.click(option);
+
+  // Optionally, you can add an assertion to verify the value change
+  expect(selectElement).toHaveTextContent('5');
+});
+
+it('Errors When No Server, Cart', async () => {
   server.close()
 
   render(
@@ -165,4 +239,20 @@ it('Errors When No Server', async () => {
   });
 
   fireEvent.click(screen.getByLabelText('addToCartBtn'));
+});
+
+it('Errors When No Server, Wishlist', async () => {
+  server.close()
+
+  render(
+    <LoginContext.Provider value={{ userName: 'test', setUserName: () => {}, accessToken: 'token', setAccessToken: () => {}, view: 'view', setView: () => {}, id: '1', setId: () => {}}}>
+      <ProductPurchaseCard product = {testProduct} />
+    </LoginContext.Provider>
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByLabelText('addToWishlistBtn')).toBeInTheDocument();
+  });
+
+  fireEvent.click(screen.getByLabelText('addToWishlistBtn'));
 });
