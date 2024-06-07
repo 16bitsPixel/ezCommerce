@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {List, Typography, Box, CardContent, Link} from '@mui/material';
+import {List, Typography, Box, CardContent} from '@mui/material';
 import { Product } from '../../../graphql/product/schema'
-import { CartItem } from '@/graphql/cart/schema';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { LoginContext } from '../../../context/Login';
-import { ProductContext } from '@/context/Product';
 
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
@@ -15,11 +13,10 @@ import { useRouter } from 'next/router';
 interface fetchWishList {
   setWishlist: any;
   loginContext: any;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // TODO: FIX ADD SO DONT ADD MULTIPLE WISHLIST
-const fetchWishlist = ({ setWishlist, loginContext, setError }: fetchWishList) => {
+const fetchWishlist = ({ setWishlist, loginContext }: fetchWishList) => {
   const query = {
     query: `query getWishList {
         getWishList {
@@ -39,15 +36,13 @@ const fetchWishlist = ({ setWishlist, loginContext, setError }: fetchWishList) =
     .then((res) => res.json())
     .then((json) => {
       if (json.errors) {
-        setError(json.errors[0].message);
         setWishlist(undefined);
       } else {
-        setError('');
         setWishlist(json.data.getWishList);
       }
     })
     .catch((e) => {
-      setError(e.toString());
+      alert(e.toString());
       setWishlist(undefined);
     });
 };
@@ -55,10 +50,9 @@ const fetchWishlist = ({ setWishlist, loginContext, setError }: fetchWishList) =
 interface FetchProductParams {
   id: string|string[]|undefined;
   setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
+const fetchProduct = ({ id, setProduct }: FetchProductParams) => {
   const query = {
     query: `query GetProduct {
       productInfo(productId: "${id}") {
@@ -77,15 +71,13 @@ const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
     .then((res) => res.json())
     .then((json) => {
       if (json.errors) {
-        setError(json.errors[0].message);
         setProduct(undefined);
       } else {
-        setError('');
         setProduct(json.data.productInfo);
       }
     })
     .catch((e) => {
-      setError(e.toString());
+      alert(e.toString());
       setProduct(undefined);
     });
 };
@@ -134,17 +126,15 @@ const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParam
  * @return {JSX}
  */
 export function WishList() {
-  const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
   const [wishlist, setWishlist] = React.useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = React.useState<Product[]>([]);
-  const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
   const router = useRouter();
   const { t } = useTranslation('common');
 
   React.useEffect(() => {
     if (loginContext.accessToken.length > 1) {
-      fetchWishlist({setWishlist, loginContext, setError});
+      fetchWishlist({setWishlist, loginContext});
     }
   }, []); // eslint-disable-line
 
@@ -155,7 +145,6 @@ export function WishList() {
           fetchProduct({
             id: product.Productid,
             setProduct: (product) => resolve(product),
-            setError: (err) => setError(err),
           });
         })
       );
@@ -216,21 +205,6 @@ export function WishList() {
 
                   {/* TODO: change based on quantity */}
                   <Typography variant="body2" color="green">{t("inStock")}</Typography>
-
-                  {/* TODO: FIX DELETE FOR WISHLIST */}
-                  <Grid container alignItems="center" spacing={1}>
-                    <Grid item>
-                      <Link
-                        component="button"
-                        variant="body2"
-                        // onClick={() => handleDeleteItem(index)}
-                        style={{ marginTop: '10px', cursor: 'pointer', color: '#007bff' }}
-                        underline="none"
-                      >
-                        {t("delete")}
-                      </Link>
-                    </Grid>
-                  </Grid>
                 </CardContent>
               </Grid>
 
