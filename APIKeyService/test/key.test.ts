@@ -42,16 +42,16 @@ test("Post a new api key", async()=>{
 })
 
 test("Post a new api key without valid access Token", async()=>{
-    await supertest(server)
-      .post('/api/v0/vendor/api/genrate-key')
-      .set('Authorization', 'Bearer 123')
-      .expect(401)
-  })
-  test("Post a new api key without auth header", async()=>{
-    await supertest(server)
-      .post('/api/v0/vendor/api/genrate-key')
-      .expect(401)
-  })
+  await supertest(server)
+    .post('/api/v0/vendor/api/genrate-key')
+    .set('Authorization', 'Bearer 123')
+    .expect(401)
+})
+test("Post a new api key without auth header", async()=>{
+  await supertest(server)
+    .post('/api/v0/vendor/api/genrate-key')
+    .expect(401)
+})
 test("Now check that new api keys is available for vendor", async()=>{
   await supertest(server)
     .get('/api/v0/vendor/api/all-keys')
@@ -66,18 +66,18 @@ test("Now check that new api keys is available for vendor", async()=>{
 const MASTER_SECRET = process.env.MASTER_SECRET || 'your-master-secret';
 
 const invalidRoleToken = jwt.sign(
-    {
-        id: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9',
-        name: 'Vin Vendor',
-        email: 'vin@vendor.com',
-        role: ['user'] 
-    },
-    MASTER_SECRET,
-    { expiresIn: '1h' }
+  {
+    id: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9',
+    name: 'Vin Vendor',
+    email: 'vin@vendor.com',
+    role: ['user'] 
+  },
+  MASTER_SECRET,
+  { expiresIn: '1h' }
 );
 
 test("Reject with 'Unauthorised' error if user does not have required scopes", async () => {
-    await supertest(server)
+  await supertest(server)
     .get('/api/v0/vendor/api/all-keys')
     .set('Authorization', 'Bearer ' + invalidRoleToken)
     .expect(401)
@@ -85,7 +85,7 @@ test("Reject with 'Unauthorised' error if user does not have required scopes", a
 
 
 test('GET API Docs', async () => {
-    await supertest(server).get('/api/v0/docs/')
-      .expect(200);
-  });
+  await supertest(server).get('/api/v0/docs/')
+    .expect(200);
+});
   
