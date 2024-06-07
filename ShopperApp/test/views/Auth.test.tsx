@@ -2,11 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Login } from '../../src/views/Login';
-import { SignUp } from '../../src/views/Signup'
 import { LoginProvider, LoginContext } from '../../src/context/Login';
 import { useRouter } from 'next/router';
 import { setupServer } from 'msw/node';
-
+import { SignUp } from '@/views/Signup';
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
     return {
@@ -232,3 +231,176 @@ it('switches to login view when button clicked', () => {
   fireEvent.click(screen.getByTestId('signin-button'));
   expect(screen.queryByTestId('signin-button')).toBeNull();
 });
+
+it('handles add to cart during login', async () => {
+    // Mock fetch response for login
+    global.fetch = jest.fn((url, options) => {
+      if (url.includes('graphql')) {
+        if (options && options.method === 'POST' && options.body.includes('login')) {
+          return Promise.resolve({
+            json: () =>
+              Promise.resolve({
+                data: { login: { name: 'Test User', accessToken: 'test-token', id: '123' } },
+              }),
+          });
+        } else if (options && options.method === 'POST' && options.body.includes('addToCart')) {
+          return Promise.resolve({
+            json: () =>
+              Promise.resolve({
+                data: { addToCart: { id: 'product-1', quantity: 1 } },
+              }),
+          });
+        }
+      }
+      return Promise.reject(new Error('Network Error'));
+    }) as jest.Mock;
+
+    // Set up localStorage
+    const cartItems = [{ id: 'product-1', quantity: 1 }];
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    render(
+      <LoginContext.Provider value={mockLoginContext}>
+        <Login />
+      </LoginContext.Provider>
+    );
+
+    const email = screen.getByLabelText('Email Address');
+    fireEvent.change(email, { target: { value: 'molly@books.com' } });
+    const passwd = screen.getByLabelText('Password');
+    fireEvent.change(passwd, { target: { value: 'mollymember' } });
+    fireEvent.submit(screen.getByTestId('login-button'));
+
+    await waitFor(() => {
+      expect(mockSetAccessToken).toHaveBeenCalledWith('test-token');
+      expect(mockSetUserName).toHaveBeenCalledWith('Test User');
+    });
+  });
+
+  it('handles error message from addToCart mutation', async () => {
+    // Mock fetch response for login and addToCart with error
+    global.fetch = jest.fn((url, options) => {
+      if (url.includes('graphql')) {
+        if (options && options.method === 'POST' && options.body.includes('login')) {
+          return Promise.resolve({
+            json: () =>
+              Promise.resolve({
+                data: { login: { name: 'Test User', accessToken: 'test-token', id: '123' } },
+              }),
+          });
+        } else if (options && options.method === 'POST' && options.body.includes('addToCart')) {
+          return Promise.resolve({
+            json: () =>
+              Promise.resolve({
+                errors: [{ message: 'Some error occurred' }],
+              }),
+          });
+        }
+      }
+      return Promise.reject(new Error('Network Error'));
+    }) as jest.Mock;
+
+    window.alert = jest.fn();
+    
+    // Set up localStorage
+    const cartItems = [{ id: 'product-1', quantity: 1 }];
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    render(
+      <LoginContext.Provider value={mockLoginContext}>
+        <Login />
+      </LoginContext.Provider>
+    );
+
+    const email = screen.getByLabelText('Email Address');
+    fireEvent.change(email, { target: { value: 'molly@books.com' } });
+    const passwd = screen.getByLabelText('Password');
+    fireEvent.change(passwd, { target: { value: 'mollymember' } });
+    fireEvent.submit(screen.getByTestId('login-button'));
+
+    await waitFor(() => {
+      expect(mockSetAccessToken).toHaveBeenCalledWith('test-token');
+      expect(mockSetUserName).toHaveBeenCalledWith('Test User');
+      expect(window.alert).toHaveBeenCalledWith('Some error occurred');
+    });
+  });
+
+  it('handles network error during addToCart mutation', async () => {
+    // Mock fetch response for login and addToCart with network error
+    global.fetch = jest.fn((url, options) => {
+      if (url.includes('graphql')) {
+        if (options && options.method === 'POST' && options.body.includes('login')) {
+          return Promise.resolve({
+            json: () =>
+              Promise.resolve({
+                data: { login: { name: 'Test User', accessToken: 'test-token', id: '123' } },
+              }),
+          });
+        } else if (options && options.method === 'POST' && options.body.includes('addToCart')) {
+          return Promise.reject(new Error('Network Error'));
+        }
+      }
+      return Promise.reject(new Error('Network Error'));
+    }) as jest.Mock;
+
+    window.alert = jest.fn();
+    
+    // Set up localStorage
+    const cartItems = [{ id: 'product-1', quantity: 1 }];
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    render(
+      <LoginContext.Provider value={mockLoginContext}>
+        <Login />
+      </LoginContext.Provider>
+    );
+
+    const email = screen.getByLabelText('Email Address');
+    fireEvent.change(email, { target: { value: 'molly@books.com' } });
+    const passwd = screen.getByLabelText('Password');
+    fireEvent.change(passwd, { target: { value: 'mollymember' } });
+    fireEvent.submit(screen.getByTestId('login-button'));
+
+    await waitFor(() => {
+      expect(mockSetAccessToken).toHaveBeenCalledWith('test-token');
+      expect(mockSetUserName).toHaveBeenCalledWith('Test User');
+      expect(window.alert).toHaveBeenCalledWith(new Error('Network Error'));
+    });
+  });
+
+
+
+  const mockSignContext = {
+    userName: '',
+    accessToken: '',
+    setAccessToken: mockSetAccessToken,
+    setUserName: mockSetUserName,
+    view: 'Signup',
+    setView: jest.fn(),
+    id: '',
+    setId: jest.fn()
+  };
+  it('sets password error when password is too short', () => {
+    render(
+        <LoginContext.Provider value={mockSignContext}>
+          <SignUp />
+        </LoginContext.Provider>
+      );
+
+      const passwordInput = screen.getByLabelText('Password');
+        fireEvent.change(passwordInput, { target: { value: 'short' } });
+
+        
+  });
+  it('sets password error when password is too long', () => {
+    render(
+      <LoginContext.Provider value={mockSignContext}>
+        <SignUp />
+       </LoginContext.Provider> 
+    );
+
+
+    const passwordInput = screen.getByLabelText('Password');
+    fireEvent.change(passwordInput, { target: { value: 'thispasswordistoolong' } });
+
+  });
