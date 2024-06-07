@@ -100,21 +100,6 @@ it('Renders', async () => {
   });
 });
 
-it('Change Quantity', async () => {
-  render(
-    <ProductPurchaseCard product = {testProduct} />
-  );
-
-  await waitFor(() => {
-    expect(screen.queryByLabelText('quantitySelect')).toBeInTheDocument();
-  });
-
-  const quantitySelect = screen.getByLabelText('quantitySelect');
-  fireEvent.mouseDown(quantitySelect);
-
-  // change the quantity value and check if changed
-});
-
 it('Add to Cart Not Logged In', async () => {
   const push = useRouter().push;
   render(

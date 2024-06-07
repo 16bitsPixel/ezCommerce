@@ -12,17 +12,16 @@ import { ProductContext } from '@/context/Product';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 interface FetchCartParams {
   setCart: React.Dispatch<React.SetStateAction<CartItem|undefined>>;
   loginContext: any;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchCart = ({ setCart, loginContext, setError }: FetchCartParams) => {
+const fetchCart = ({ setCart, loginContext }: FetchCartParams) => {
   const query = {
     query: `query GetCart {
       Cart {
@@ -41,16 +40,10 @@ const fetchCart = ({ setCart, loginContext, setError }: FetchCartParams) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.errors) {
-        setError(json.errors[0].message);
-        setCart(undefined);
-      } else {
-        setError('');
-        setCart(json.data.Cart);
-      }
+      setCart(json.data.Cart);
     })
     .catch((e) => {
-      setError(e.toString());
+      alert(e.toString());
       setCart(undefined);
     });
 };
@@ -58,10 +51,9 @@ const fetchCart = ({ setCart, loginContext, setError }: FetchCartParams) => {
 interface FetchProductParams {
   id: string|string[]|undefined;
   setProduct: React.Dispatch<React.SetStateAction<Product|undefined>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
+const fetchProduct = ({ id, setProduct }: FetchProductParams) => {
   const query = {
     query: `query GetProduct {
       productInfo(productId: "${id}") {
@@ -79,27 +71,16 @@ const fetchProduct = ({ id, setProduct, setError }: FetchProductParams) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.errors) {
-        setError(json.errors[0].message);
-        setProduct(undefined);
-      } else {
-        setError('');
-        setProduct(json.data.productInfo);
-      }
-    })
-    .catch((e) => {
-      setError(e.toString());
-      setProduct(undefined);
+      setProduct(json.data.productInfo);
     });
 };
 
 interface DeleteCartItemParams {
   newCart: CartItem[];
   loginContext: any;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParams) => {
+const deleteCartItem = ({ newCart, loginContext }: DeleteCartItemParams) => {
   const query = {
     query: `mutation DeleteCartItem {
       setCart(newCart: ${JSON.stringify(newCart)}) {
@@ -116,17 +97,7 @@ const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParam
       'Authorization': `Bearer ${loginContext.accessToken}`
     },
   })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.errors) {
-        setError(json.errors[0].message);
-      } else {
-        setError('');
-      }
-    })
-    .catch((e) => {
-      setError(e.toString());
-    });
+    .then((res) => res.json());
 };
 
 /**
@@ -135,7 +106,6 @@ const deleteCartItem = ({ newCart, loginContext, setError }: DeleteCartItemParam
  */
 export function CartList() {
   const {products, setProducts, cart, setCart} = React.useContext(ProductContext)
-  const [error, setError] = React.useState('');
   const loginContext = React.useContext(LoginContext)
   const router = useRouter();
   const { t } = useTranslation('common');
@@ -148,24 +118,23 @@ export function CartList() {
       }
     } else {
       // TODO: fetch account cart from endpoint
-      fetchCart({setCart, loginContext, setError});
+      fetchCart({setCart, loginContext});
     }
   }, []); // eslint-disable-line
 
   React.useEffect(() => {
     const loadProducts = async () => {
-      const productPromises = cart.map((productId: CartItem) =>
+      const productPromises = cart.map((productId: any) =>
         new Promise((resolve) => {
           fetchProduct({
             id: productId.id,
             setProduct: (product) => resolve(product),
-            setError: (err) => setError(err),
           });
         })
       );
 
       const productResults = await Promise.all(productPromises);
-      setProducts(productResults.filter((product) => product !== undefined));
+      setProducts(productResults.filter((product): product is Product => product !== undefined));
     };
 
     loadProducts();
@@ -185,14 +154,14 @@ export function CartList() {
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     } else {
       // if logged in then set cart endpoint
-      deleteCartItem({newCart: updatedCart, loginContext, setError});
+      deleteCartItem({newCart: updatedCart, loginContext});
     }
   };
 
   // Function to handle quantity change
   const handleQuantityChange = (index: number, quantity: number) => {
     const updatedCart = [...cart];
-    (updatedCart[index] as CartItem).quantity = quantity;
+    if (updatedCart[index]) (updatedCart[index] as CartItem).quantity = quantity;
     setCart(updatedCart);
   };
 
@@ -225,7 +194,7 @@ export function CartList() {
                   component="img"
                   image={item.image[0]}
                   alt={item.name}
-                  aria-label="cardImage"
+                  aria-label={`cardImage-${index}`}
                   style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', cursor: 'pointer' }}
                   onClick={() => handleClick(item.id)}
                 />
@@ -249,6 +218,7 @@ export function CartList() {
                           value={cart[index] ? (cart[index] as CartItem).quantity : 1} // Set the value to the quantity from cart
                           onChange={(event) => handleQuantityChange(index, event.target.value as number)}
                           label="Qty"
+                          aria-label={`quantitySelect-${index}`}
                           MenuProps={{
                             PaperProps: {
                               style: {
@@ -272,6 +242,7 @@ export function CartList() {
                         onClick={() => handleDeleteItem(index)}
                         style={{ marginTop: '10px', cursor: 'pointer', color: '#007bff' }}
                         underline="none"
+                        aria-label={`deleteBtn-${index}`}
                       >
                         {t("delete")}
                       </Link>
