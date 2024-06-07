@@ -4,23 +4,36 @@ import requestHandler from './requestHandler';
 
 global.fetch = jest.fn();
 
-const mockedFetch = fetch as unknown as jest.Mock;
 
 let server: http.Server;
 
-beforeAll(async () => {
+const startServer = () => {
   server = http.createServer(requestHandler);
   server.listen(3002);
+};
+
+const closeServer = () => {
+  server.close();
+};
+
+beforeAll(async () => {
+  startServer();
 });
 
 afterAll(() => {
-  server.close();
+  closeServer();
 });
+
 
 
 describe('Allkeys', () => {
   beforeEach(() => {
     (fetch as jest.Mock).mockClear();
+    jest.clearAllMocks();
+  });
+  afterEach(() => {
+    closeServer();
+    startServer();
   });
       
   it('Grab all keys', async () => {
@@ -51,8 +64,29 @@ describe('Allkeys', () => {
       { id: '1', key: 'key1' },
       { id: '2', key: 'key2' },
     ]);
-    expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
-    expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3013/api/v0/vendor/api/all-keys', expect.any(Object));
+    expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
+    expect(fetch).toHaveBeenCalledWith('http://localhost:3013/api/v0/vendor/api/all-keys', expect.any(Object));
+  });
+  it('Grab all keys but server saids your access is bad', async () => {
+    
+    const mockResponse = {
+      ok: false,
+    };
+    (fetch as jest.Mock).mockResolvedValue(mockResponse);
+  
+    const response = await supertest(server)
+      .post('/api/graphql')
+      .set('Authorization', 'Bearer testToken')
+      .send({
+        query: `
+          query keys {
+            allkeys { id, key }
+          }
+          `,
+      })
+      .expect(200);
+    expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
+    expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
   });
 
   it('Grab all keys but not a vendor', async () => {
@@ -79,11 +113,12 @@ describe('Allkeys', () => {
       })
       .expect(200);
   
-    console.log(response.body);
     
-    expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
+    expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
     expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
   });
+
+
   it('Grab all keys but no auth header', async () => {
     
     (fetch as jest.Mock).mockResolvedValueOnce({
