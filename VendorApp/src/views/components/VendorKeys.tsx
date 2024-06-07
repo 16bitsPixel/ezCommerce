@@ -41,7 +41,6 @@ export const VendorKeys = () => {
 
   useEffect(() => {
     const fetchKeys = () => {
-      console.log("Fetching keys for you")
       const query = {
         query: `query keys {
           allkeys { id, key }

@@ -19,6 +19,7 @@
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "dprint": "^0.46.1",
     "eslint": "*",
     "eslint-config-next": "*",
     "eslint-config-typescript": "*",
