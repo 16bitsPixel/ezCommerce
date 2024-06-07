@@ -39,7 +39,7 @@ test('Get all products', async () => {
     .get('/api/v0/product')
     .expect(200)
     .then((res) => {
-      expect(res.body.length).toBe(4);
+      expect(res.body.length).toBe(105);
     })
 });
 
@@ -51,9 +51,9 @@ test('Create Product', async () => {
     .then((res) => {
       product_id = res.body.id;
       expect(res.body.name).toBe('test name');
-      expect(res.body.description).toBe('test description');
+      expect(res.body.description[0]).toBe('test description');
       expect(res.body.price).toBe(13);
-      expect(res.body.image).toBe('test image');
+      expect(res.body.image[0]).toBe('test image');
     });
 });
 
@@ -63,9 +63,9 @@ test('Get a single product', async () => {
     .expect(200)
     .then((res) => {
       expect(res.body.name).toBe('test name');
-      expect(res.body.description).toBe('test description');
+      expect(res.body.description[0]).toBe('test description');
       expect(res.body.price).toBe(13);
-      expect(res.body.image).toBe('test image');
+      expect(res.body.image[0]).toBe('test image');
     })
 });
 
@@ -79,3 +79,18 @@ test('GET API Docs', async () => {
   await supertest(server).get('/api/v0/docs/')
     .expect(200)
 });
+
+test('Search products with no results', async () => {
+    await supertest(server)
+      .get('/api/v0/product/search?query=nonexistentproduct')
+      .expect(404)
+});
+
+  test('Search products with results', async () => {
+    await supertest(server)
+      .get('/api/v0/product/search?query=Product')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeDefined();
+      });
+  });
