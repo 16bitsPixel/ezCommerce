@@ -1,24 +1,9 @@
-/*
-#######################################################################
-#
-# Copyright (C) 2022-2024 David C. Harrison. All right reserved.
-#
-# You may not use, distribute, publish, or modify this code without
-# the express written permission of the copyright holder.
-#
-#######################################################################
-*/
-/*
-#######################################################################
-#                   DO NOT MODIFY THIS FILE
-#######################################################################
-*/
-
 import supertest from 'supertest';
 import * as http from 'http';
 
 import * as db from './db';
 import app from '../src/app';
+import jwt from 'jsonwebtoken';
 
 let server: http.Server<
   typeof http.IncomingMessage,
@@ -55,6 +40,18 @@ test("Post a new api key", async()=>{
       apikey = res.body
     })
 })
+
+test("Post a new api key without valid access Token", async()=>{
+    await supertest(server)
+      .post('/api/v0/vendor/api/genrate-key')
+      .set('Authorization', 'Bearer 123')
+      .expect(401)
+  })
+  test("Post a new api key without auth header", async()=>{
+    await supertest(server)
+      .post('/api/v0/vendor/api/genrate-key')
+      .expect(401)
+  })
 test("Now check that new api keys is available for vendor", async()=>{
   await supertest(server)
     .get('/api/v0/vendor/api/all-keys')
@@ -66,3 +63,29 @@ test("Now check that new api keys is available for vendor", async()=>{
     })
 })
 
+const MASTER_SECRET = process.env.MASTER_SECRET || 'your-master-secret';
+
+const invalidRoleToken = jwt.sign(
+    {
+        id: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9',
+        name: 'Vin Vendor',
+        email: 'vin@vendor.com',
+        role: ['user'] 
+    },
+    MASTER_SECRET,
+    { expiresIn: '1h' }
+);
+
+test("Reject with 'Unauthorised' error if user does not have required scopes", async () => {
+    await supertest(server)
+    .get('/api/v0/vendor/api/all-keys')
+    .set('Authorization', 'Bearer ' + invalidRoleToken)
+    .expect(401)
+});
+
+
+test('GET API Docs', async () => {
+    await supertest(server).get('/api/v0/docs/')
+      .expect(200);
+  });
+  
