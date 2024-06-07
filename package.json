@@ -53,7 +53,6 @@
     "build-vendorapi": "cd VendorAPI && npm run build",
     "build-apikey": "cd APIKeyService && npm run build",
     "build-orders": "cd OrderService && npm run build",
-    "build-shipping": "cd ShippingService && npm run build",
     "start": "concurrently --kill-others \"npm run start-accounts\" \"npm run start-products\" \"npm run start-shopperapp\" \"npm run start-vendorapp\" \"npm run start-adminapp\" \"npm run start-vendorapi\" \"npm run start-apikey\" \"npm run start-orderservice\"",
     "start-accounts": "cd AccountService && npm start",
     "start-products": "cd ProductService && npm start",
@@ -82,6 +81,6 @@
     "APIkeyservice-test": "cd APIKeyService && npm run test -- --silent"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "*"
   }
 }
