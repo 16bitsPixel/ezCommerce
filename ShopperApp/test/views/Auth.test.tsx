@@ -378,7 +378,9 @@ it('handles add to cart during login', async () => {
     view: 'Signup',
     setView: jest.fn(),
     id: '',
-    setId: jest.fn()
+    setId: jest.fn(),
+    passwordError: '',
+    setPasswordError: jest.fn()
   };
   it('sets password error when password is too short', () => {
     render(
@@ -404,3 +406,24 @@ it('handles add to cart during login', async () => {
     fireEvent.change(passwordInput, { target: { value: 'thispasswordistoolong' } });
 
   });
+
+  
+    it('alerts password error and prevents form submission when password error exists', async () => {
+        window.alert = jest.fn(); 
+
+      render(
+        <LoginContext.Provider value={mockSignContext}>
+          <SignUp />
+        </LoginContext.Provider>
+      );
+  
+      const passwordInput = screen.getByPlaceholderText('password-placeholder');
+      const submitButton = screen.getByTestId('signup-button');
+  
+      fireEvent.change(passwordInput, { target: { value: 'short' } });
+  
+      await fireEvent.submit(submitButton);
+
+      expect(window.alert).toHaveBeenCalledWith('Password must be between 8 and 16 characters.');
+      expect(window.alert).toHaveBeenCalledTimes(1);
+    });
