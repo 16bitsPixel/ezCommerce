@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { graphql, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { SearchResult } from '@/views/components/SearchResult';
-import { SearchContext } from '@/context/SearchContext';
+import { SearchContext, SearchProvider } from '@/context/SearchContext';
 
 let returnError = false;
 let mockSearchTerm = 'test';
@@ -86,4 +86,24 @@ it('Returns null when there is no search term', () => {
     </SearchContext.Provider>
   );
   expect(container.firstChild).toBeNull();
+});
+
+it('Updates search term in SearchProvider', () => {
+  const TestComponent = () => {
+    const { searchTerm, setSearchTerm } = React.useContext(SearchContext);
+    return (
+      <div>
+        <span data-testid="search-term">{searchTerm}</span>
+        <button onClick={() => setSearchTerm('new search term')}>Update Search Term</button>
+      </div>
+    );
+  };
+  render(
+    <SearchProvider>
+      <TestComponent />
+    </SearchProvider>
+  );
+  expect(screen.getByTestId('search-term').textContent).toBe('');
+  fireEvent.click(screen.getByText('Update Search Term'));
+  expect(screen.getByTestId('search-term').textContent).toBe('new search term');
 });
