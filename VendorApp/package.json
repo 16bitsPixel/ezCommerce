@@ -24,6 +24,7 @@
     "eslint-config-typescript": "*",
     "jest": "*",
     "jest-environment-jsdom": "*",
+    "msw": "^2.3.1",
     "ts-jest": "*",
     "ts-node": "*",
     "typescript": "*"
@@ -39,7 +40,6 @@
     "graphql": "*",
     "graphql-request": "*",
     "graphql-yoga": "*",
-    "msw": "^2.3.0",
     "next": "*",
     "react": "*",
     "react-dom": "*",
