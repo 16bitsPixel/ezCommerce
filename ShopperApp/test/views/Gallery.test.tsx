@@ -4,7 +4,11 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { setupServer } from 'msw/node';
 
 import {Gallery} from '@/views/components/Gallery';
+import { SearchContext } from '@/context/SearchContext';
+
 let returnError = false;
+let mockSearchTerm = 'test';
+
 const server = setupServer();
 
 beforeAll(() => server.listen())
@@ -50,4 +54,16 @@ it('Bottom Bubbles Work', () => {
   // issue I was getting
   const leftArrow = screen.getByLabelText('arrow-left');
   fireEvent.click(leftArrow);
+});
+
+it('Image Click Sets Search Term', () => {
+  const setSearchTermMock = jest.fn();
+  render(
+    <SearchContext.Provider value={{ searchTerm: mockSearchTerm, setSearchTerm: setSearchTermMock }}>
+      <Gallery />
+    </SearchContext.Provider>
+  );
+  const image = screen.getByTestId('1');
+  fireEvent.click(image);
+  expect(setSearchTermMock).toHaveBeenCalledWith('dinnerware');
 });
