@@ -35,11 +35,7 @@ const fetchWishlist = ({ setWishlist, loginContext }: fetchWishList) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.errors) {
-        setWishlist(undefined);
-      } else {
-        setWishlist(json.data.getWishList);
-      }
+      setWishlist(json.data.getWishList);
     })
     .catch((e) => {
       alert(e.toString());
@@ -70,15 +66,7 @@ const fetchProduct = ({ id, setProduct }: FetchProductParams) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.errors) {
-        setProduct(undefined);
-      } else {
-        setProduct(json.data.productInfo);
-      }
-    })
-    .catch((e) => {
-      alert(e.toString());
-      setProduct(undefined);
+      setProduct(json.data.productInfo);
     });
 };
 
@@ -192,7 +180,7 @@ export function WishList() {
                   component="img"
                   image={item.image[0]}
                   alt={item.name}
-                  aria-label="cardImage"
+                  aria-label={`cardImage-${index}`}
                   style={{ height: 'auto', maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', cursor: 'pointer' }}
                   onClick={() => handleClick(item.id)}
                 />
