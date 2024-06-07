@@ -17,7 +17,7 @@
     "docker-down-products": "cd ProductService && docker-compose down",
     "docker-down-apikey": "cd APIKeyService && docker-compose down",
     "docker-down-orders": "cd OrderService && docker-compose down",
-    "install": "npm install && npm run install-adminapp &&  npm run install-vendorapp &&  npm run install-shopperapp && npm run install-accounts && npm run install-products && npm run install-vendorapi && npm run install-apikey && npm run install-orders",
+    "installs": "npm install && npm run install-adminapp &&  npm run install-vendorapp &&  npm run install-shopperapp && npm run install-accounts && npm run install-products && npm run install-vendorapi && npm run install-apikey && npm run install-orders",
     "install-adminapp": "cd AdminApp && npm install",
     "install-vendorapp": "cd VendorApp && npm install",
     "install-shopperapp": "cd ShopperApp && npm install",
