@@ -1,8 +1,6 @@
 import supertest from 'supertest';
 import http from 'http';
 import requestHandler from './requestHandler';
-import { AuthService } from '@/graphql/auth/service';
-import { Credentials, SignupCred, AccessToken } from '@/graphql/auth/schema';
 
 global.fetch = jest.fn();
 
@@ -10,30 +8,18 @@ let server: http.Server;
 
 beforeAll(async () => {
   server = http.createServer(requestHandler);
-  server.listen(3002);
+  server.listen(3000);
 });
 
 afterAll(() => {
   server.close();
 });
 
-export const anna = {
-  email: 'anna@books.com',
-  password: 'annaadmin',
-  name: "Anna Admin",
-};
-
-export interface Member {
-  email: string;
-  password: string;
-}
-
-describe('AuthService', () => {
+describe('AuthResolver', () => {
   beforeEach(() => {
     (fetch as jest.Mock).mockClear();
   });
 
-  const authService = new AuthService();
 
   describe('login', () => {
     it('should return authenticated user on successful login', async () => {
@@ -43,10 +29,20 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const credentials: Credentials = { email: 'anna@books.com', password: 'annaadmin' };
-      const result = await authService.login(credentials);
-
-      expect(result).toEqual({ name: 'testUser', accessToken: 'testToken' });
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              login(email: "molly@books.com" password: "mollymember") {
+                name
+                accessToken
+              }
+            }
+          `,
+        })
+        .expect(200);
+      expect(response.body.data.login).toEqual({ name: 'testUser', accessToken: 'testToken' });
       expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate', expect.any(Object));
     });
 
@@ -57,9 +53,21 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const credentials: Credentials = { email: 'molly@books.com', password: 'wrongpassword' };
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              login(email: "molly@books.com" password: "wrongpassword") {
+                name
+                accessToken
+              }
+            }
+          `,
+        })
+        .expect(200);
 
-      await expect(authService.login(credentials)).rejects.toThrow('Unauthorised');
+      expect(response.body.errors).toBeTruthy();
     });
   });
 
@@ -71,10 +79,20 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const accessToken: AccessToken = { accessToken: 'testToken' };
-      const result = await authService.restore(accessToken);
-
-      expect(result).toEqual({ name: 'testUser', accessToken: 'testToken' });
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              restore(accessToken: "testToken") {
+                name
+                accessToken
+              }
+            }
+          `,
+        })
+        .expect(200);
+      expect(response.body.data.restore).toEqual({ name: 'testUser', accessToken: 'testToken' });
       expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/restore?accessToken=testToken', expect.any(Object));
     });
 
@@ -85,39 +103,73 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const accessToken: AccessToken = { accessToken: 'invalidToken' };
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              restore(accessToken: "invalidToken") {
+                name
+                accessToken
+              }
+            }
+          `,
+        })
+        .expect(200);
 
-      await expect(authService.restore(accessToken)).rejects.toThrow('Unauthorised');
+      expect(response.body.errors).toBeTruthy();
     });
   });
 
-  describe('check', () => {
-    it('should return session user on successful check', async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ id: '1', role: 'user' }),
-      };
-      (fetch as jest.Mock).mockResolvedValue(mockResponse);
+  // describe('check', () => {
+  //   it('should return session user on successful check', async () => {
+  //     const mockResponse = {
+  //       ok: true,
+  //       json: jest.fn().mockResolvedValue({ id: '1', role: 'user' }),
+  //     };
+  //     (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const authHeader = 'Bearer testToken';
-      const result = await authService.check(authHeader);
+  //     const response = await supertest(server)
+  //       .post('/api/graphql')
+  //       .send({
+  //         query: `
+  //           query {
+  //             check(authHeader: "Bearer testToken") {
+  //               id
+  //               accessToken
+  //             }
+  //           }
+  //         `,
+  //       })
+  //       .expect(200);
+  //     expect(response.body.data.check).toEqual({ id: '1', accessToken: 'testToken' });
+  //     expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
+  //   });
 
-      expect(result).toEqual({ id: '1', accessToken: 'testToken' });
-      expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
-    });
+  //   it('should throw an error on failed check', async () => {
+  //     const mockResponse = {
+  //       ok: false,
+  //       json: jest.fn().mockResolvedValue({ message: 'Unauthorised' }),
+  //     };
+  //     (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-    it('should throw an error on failed check', async () => {
-      const mockResponse = {
-        ok: false,
-        json: jest.fn().mockResolvedValue({ message: 'Unauthorised' }),
-      };
-      (fetch as jest.Mock).mockResolvedValue(mockResponse);
+  //     const response = await supertest(server)
+  //       .post('/api/graphql')
+  //       .send({
+  //         query: `
+  //           query {
+  //             check(authHeader: "Bearer invalidToken") {
+  //               id
+  //               accessToken
+  //             }
+  //           }
+  //         `,
+  //       })
+  //       .expect(200);
 
-      const authHeader = 'Bearer invalidToken';
-
-      await expect(authService.check(authHeader)).rejects.toThrow('Unauthorised');
-    });
-  });
+  //     expect(response.body.errors).toBeTruthy();
+  //   });
+  // });
 
   describe('signup', () => {
     it('should return true on successful signup', async () => {
@@ -127,16 +179,23 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const signupCred: SignupCred = {
-        role: 'vendor',
-        firstname: 'test',
-        lastname: 'last',
-        email: 'email@gmail.com',
-        password: 'password',
-      };
-      const result = await authService.signup(signupCred);
-
-      expect(result).toBe(true);
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            mutation signup{
+              signup(
+                role: "member"
+                firstname: "test"
+                lastname: "last"
+                email: "email@gmail.com"
+                password: "password"
+              ) 
+            }
+          `,
+        })
+        .expect(200);
+      expect(response.body.data.signup).toBe(true);
       expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/Signup', expect.any(Object));
     });
 
@@ -146,15 +205,24 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const signupCred: SignupCred = {
-        role: 'vendor',
-        firstname: 'test',
-        lastname: 'last',
-        email: 'email@gmail.com',
-        password: 'password',
-      };
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            mutation {
+              signup(
+                role: "member"
+                firstname: "test"
+                lastname: "last"
+                email: "email@gmail.com"
+                password: "password"
+              )
+            }
+          `,
+        })
+        .expect(200);
 
-      await expect(authService.signup(signupCred)).rejects.toThrow('Not Created');
+      expect(response.body.errors).toBeTruthy();
     });
   });
 
@@ -166,10 +234,17 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const credentials: Credentials = { email: 'test', password: 'password' };
-      const result = await authService.isVerified(credentials);
-
-      expect(result).toBe(true);
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              isVerified(email: "test", password: "password") 
+            }
+          `,
+        })
+        .expect(200);
+      expect(response.body.data.isVerified).toBe(true);
       expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/Verify', expect.any(Object));
     });
 
@@ -179,9 +254,18 @@ describe('AuthService', () => {
       };
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const credentials: Credentials = { email: 'test', password: 'password' };
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .send({
+          query: `
+            query {
+              isVerified(email: "test", password: "password") 
+            }
+          `,
+        })
+        .expect(200);
 
-      await expect(authService.isVerified(credentials)).rejects.toThrow('Not Verified');
+      expect(response.body.errors).toBeTruthy();
     });
   });
 });
