@@ -136,7 +136,7 @@ export function TopBar() {
                   {t('logout')}
                 </Button>
               )}
-              <Button variant="outlined" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
+              <Button variant="outlined" aria-label="orderButtonTop" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>
               <Button variant="outlined" onClick={handleCart} style={{ color: 'white' }}>{t('cart')}</Button>
