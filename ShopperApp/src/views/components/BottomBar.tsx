@@ -98,8 +98,6 @@ export function BottomBar() {
     case 4:
       loginContext.accessToken.length < 1 ? handleSignIn() : handleLogout();
       break;
-    default:
-      break;
     }
   };
 

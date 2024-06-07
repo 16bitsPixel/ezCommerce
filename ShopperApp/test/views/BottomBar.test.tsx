@@ -4,32 +4,33 @@ import { useRouter } from 'next/router';
 import { ScreenSizeContext } from '@/context/ScreenSize';
 import { LoginContext } from '@/context/Login';
 import React from 'react';
-import '@testing-library/jest-dom'; // Importing jest-dom for custom matchers
+import '@testing-library/jest-dom'; 
 
-// Mocking react-i18next
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: jest.fn((str: string) => {
-      switch (str) {
-        case 'change-locale':
-          return 'Change Locale';
-        case 'home':
-          return 'Home';
-        case 'orders':
-          return 'Orders';
-        case 'cart':
-          return 'Cart';
-        case 'sign-in':
-          return 'Sign In';
-        default:
-          return str;
-      }
+    useTranslation: () => ({
+      t: jest.fn((str: string) => {
+        switch (str) {
+          case 'change-locale':
+            return 'Change Locale';
+          case 'home':
+            return 'Home';
+          case 'orders':
+            return 'Orders';
+          case 'cart':
+            return 'Cart';
+          case 'sign-in':
+            return 'Sign In';
+          case 'logout':
+            return 'logout';
+          default:
+            return str;
+        }
+      }),
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
     }),
-    i18n: {
-      changeLanguage: () => new Promise(() => {}),
-    },
-  }),
-}));
+  }));
 
 // Mocking next/router
 jest.mock('next/router', () => ({
@@ -169,4 +170,121 @@ it('Test handleLogout', async () => {
     expect(mockSetUserName).toHaveBeenCalledWith('');
     expect(push).toHaveBeenCalledWith('/');
   });
+  
 });
+
+it('Sets value based on pathname /order', () => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+      locale: 'en',
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      route: '/',
+      pathname: '/order',
+      query: {},
+      asPath: '/',
+    });
+
+    const isSmallScreen = true;
+    const setSmallScreen = jest.fn();
+
+    render(
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <BottomBar />
+      </ScreenSizeContext.Provider>
+    );
+
+    const ordersButton = screen.getByText('Orders');
+    expect(ordersButton).toBeInTheDocument();
+    fireEvent.click(ordersButton);
+    expect(ordersButton).toHaveClass('Mui-selected');
+  });
+
+  it('Sets value based on pathname /cart', () => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+      locale: 'en',
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      route: '/',
+      pathname: '/cart',
+      query: {},
+      asPath: '/',
+    });
+
+    const isSmallScreen = true;
+    const setSmallScreen = jest.fn();
+
+    render(
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <BottomBar />
+      </ScreenSizeContext.Provider>
+    );
+
+    const cartButton = screen.getByText('Cart');
+    expect(cartButton).toBeInTheDocument();
+    fireEvent.click(cartButton);
+    expect(cartButton).toHaveClass('Mui-selected');
+  });
+
+  it('Sets value based on pathname /login', () => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+      locale: 'en',
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      route: '/',
+      pathname: '/login',
+      query: {},
+      asPath: '/',
+    });
+
+    const isSmallScreen = true;
+    const setSmallScreen = jest.fn();
+
+    render(
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <BottomBar />
+      </ScreenSizeContext.Provider>
+    );
+
+    const signInButton = screen.getByText('Sign In');
+    expect(signInButton).toBeInTheDocument();
+    fireEvent.click(signInButton);
+    expect(signInButton).toHaveClass('Mui-selected');
+  });
+
+  it('Sets value based on default pathname', () => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+      locale: 'en',
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      route: '/',
+      pathname: '/some-other-path',
+      query: {},
+      asPath: '/',
+    });
+
+    const isSmallScreen = true;
+    const setSmallScreen = jest.fn();
+
+    render(
+      <ScreenSizeContext.Provider value={{ isSmallScreen, setSmallScreen }}>
+        <BottomBar />
+      </ScreenSizeContext.Provider>
+    );
+
+    const homeButton = screen.getByText('Home');
+    expect(homeButton).toBeInTheDocument();
+    fireEvent.click(homeButton);
+    expect(homeButton).toHaveClass('Mui-selected');
+  });
