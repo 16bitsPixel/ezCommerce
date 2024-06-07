@@ -37,13 +37,11 @@ export const VendorKeys = () => {
           setKeys([...keys, json.data.createKey]);
         }
       })
-      .catch((e) => {
-        alert('Error creating new key: ' + e.message);
-      });
   };
 
   useEffect(() => {
     const fetchKeys = () => {
+      console.log("Fetching keys for you")
       const query = {
         query: `query keys {
           allkeys { id, key }
@@ -65,9 +63,6 @@ export const VendorKeys = () => {
             setKeys(json.data.allkeys);
           }
         })
-        .catch((e) => {
-          alert('Error fetching keys: ' + e.message);
-        });
     };
 
     if (loginContext.accessToken) {

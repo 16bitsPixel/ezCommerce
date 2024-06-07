@@ -46,15 +46,15 @@ it('renders singup form', () => {
 });
 
 it('clicks login button', async () => {
-    render(
-      <LoginContext.Provider value={mockLoginContext}>
-        <SignUp />
-      </LoginContext.Provider>
-    );
-    fireEvent.click(screen.getByText("Already have an account? Sign in"))
-    await waitFor(() => {
-      expect(mocksetView).toHaveBeenCalledWith('Login');
-    });
+  render(
+    <LoginContext.Provider value={mockLoginContext}>
+      <SignUp />
+    </LoginContext.Provider>
+  );
+  fireEvent.click(screen.getByText("Already have an account? Sign in"))
+  await waitFor(() => {
+    expect(mocksetView).toHaveBeenCalledWith('Login');
+  });
 });
 
 it('handles form submission with valid credentials', async () => {
@@ -82,7 +82,7 @@ it('handles form submission with valid credentials', async () => {
   fireEvent.change(passwd,  { target: { value: 'password123' } });
   fireEvent.click(screen.getByRole('button', { name: 'Sign Up' }));
   await waitFor(() => {
-    expect(window.alert).toHaveBeenCalledWith('Signup successful! You can now log in.');
+    expect(window.alert).toHaveBeenCalledWith('Signup successful! Please wait for an admin to accept you.');
   });
 });
 
@@ -122,8 +122,8 @@ it('handles general error', async () => {
   ) as jest.Mock;
   render(
     <LoginProvider>
-       <Login />
-       <SignUp />
+      <Login />
+      <SignUp />
     </LoginProvider>
   );
   fireEvent.click(screen.getByText("Don't have an account? Sign Up"))
