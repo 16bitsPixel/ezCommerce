@@ -19,8 +19,6 @@ export class AuthResolver {
     return new AuthService().restore(accessToken)
   }
 
-
-
   @Mutation(() => Boolean)
   async signup(
     @Args() signupCred: SignupCred,
