@@ -180,6 +180,7 @@ export function Login() {
                 variant="contained"
                 color="primary"
                 data-testid="login-button"
+                aria-label="loginBtn"
                 sx={{ mt: 3, mb: 2, bgcolor: '#f6db00', color: 'black', '&:hover': {bgcolor: '#f6c900'}, padding: '10px 0'}}
               >
                 {t('login')}

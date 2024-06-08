@@ -29,13 +29,14 @@ afterEach(async () => {
 
 it('should allow a user to login', async () => {
   await page.goto('http://localhost:3000/login');
-  // Fill in the email and password fields
-  await page.type('#email', 'molly@books.com');
-  await page.type('#password', 'mollymember');
 
-  const submit = await page.$('aria/Submit');
-
-  await submit.click();
+  // sign in as molly
+  await page.waitForSelector('input[type="email"][name="email"]');
+  const emailInput = await page.$('input[type="email"][name="email"]');
+  const passwordInput = await page.$('input[type="password"][name="password"]');
+  await emailInput.type('molly@books.com');
+  await passwordInput.type('mollymember');
+  await page.click('aria/loginBtn');
 
   // Wait for the login to complete
   await page.waitForNavigation();
