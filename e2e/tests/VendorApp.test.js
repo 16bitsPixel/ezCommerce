@@ -1,8 +1,4 @@
 const puppeteer = require('puppeteer');
-const http = require('http');
-const path = require('path');
-const express = require('express');
-
 
 let browser;
 let page;
