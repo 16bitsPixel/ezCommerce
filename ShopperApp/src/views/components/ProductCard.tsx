@@ -39,7 +39,7 @@ export default function ProductCard({id, name, price, /*rating,*/ image}: Produc
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          aria-label='cardImage'
+          aria-label={`cardImage-${id}`}
         />
       </Link>
       <CardContent>
