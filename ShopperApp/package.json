@@ -29,6 +29,7 @@
     "eslint-config-typescript": "*",
     "jest": "*",
     "jest-environment-jsdom": "*",
+    "jest-mock-extended": "^3.0.7",
     "msw": "*",
     "next-router-mock": "^0.9.13",
     "supertest": "*",
