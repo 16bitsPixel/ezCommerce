@@ -10,7 +10,7 @@ let page;
  */
 beforeEach(async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   page = await browser.newPage();
 });
@@ -221,6 +221,13 @@ it('local cart to account cart', async () => {
   await page.waitForSelector('[aria-label="cartBtn"]', {timeout: 5000});
   await page.click('[aria-label="cartBtn"]');
   await page.waitForSelector('[aria-label="cardImage-0"]');
+
+  // wait a bit
+  await page.evaluate(() => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+  });
 
   // strawberry cat is in cart still
   // should be 12.99 in cart
