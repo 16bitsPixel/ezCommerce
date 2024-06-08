@@ -59,7 +59,7 @@ describe('CartResolver', () => {
       } as any);
 
       (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
+        ok: false,
         json: jest.fn().mockResolvedValue({ message: 'Get Cart Error' }),
       } as any);
 
@@ -121,7 +121,7 @@ describe('CartResolver', () => {
       } as any);
 
       (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
+        ok: false,
         json: jest.fn().mockResolvedValue({ message: 'Add Cart Error' }),
       } as any);
 
@@ -183,7 +183,7 @@ describe('CartResolver', () => {
       } as any);
 
       (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
+        ok: false,
         json: jest.fn().mockResolvedValue({ message: 'Set Cart Error' }),
       } as any);
 
