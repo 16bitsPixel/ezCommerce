@@ -81,7 +81,9 @@ export function OrderBox() {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>{t('order-placed')}</strong></Typography>
-                <Typography>{new Intl.DateTimeFormat('en-US').format(new Date(order.date))}</Typography>
+                <Typography>
+                  {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(order.date))}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>{t('total')}</strong></Typography>
@@ -99,14 +101,6 @@ export function OrderBox() {
               quantity={order.quantities}
               onTotalChange={(total: number) => handleTotalChange(index, total)}
             />
-            {/* <Divider sx={{ margin: '16px 0' }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button className = 'orderButton' variant="contained" >Get product support</Button>
-              <Box>
-                <Button variant="outlined" sx={{ marginRight: 1 }}>Track package</Button>
-                <Button variant="outlined" sx={{ marginRight: 1 }}>Return or replace items</Button>
-              </Box>
-            </Box> */}
           </Box>
         ))}
       </Box>
