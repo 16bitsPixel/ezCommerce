@@ -30,6 +30,7 @@ it('Renders Dashboard', () => {
   render(<Dashboard/>)
 })
 
+
 it('clicks logout button', async () => {
   global.fetch = jest.fn(() =>
     Promise.resolve({

@@ -9,7 +9,6 @@ import { LoginContext } from '../context/Login'
 const TopBar = () => {
   const {setUserName, setAccessToken} = useContext(LoginContext)
   const handleLogout = () => {
-    
     console.log('Logged out');
     setUserName('');
     setAccessToken('');

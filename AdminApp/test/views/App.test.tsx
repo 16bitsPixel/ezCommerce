@@ -7,8 +7,8 @@ it('Renders', async () => {
 });
 
 it('Renders App', async () => {
-    render(<App />)
-    expect(screen.getByLabelText('Email Address *'))
-    expect(screen.getByLabelText('Password *'))
-    expect(screen.getByRole('button', { name: 'Sign In' }))
+  render(<App />)
+  expect(screen.getByLabelText('Email Address *'))
+  expect(screen.getByLabelText('Password *'))
+  expect(screen.getByRole('button', { name: 'Sign In' }))
 });
