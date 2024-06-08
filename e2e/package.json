@@ -38,7 +38,7 @@
     }
   },
   "scripts": {
-    "build": "cd ../ && npm run docker-up",
+    "build": "cd ../ && npm run docker-down && npm run docker-up",
     "dev": "cd ../ && npm run dev",
     "start-server": "concurrently --kill-others \"npm run dev\" \"sleep 10 && npm run e2e\"",
     "e2e": "jest --config=jest.config.js --runInBand --verbose --forceExit --detectOpenHandles",
