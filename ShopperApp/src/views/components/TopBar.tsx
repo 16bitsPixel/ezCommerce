@@ -128,7 +128,7 @@ export function TopBar() {
           {!isSmallScreen && (
             <div className="topbar-buttons" style={{ flexGrow: 0, marginLeft: 'auto' }}>
               {loginContext.accessToken.length < 1 ? (
-                <Button variant="outlined" onClick={handleSignIn} style={{ color: 'white', marginRight: '8px' }}>
+                <Button variant="outlined" onClick={handleSignIn} style={{ color: 'white', marginRight: '8px' }} aria-label='signInBtn'>
                   {t('sign-in')}
                 </Button>
               ) : (
@@ -139,7 +139,7 @@ export function TopBar() {
               <Button variant="outlined" aria-label="orderButtonTop" onClick={handleOrder} style={{ color: 'white', marginRight: '8px' }}>
                 {t('orders')}
               </Button>
-              <Button variant="outlined" onClick={handleCart} style={{ color: 'white' }}>{t('cart')}</Button>
+              <Button variant="outlined" onClick={handleCart} style={{ color: 'white' }} aria-label='cartBtn'>{t('cart')}</Button>
             </div>
           )}
         </Toolbar>

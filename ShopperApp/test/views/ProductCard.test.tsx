@@ -31,7 +31,7 @@ it('Renders Product Card', async () => {
     />
   );
 
-  const cardImage = screen.getByLabelText('cardImage');
+  const cardImage = screen.getByLabelText('cardImage-1');
   expect(cardImage).toBeDefined();
   
   // hover over and out of image
