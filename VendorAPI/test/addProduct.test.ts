@@ -33,14 +33,14 @@ const validToken = jwt.sign(
 );
 
 const invalidToken = jwt.sign(
-    {
-      id: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9',
-      name: 'Vin Vendor',
-      email: 'vin@vendor.com',
-    },
-    'invalid-secret', 
-    { expiresIn: '1h' }
-  );
+  {
+    id: 'fa14fb7e-2a1d-41d5-8985-30568dc8a7a9',
+    name: 'Vin Vendor',
+    email: 'vin@vendor.com',
+  },
+  'invalid-secret', 
+  { expiresIn: '1h' }
+);
 
 const handlers = [
   mswHttp.post('http://localhost:3013/api/v0/vendor/verify', async ({ request }) => {
@@ -92,25 +92,25 @@ test('Vendor Adds a Product with being authorized', async () => {
 });
 
 test('Vendor Adds a Product without being authorized', async () => {
-    await supertest(server)
-      .post('/api/v0/products')
-      .set('Authorization', `Bearer 123`)
-      .send(testProduct)
-      .expect(401)
-  });
+  await supertest(server)
+    .post('/api/v0/products')
+    .set('Authorization', `Bearer 123`)
+    .send(testProduct)
+    .expect(401)
+});
 
-  test('Vendor Adds a Product without auth header', async () => {
-    await supertest(server)
-      .post('/api/v0/products')
-      .send(testProduct)
-      .expect(401)
-  });
+test('Vendor Adds a Product without auth header', async () => {
+  await supertest(server)
+    .post('/api/v0/products')
+    .send(testProduct)
+    .expect(401)
+});
   
 test('Vendor fails to add a product with invalid token', async () => {
-    await supertest(server)
-        .post('/api/v0/products')
-        .set('Authorization', `Bearer ${invalidToken}`)
-        .send(testProduct)
-        .expect(401)
+  await supertest(server)
+    .post('/api/v0/products')
+    .set('Authorization', `Bearer ${invalidToken}`)
+    .send(testProduct)
+    .expect(401)
 });
   
