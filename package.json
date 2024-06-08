@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "repository": "none",
   "scripts": {
+    "e2e": "cd e2e && npm run test",
     "containerise": "npm run build && docker-compose up --build",
     "docker-up": "npm run docker-accounts && npm run docker-products && npm run docker-apikey && npm run docker-orders",
     "docker-down": "npm run docker-down-accounts && npm run docker-down-products && npm run docker-down-apikey && npm run docker-down-orders",
