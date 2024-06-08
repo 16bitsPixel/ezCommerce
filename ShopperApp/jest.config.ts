@@ -23,6 +23,8 @@ const customJestConfig = {
   coveragePathIgnorePatterns: [
     "src/pages/_app.tsx",
     "src/pages/_document.tsx",
+    "src/graphql/order/schema.ts",
+    "src/views/components/Order/"
   ],
   testMatch: [
     "**/?(*.)+(spec|test).[jt]s?(x)"
