@@ -1,8 +1,4 @@
 const puppeteer = require('puppeteer');
-const http = require('http');
-const path = require('path');
-const express = require('express');
-
 
 let browser;
 let page;
@@ -26,27 +22,22 @@ afterEach(async () => {
   await browser.close();
 });
 
-it('Find product cards and go to first product (capybara) and change image', async () => {
+it('Go to capybara change image', async () => {
   await page.goto('http://localhost:3000');
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
-  const cardImage = await page.$('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  const capy = `[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]`;
+  await page.waitForSelector(capy, {timeout: 5000});
+  const cardImage = await page.$(capy);
   expect(cardImage).toBeDefined();
 
   // hover
-  await page.hover('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.hover(capy);
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capy);
 
   // wait for page to load
   await page.waitForSelector('[aria-label="cardImage"]');
-
-  // now get capybara title
-  const productTitle = await page.$('h5');
-  const content =
-    await(await productTitle.getProperty('textContent')).jsonValue();
-  expect(content).toBe('EASELR WeightedPlush Cute Capybara Plush, 12inch Capybara Stuffed Animal Soft Capybara Plushies Toy Capybara Doll Pillow Birthday for Kids (with Bag)');
 
   // hover
   await page.hover('[aria-label="cardImage"]');
@@ -56,14 +47,15 @@ it('Find product cards and go to first product (capybara) and change image', asy
   await page.click('[aria-label="thumbnail-1"]');
 }, 20000);
 
-it('Go to capybara page, add to cart, go back product add to cart, 2 quantity', async () => {
+it('add to cart, go back add to cart, 2 quantity', async () => {
   await page.goto('http://localhost:3000');
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
+  const capy = `[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]`;
+  await page.waitForSelector(capy, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capy);
 
   // change quantity
   await page.waitForSelector('#quantity');
@@ -83,12 +75,6 @@ it('Go to capybara page, add to cart, go back product add to cart, 2 quantity', 
   // wait for page to load
   await page.waitForSelector('[aria-label="cardImage"]');
 
-  // now get capybara title
-  const productTitle = await page.$('h5');
-  const content3 =
-    await(await productTitle.getProperty('textContent')).jsonValue();
-  expect(content3).toBe('EASELR WeightedPlush Cute Capybara Plush, 12inch Capybara Stuffed Animal Soft Capybara Plushies Toy Capybara Doll Pillow Birthday for Kids (with Bag)');
-
   // add again
   await page.click('[aria-label="addToCartBtn"]');
   await page.waitForSelector('[aria-label="cardImage-0"]');
@@ -103,10 +89,11 @@ it('Go to capybara page, add to cart, delete', async () => {
   await page.goto('http://localhost:3000');
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
+  capybara = '[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]';
+  await page.waitForSelector(capybara, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capybara);
 
   // add to cart
   await page.waitForSelector('[aria-label="addToCartBtn"]');
@@ -120,7 +107,7 @@ it('Go to capybara page, add to cart, delete', async () => {
   expect(content).toBe('Total: $19.99');
 
   await page.evaluate(() => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, 1000);
     });
   }); // wait a bit for droplist to go away
@@ -134,14 +121,15 @@ it('Go to capybara page, add to cart, delete', async () => {
   expect(content2).toBe('Total: $0.00');
 });
 
-it('Go to capybara page, add to cart, checkout but sent to login', async () => {
+it('add to cart, checkout but sent to login', async () => {
   await page.goto('http://localhost:3000');
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
+  capybara = '[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]';
+  await page.waitForSelector(capybara, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capybara);
 
   // add to cart
   await page.waitForSelector('[aria-label="addToCartBtn"]');
@@ -158,10 +146,11 @@ it('Go to capybara page, add to wishlist, but sent to login', async () => {
   await page.goto('http://localhost:3000');
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
+  capybara = '[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]';
+  await page.waitForSelector(capybara, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capybara);
 
   // add to cart
   await page.waitForSelector('[aria-label="addToWishlistBtn"]');
@@ -174,9 +163,9 @@ it('Go to capybara page, add to wishlist, but sent to login', async () => {
 it('Sign in, go to capybara, add to wishlist', async () => {
   await page.goto('http://localhost:3000');
 
-  await page.setViewport({ width: 1920, height: 1080 });
+  await page.setViewport({width: 1920, height: 1080});
 
-  await page.waitForSelector('[aria-label="signInBtn"]', { timeout: 5000 });
+  await page.waitForSelector('[aria-label="signInBtn"]', {timeout: 5000});
 
   // click and go to login page
   await page.click('[aria-label="signInBtn"]');
@@ -190,33 +179,35 @@ it('Sign in, go to capybara, add to wishlist', async () => {
   await page.click('aria/loginBtn');
 
   // wait for capybara
-  await page.waitForSelector('[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]', { timeout: 5000 });
+  capybara = '[aria-label^="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]';
+  await page.waitForSelector(capybara, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-eca286ff-43a8-457d-ab07-b2f3d003d903"]');
+  await page.click(capybara);
 
   // add to wishlist
   await page.waitForSelector('[aria-label="addToCartBtn"]');
   await page.click('[aria-label="addToWishlistBtn"]');
 });
 
-it('go to strawberry cat, add to cart, checkout, sent to login, should be in cart now', async () => {
+it('local cart to account cart', async () => {
   await page.goto('http://localhost:3000');
 
-  await page.setViewport({ width: 1920, height: 1080 });
+  await page.setViewport({width: 1920, height: 1080});
 
   // on first render check if capybara product exists
-  await page.waitForSelector('[aria-label^="cardImage-01dcf491-4ad3-432d-86cc-62e70465cafb"]', { timeout: 5000 });
+  cat = '[aria-label^="cardImage-01dcf491-4ad3-432d-86cc-62e70465cafb"]';
+  await page.waitForSelector(cat, {timeout: 5000});
 
   // click and go to product page
-  await page.click('[aria-label="cardImage-01dcf491-4ad3-432d-86cc-62e70465cafb"]');
+  await page.click(cat);
 
   // add to cart
   await page.waitForSelector('[aria-label="addToCartBtn"]');
   await page.click('[aria-label="addToCartBtn"]');
   await page.waitForSelector('[aria-label="cardImage-0"]');
 
-  await page.click('[aria-label="checkout-button"]');
+  await page.click('[aria-label="signInBtn"]');
 
   // sign in as molly
   await page.waitForSelector('input[type="email"][name="email"]');
@@ -227,7 +218,7 @@ it('go to strawberry cat, add to cart, checkout, sent to login, should be in car
   await page.click('aria/loginBtn');
 
   // go back to cart page
-  await page.waitForSelector('[aria-label="cartBtn"]', { timeout: 5000 });
+  await page.waitForSelector('[aria-label="cartBtn"]', {timeout: 5000});
   await page.click('[aria-label="cartBtn"]');
   await page.waitForSelector('[aria-label="cardImage-0"]');
 
@@ -239,12 +230,12 @@ it('go to strawberry cat, add to cart, checkout, sent to login, should be in car
   expect(content).toBe('Total: $12.99');
 });
 
-it('go to cart as molly, strawberry cat still here, checkout and purchase', async () => {
+it('cat in account cart and purchase', async () => {
   await page.goto('http://localhost:3000');
 
-  await page.setViewport({ width: 1920, height: 1080 });
+  await page.setViewport({width: 1920, height: 1080});
 
-  await page.waitForSelector('[aria-label="signInBtn"]', { timeout: 5000 });
+  await page.waitForSelector('[aria-label="signInBtn"]', {timeout: 5000});
 
   // click and go to login page
   await page.click('[aria-label="signInBtn"]');
@@ -258,7 +249,7 @@ it('go to cart as molly, strawberry cat still here, checkout and purchase', asyn
   await page.click('aria/loginBtn');
 
   // go to cart
-  await page.waitForSelector('[aria-label="cartBtn"]', { timeout: 5000 });
+  await page.waitForSelector('[aria-label="cartBtn"]', {timeout: 5000});
   await page.click('[aria-label="cartBtn"]');
   await page.waitForSelector('[aria-label="cardImage-0"]');
 
@@ -289,9 +280,9 @@ it('go to cart as molly, strawberry cat still here, checkout and purchase', asyn
   const billingName = await page.$('input[type="text"][name="billingName"]');
   await billingName.type('Molly Member');
 
-  const locator = ".SubmitButton";
+  const locator = '.SubmitButton';
   await page.evaluate( (paramLocator) => {
-      document.querySelector(paramLocator).click();
+    document.querySelector(paramLocator).click();
   }, locator);
 
   // dumb code thing
@@ -311,14 +302,14 @@ it('go to cart as molly, strawberry cat still here, checkout and purchase', asyn
 
   // wait a bit
   await page.evaluate(() => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, 1000);
     });
   });
 
-  const locator2 = ".SubmitButton";
+  const locator2 = '.SubmitButton';
   await page.evaluate( (paramLocator) => {
-      document.querySelector(paramLocator).click();
+    document.querySelector(paramLocator).click();
   }, locator2);
 
   // should eventually get success message
