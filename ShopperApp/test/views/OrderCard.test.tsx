@@ -1,17 +1,16 @@
-// /mnt/data/readme.md
 import React from 'react';
 import { render, screen, waitFor, fireEvent, queryAllByTestId } from '@testing-library/react';
 import { graphql, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { LoginContext } from '@/context/Login';
-import { OrderBox } from '@/views/components/Order/OrderBox';
+import { OrderCard } from '@/views/components/Order/OrderCard';
 
 import { useRouter } from 'next/router';
 
 let returnError = false;
 
 const handlers = [
-  graphql.query('getOrders', ({ query }) => {
+  graphql.query('ProductInfo', ({ query }) => {
     console.log(query);
     if (returnError) {
       return HttpResponse.json({
@@ -20,23 +19,19 @@ const handlers = [
     }
     return HttpResponse.json({
       data: {
-        order: [
+        productInfo: [
           {
-            orderId: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
-            accountId: '7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b',
-            productId: ['8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c', '4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f'],
-            date: '2022-03-15T14:30:00Z',
-            status: 'pending',
-            quantities: [1, 2],
+            "id": "1",
+            "name": "test1",
+            "price": 10,
+            "image": ["some image"]
           },
           {
-            orderId: '9a0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d',
-            accountId: '7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b',
-            productId: ['8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c', '4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f'],
-            date: '2022-04-20T18:45:00Z',
-            status: 'pending',
-            quantities: [3, 4],
-          },
+            "id": "2",
+            "name": "test2",
+            "price": 1,
+            "image": ["some image 2"]
+          }
         ]
       },
     })
@@ -64,14 +59,16 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: jest.fn((str: string) => {
       switch (str) {
-        case 'total':
-          return 'TOTAL';
-        case 'your-orders':
-          return 'Your Orders';
-        case 'ship-to':
-          return 'SHIP TO';
-        case 'order-placed':
-          return 'ORDER PLACED';
+        case 'status':
+          return 'Status';
+        case 'quantity':
+          return 'Quantity';
+        case 'price':
+          return 'Price';
+        case 'buy-it-again':
+          return 'But It Again';
+        case 'view-your-item':
+          return 'View Your Item';
         default:
           return str;
       }
@@ -93,29 +90,27 @@ const mockLoginContext = {
   setId: jest.fn()
 };
 
+const sampleIds = ['1', '2'];
+const sampleStatus = 'In Progress';
+const sampleQuantity = [2, 3];
+const sampleOnTotalChange = jest.fn();
+
 it('Renders and displays the correct text', async () => {
   render(
     <LoginContext.Provider value={mockLoginContext}>
-      <OrderBox />
+      <OrderCard
+        ids={sampleIds}
+        status={sampleStatus}
+        quantity={sampleQuantity}
+        onTotalChange={sampleOnTotalChange}
+      />
     </LoginContext.Provider>
   );
 
   await waitFor(() => {
-    expect(screen.getByText('Your Orders')).toBeInTheDocument();
-    expect(screen.queryAllByText('Your Orders').length).toBe(1);
-    expect(screen.queryAllByText('SHIP TO').length).toBe(2);
-    expect(screen.queryAllByText('TOTAL').length).toBe(2);
-    expect(screen.queryAllByText('ORDER PLACED').length).toBe(2);
-    expect(screen.queryAllByText('Test User').length).toBe(2);
+    const statusElement = screen.getByLabelText('status');
+    expect(statusElement).toBeInTheDocument();
+    expect(statusElement).toHaveTextContent(sampleStatus);
   });
 });
 
-it('Errors When No Server', async () => {
-  server.close()
-  render(
-    <OrderBox />
-  );
-  await waitFor(() => {
-    expect(screen.queryAllByText('04/15/22').length).toBe(0);
-  });
-});
