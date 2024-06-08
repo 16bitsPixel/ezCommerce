@@ -10,6 +10,7 @@ directories_to_zip=(
     "ShopperApp"
     "VendorAPI"
     "VendorApp"
+    "e2e"
     "sql"
 )
 
@@ -17,7 +18,7 @@ directories_to_zip=(
 final_zip_file="final.zip"
 
 # Include docker-compose.yml and package.json
-items_to_zip=("${directories_to_zip[@]}" "docker-compose.yml" "package.json")
+items_to_zip=("${directories_to_zip[@]}" "docker-compose.yml" "package.json" "README.md")
 
 # Create a single zip file containing all specified directories and files, explicitly excluding unwanted files
 zip -rv "${final_zip_file}" "${items_to_zip[@]}" \

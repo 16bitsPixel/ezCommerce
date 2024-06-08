@@ -13,9 +13,9 @@
 ## Ports
 3000 - Vendor Web App
 
-3001 - Admin Web App
+3001/admin - Admin Web App
 
-3002 - Vendor Web App
+3002/vendor - Vendor Web App
 
 
 3011 - Account Service

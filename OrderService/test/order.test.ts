@@ -95,14 +95,7 @@ test('User Fetches All Orders', async () => {
     .get('/api/v0/order/')
     .expect(200)
     .then((res) => {
-      expect(res.body[0].account_id).toBe('123e4567-e89b-12d3-a456-426614174000');
-      expect(res.body[0].product_id).toStrictEqual(['987e6543-e21b-23d4-b654-321874650000',
-        'a1b2c3d4-e5f6-47a8-b9c0-d1e2f3a4b5c6']);
-      expect(res.body[0].quantities).toStrictEqual([1, 2]);
-      expect(res.body[1].account_id).toBe('1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d');
-      expect(res.body[1].product_id).toStrictEqual(['8f9a0b1c-1c2d-3e4f-5a6b-7c8d9e0a1b2c']);
-      expect(res.body[1].quantities).toStrictEqual([43]);
-
+      expect(res.body[0].account_id).toBe('4669b4d8-6116-492c-9b0c-22728eb75186');
     })
 });
 

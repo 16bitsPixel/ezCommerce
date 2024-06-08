@@ -19,12 +19,14 @@
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "@types/supertest": "^6.0.2",
     "dprint": "^0.46.1",
     "eslint": "*",
     "eslint-config-next": "*",
     "eslint-config-typescript": "*",
     "jest": "*",
     "jest-environment-jsdom": "*",
+    "jest-fetch-mock": "^3.0.3",
     "ts-jest": "*",
     "ts-node": "*",
     "typescript": "*"
@@ -47,6 +49,7 @@
     "react-dom": "*",
     "recharts": "^2.12.7",
     "reflect-metadata": "*",
+    "supertest": "^7.0.0",
     "type-graphql": "*"
   },
   "eslintConfig": {

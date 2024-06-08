@@ -1,6 +1,7 @@
 import supertest from 'supertest';
 import http from 'http';
 import requestHandler from './requestHandler';
+import { AuthService } from '@/graphql/auth/service';
 
 global.fetch = jest.fn();
 
@@ -121,56 +122,6 @@ describe('AuthResolver', () => {
     });
   });
 
-  // describe('check', () => {
-  //   it('should return session user on successful check', async () => {
-  //     const mockResponse = {
-  //       ok: true,
-  //       json: jest.fn().mockResolvedValue({ id: '1', role: 'user' }),
-  //     };
-  //     (fetch as jest.Mock).mockResolvedValue(mockResponse);
-
-  //     const response = await supertest(server)
-  //       .post('/api/graphql')
-  //       .send({
-  //         query: `
-  //           query {
-  //             check(authHeader: "Bearer testToken") {
-  //               id
-  //               accessToken
-  //             }
-  //           }
-  //         `,
-  //       })
-  //       .expect(200);
-  //     expect(response.body.data.check).toEqual({ id: '1', accessToken: 'testToken' });
-  //     expect(fetch).toHaveBeenCalledWith('http://localhost:3011/api/v0/authenticate?accessToken=testToken', expect.any(Object));
-  //   });
-
-  //   it('should throw an error on failed check', async () => {
-  //     const mockResponse = {
-  //       ok: false,
-  //       json: jest.fn().mockResolvedValue({ message: 'Unauthorised' }),
-  //     };
-  //     (fetch as jest.Mock).mockResolvedValue(mockResponse);
-
-  //     const response = await supertest(server)
-  //       .post('/api/graphql')
-  //       .send({
-  //         query: `
-  //           query {
-  //             check(authHeader: "Bearer invalidToken") {
-  //               id
-  //               accessToken
-  //             }
-  //           }
-  //         `,
-  //       })
-  //       .expect(200);
-
-  //     expect(response.body.errors).toBeTruthy();
-  //   });
-  // });
-
   describe('signup', () => {
     it('should return true on successful signup', async () => {
       const mockResponse = {
@@ -267,5 +218,173 @@ describe('AuthResolver', () => {
 
       expect(response.body.errors).toBeTruthy();
     });
+  });
+});
+
+// describe('AuthService', () => {
+//   let authService: AuthService;
+
+//   beforeEach(() => {
+//     authService = new AuthService();
+//     (fetch as jest.Mock).mockClear();
+//   });
+
+//   describe('check', () => {
+//     it('should reject with "Unauthorised" if no authHeader is provided', async () => {
+//       await expect(authService.check()).rejects.toThrow('Unauthorised');
+//     });
+
+//     it('should reject with "Unauthorised" if authHeader format is incorrect', async () => {
+//       await expect(authService.check('InvalidHeader')).rejects.toThrow('Unauthorised');
+//     });
+
+//     it('should throw an error if the fetch response is not ok', async () => {
+//       (fetch as jest.Mock).mockResolvedValueOnce({
+//         ok: false,
+//       } as any);
+
+//       await expect(authService.check('Bearer testToken')).rejects.toThrow('Unauthorised');
+//     });
+
+//     it('should reject with "Unauthorised" if user role does not match', async () => {
+//       (fetch as jest.Mock).mockResolvedValueOnce({
+//         ok: true,
+//         json: jest.fn().mockResolvedValue({ id: 'testUser', role: 'user' }),
+//       } as any);
+
+//       await expect(authService.check('Bearer testToken', ['admin'])).rejects.toThrow('Unauthorised');
+//     });
+
+//     it('should resolve with session user if authentication and authorization succeed', async () => {
+//       (fetch as jest.Mock).mockResolvedValueOnce({
+//         ok: true,
+//         json: jest.fn().mockResolvedValue({ id: 'testUser', role: 'user' }),
+//       } as any);
+
+//       await expect(authService.check('Bearer testToken', ['user'])).resolves.toEqual({ id: 'testUser', accessToken: 'testToken' });
+//     });
+//   });
+// });
+
+describe('CartResolver', () => {
+  beforeEach(() => {
+    (fetch as jest.Mock).mockClear();
+  });
+
+  describe('Check', () => {
+    it('cart but your access is bad', async () => {
+      const mockResponse = {
+        ok: false,
+      };
+      (fetch as jest.Mock).mockResolvedValue(mockResponse);
+
+      const response = await supertest(server)
+        .post('/api/graphql')
+        .set('Authorization', 'Bearer testToken')
+        .send({
+          query: `
+            query {
+              Cart {
+                id
+                quantity
+              }
+            }
+          `,
+        })
+        .expect(200);
+
+      expect(response.body.errors).toBeTruthy();
+      expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
+    });
+  });
+
+  it('cart but not a member', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ id: 'testUser', role: 'admin' }),
+    } as any);
+
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ cart: [{ id: '1', quantity: 2 }] }),
+    } as any);
+
+    const response = await supertest(server)
+      .post('/api/graphql')
+      .set('Authorization', 'Bearer testToken')
+      .send({
+        query: `
+          query {
+            Cart {
+              id
+              quantity
+            }
+          }
+        `,
+      })
+      .expect(200);
+
+    // console.log('#########')
+    // console.log(response.body)
+    expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
+  });
+
+  it('cart but no auth header', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ id: 'testUser', role: 'member' }),
+    } as any);
+
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ cart: [{ id: '1', quantity: 2 }] }),
+    } as any);
+
+    const response = await supertest(server)
+      .post('/api/graphql')
+      .send({
+        query: `
+          query {
+            Cart {
+              id
+              quantity
+            }
+          }
+        `,
+      })
+      .expect(200);
+
+    // console.log(response.body)
+    expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
+  });
+
+  it('cart but not a bearrer is set', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ id: 'testUser', role: 'member' }),
+    } as any);
+
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ cart: [{ id: '1', quantity: 2 }] }),
+    } as any);
+
+    const response = await supertest(server)
+      .post('/api/graphql')
+      .set('Authorization', 'Nothing testToken')
+      .send({
+        query: `
+          query {
+            Cart {
+              id
+              quantity
+            }
+          }
+        `,
+      })
+      .expect(200);
+
+    // console.log(response.body)
+    expect(response.body.errors[0].message).toBe("Access denied! You don't have permission for this action!");
   });
 });
