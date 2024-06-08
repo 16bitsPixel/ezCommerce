@@ -15,7 +15,7 @@ export class AuthService {
           if (!res.ok) {
             return res.json().then((error) => {
               console.log("Error response body:", error);
-              throw new Error(error.message || "Unauthorised");
+              throw new Error(error.message);
             }).catch((jsonParseError) => {
               console.log("Error parsing JSON:", jsonParseError);
               throw new Error("Unauthorised");
@@ -44,7 +44,7 @@ export class AuthService {
         .then((res) => {                    
           if (!res.ok) {
             return res.json().then((error) => {
-              throw new Error(error.message || "Unauthorised");
+              throw new Error(error.message);
             }).catch((jsonParseError) => {
               console.log("Error parsing JSON:", jsonParseError);
               throw new Error("Unauthorised");
