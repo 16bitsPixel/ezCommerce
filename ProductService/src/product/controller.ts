@@ -49,7 +49,7 @@ export class ProductController extends Controller {
   public async addProduct(
     @Body() productInfo: ProductAdd
   ): Promise<Product> {
-      return await new ProductService().addProduct(productInfo);
+    return await new ProductService().addProduct(productInfo);
   }
 
   @Get('search')

@@ -153,7 +153,7 @@ test('Update order status to cancelled with valid token', async () => {
 });
 
 test('GET API Docs', async () => {
-    await supertest(server).get('/api/v0/docs/')
-      .expect(200);
-  });
+  await supertest(server).get('/api/v0/docs/')
+    .expect(200);
+});
   
