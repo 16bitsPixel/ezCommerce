@@ -1,7 +1,7 @@
-import { Query, Resolver, Args, Mutation, Authorized, Arg } from "type-graphql"
+import { Query, Resolver, Args, Mutation} from "type-graphql"
 
-import { Credentials, Authenticated, SignupCred, Vendor, VendorId } from "./schema"
-import { AuthService, VendorService } from "./service"
+import { Credentials, Authenticated, SignupCred } from "./schema"
+import { AuthService } from "./service"
 
 @Resolver()
 export class AuthResolver {
@@ -19,23 +19,4 @@ export class AuthResolver {
     return new AuthService().signup(signupCred)
   }
 
-  @Authorized("admin")
-  @Query(() => [Vendor])
-  async getVendors(
-  ): Promise<Vendor[]> {
-    return new VendorService().all()
-  }
-  @Authorized("admin")
-  @Query(() => [Vendor])
-  async getpendingVendors(
-  ): Promise<Vendor[]> {
-    return new VendorService().pendingall();
-  }
-  @Authorized("admin")
-  @Mutation(() => Vendor)
-  async acceptVendors(
-    @Arg("input") id: VendorId
-  ): Promise<Vendor> {
-    return new VendorService().accept(id.id);
-  }
 }
