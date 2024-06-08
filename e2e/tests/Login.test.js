@@ -50,11 +50,11 @@ it('signup bob', async () => {
   const firstInput = await page.$('input[type="text"][name="firstname"]');
   const lastInput = await page.$('input[type="text"][name="lastname"]');
   const emailInputSignup = await page.$('input[type="email"][name="email"]');
-  const passwordInputSignup = await page.$('input[type="password"][name="password"]');
+  const pwdInput = await page.$('input[type="password"][name="password"]');
   await firstInput.type('Bob');
   await lastInput.type('Builder');
   await emailInputSignup.type('bob@builder.com');
-  await passwordInputSignup.type('bobbuilder');
+  await pwdInput.type('bobbuilder');
   await page.click('[aria-label="signupBtn"]');
 });
 

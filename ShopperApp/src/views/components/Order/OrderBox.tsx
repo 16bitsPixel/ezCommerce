@@ -77,7 +77,7 @@ export function OrderBox() {
       </Typography>
       <Box sx={{ width: '75%' }}>
         {orders.map((order: Order, index) => (
-          <Box key={index} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
+          <Box key={index} aria-label = {`orderBox-${index}`} sx={{ marginBottom: 4, border: '1px solid #e0e0e0', borderRadius: 2, padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={4}>
                 <Typography variant="subtitle1"><strong>{t('order-placed')}</strong></Typography>

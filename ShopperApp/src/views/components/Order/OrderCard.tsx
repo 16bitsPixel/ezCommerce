@@ -183,6 +183,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                 <Button 
                   className='orderButton' 
                   variant="contained" 
+                  aria-label='orderAgainBtn'
                   sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2, marginBottom: 1 }}
                   onClick= {()=>handleAddToCart(ids[index], quantity[index])}>
                   {t('buy-it-again')}
@@ -190,6 +191,7 @@ export function OrderCard({ ids, status, quantity, onTotalChange }: OrderCardPro
                 <Button 
                   variant="outlined" 
                   sx={{ minWidth: 160, paddingLeft: 2, paddingRight: 2 }} 
+                  aria-label='viewItemBtn'
                   onClick={() => handleViewItemClick(product.id)}>
                   {t('view-your-item')}
                 </Button>
