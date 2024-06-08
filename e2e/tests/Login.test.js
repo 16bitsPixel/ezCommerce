@@ -22,7 +22,6 @@ afterEach(async () => {
   await browser.close();
 });
 
-
 it('should allow a user to login', async () => {
   await page.goto('http://localhost:3000/login');
 
@@ -40,71 +39,39 @@ it('should allow a user to login', async () => {
   // Assert that the user is redirected to the home page
   expect(page.url()).toBe('http://localhost:3000/');
 });
-// it('user logs ins and logsout', async () => {
-//   await page.goto('http://localhost:3000/login');
-//   // Fill in the email and password fields
-//   await page.type('#email', 'molly@books.com');
-//   await page.type('#password', 'mollymember');
 
-//   const submit = await page.$('aria/Submit');
+it('signup bob', async () => {
+  await page.goto('http://localhost:3000/login');
 
-//   await submit.click();
+  await page.waitForSelector('[aria-label="signup"]');
+  await page.click('[aria-label="signup"]');
 
-//   // Wait for the login to complete
-//   await page.waitForNavigation();
+  await page.waitForSelector('[aria-label="signupBtn"]');
+  const firstInput = await page.$('input[type="text"][name="firstname"]');
+  const lastInput = await page.$('input[type="text"][name="lastname"]');
+  const emailInputSignup = await page.$('input[type="email"][name="email"]');
+  const passwordInputSignup = await page.$('input[type="password"][name="password"]');
+  await firstInput.type('Bob');
+  await lastInput.type('Builder');
+  await emailInputSignup.type('bob@builder.com');
+  await passwordInputSignup.type('bobbuilder');
+  await page.click('[aria-label="signupBtn"]');
+});
 
-//   // Assert that the user is redirected to the home page
-//   expect(page.url()).toBe('http://localhost:3000/');
+it('sign in bob', async () => {
+  await page.goto('http://localhost:3000/login');
 
-//   // Wait for the logout button to be available
-//   await page.waitForSelector('[aria-label="Logout"]');
+  // sign in as bob
+  await page.waitForSelector('input[type="email"][name="email"]');
+  const emailInput = await page.$('input[type="email"][name="email"]');
+  const passwordInput = await page.$('input[type="password"][name="password"]');
+  await emailInput.type('bob@builder.com');
+  await passwordInput.type('bobbuilder');
+  await page.click('aria/loginBtn');
 
-//   // Find the logout button and press it
-//   const logout = await page.$('[aria-label="Logout"]');
-//   await logout.click();
+  // Wait for the login to complete
+  await page.waitForNavigation();
 
-//   // Assert that the user is redirected to the home page
-//   expect(page.url()).toBe('http://localhost:3000/login');
-// });
-// it('user enters invalid credentials', async () => {
-//   // to sense the dialog which is the window aler
-//   const alertDialogPromise = new Promise((resolve, reject) => {
-//     page.on('dialog', (dialog) => {
-//       if (dialog.type() === 'alert') {
-//         resolve(dialog); // Resolve the promise when an alert is detected
-//       } else {
-//         reject(new Error('Window.Alert was not triggered'));
-//       }
-//     });
-//   });
-//   await page.goto('http://localhost:3000/login');
-//   // Fill in the email and password fields
-//   await page.type('#email', 'badmeber@books.com');
-//   await page.type('#password', 'badpassword');
-
-//   const submit = await page.$('aria/Submit');
-
-//   await submit.click();
-
-//   // Wait for dialog and then dismiss it
-//   const dialog = await alertDialogPromise;
-//   await dialog.dismiss();
-// });
-// it('Wont be able to click submit given bad email format', async () => {
-//   await page.goto('http://localhost:3000/login');
-//   // Fill in the email and password fields
-//   await page.type('#email', 'badmeberbooks.com');
-//   await page.type('#password', 'badpassword');
-
-//   const isDisabled = await page.$eval('aria/Submit', (el) => el.disabled);
-//   expect(isDisabled).toBe(true);
-// });
-// it('Good email format but no passwrod', async () => {
-//   await page.goto('http://localhost:3000/login');
-//   // Fill in the email and password fields
-//   await page.type('#email', 'molly@books.com');
-//   await page.type('#password', '');
-
-//   const isDisabled = await page.$eval('aria/Submit', (el) => el.disabled);
-//   expect(isDisabled).toBe(true);
-// });
+  // Assert that the user is redirected to the home page
+  expect(page.url()).toBe('http://localhost:3000/');
+});
